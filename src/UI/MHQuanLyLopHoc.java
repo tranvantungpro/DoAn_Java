@@ -15,13 +15,18 @@ import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,9 +35,16 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import java.util.Calendar;
 
+import Moudle.CTH;
+import Moudle.GiangVien;
+import Moudle.LoaiLopHoc;
 import Moudle.LopHoc;
+import Service.KetNoiCTH;
+import Service.KetNoiGV;
 import Service.KetNoiLH;
+import Service.KetNoiLLH;
 import Service.KetNoiSQL;
 
 public class MHQuanLyLopHoc extends JFrame
@@ -42,11 +54,16 @@ public class MHQuanLyLopHoc extends JFrame
 		JButton btnThem, btnXoa, btnSua, btnTimKiem, btnTaoMoi;
 		DefaultTableModel dtmLopHoc;
 		JTable  tblLopHoc;
-
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		ArrayList<LopHoc> dsLH = null;
 		ArrayList<LopHoc> dsThem = null;
 		ArrayList<LopHoc> dsLHTim = null;
 		static String MaLopHoc = "";
+		JComboBox<LoaiLopHoc>cboLoaiLH;
+		JComboBox<CTH>cboCTH;
+		JComboBox<GiangVien>cboGV;
+		
+		 
 
 
 		public MHQuanLyLopHoc (String tieude)
@@ -55,6 +72,9 @@ public class MHQuanLyLopHoc extends JFrame
 			addContronls();
 			addEvents();
 			HienThiToanBoLH();
+			hienThiDanhMucLenList();
+			hienThicboCTH();
+			hienThicboGV();
 		}
 
 		private void addEvents() 
@@ -138,12 +158,12 @@ public class MHQuanLyLopHoc extends JFrame
 					LopHoc LH = dsLH.get(row);
 					txtMa.setText(LH.getMaLH());
 					txtTen.setText(LH.getTenLH());
-					txtLoai.setText(LH.getLoaiLH());
-					txtMaCH.setText(LH.getMaCTH());
-					//txtSoBuoi.setText(LH.getSoBuoi());
-					//txtngaybd.setText(LH.getNgayBD());
-					//txtngaykt.setText(LH.getNgayKT());
-					txtMagv.setText(LH.getMaGV());
+					cboLoaiLH.setSelectedItem(LH.getLoaiLH());
+					cboCTH.setSelectedItem(LH.getMaCTH());
+					txtSoBuoi.setText(Integer.toString(LH.getSoBuoi()));
+					//txtngaybd.setText(df.format(LH.getNgayBD()));
+					//txtngaykt.setText(df.format(LH.getNgayKT()));
+					cboGV.setSelectedItem(LH.getMaGV());
 				}
 			});
 
@@ -164,6 +184,7 @@ public class MHQuanLyLopHoc extends JFrame
 					txtTen.setText("");
 					txtLoai.setText("");
 					txtMaCH.setText("");
+					txtSoBuoi.setText("");
 					txtngaybd.setText("");
 					txtngaykt.setText("");
 					txtMagv.setText("");
@@ -187,7 +208,7 @@ public class MHQuanLyLopHoc extends JFrame
 			//create slip
 			JPanel pnTop = new JPanel();
 			pnTop.setLayout(new BorderLayout());
-			pnTop.setPreferredSize(new Dimension(0, 370));
+			pnTop.setPreferredSize(new Dimension(0, 485));
 			JPanel pnBottom = new JPanel();
 			pnBottom.setLayout(new BoxLayout(pnBottom, BoxLayout.Y_AXIS));
 			JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pnTop, pnBottom);
@@ -229,8 +250,13 @@ public class MHQuanLyLopHoc extends JFrame
 			lblMa.setFont(new Font("Arial", Font.PLAIN, 15));
 			txtMa = new JTextField(30);
 			txtMa.setEditable(false);
+			JLabel lblNXBa = new JLabel("Số Buổi: ");
+			lblNXBa.setFont(new Font("Arial", Font.PLAIN, 15));
+			txtSoBuoi = new JTextField(30);
 			pnMa.add(lblMa);
 			pnMa.add(txtMa);
+			pnMa.add(lblNXBa);
+			pnMa.add(txtSoBuoi);
 			pnTopofBottom.add(pnMa);
 			//pnMa Ten
 			JPanel pnTen = new JPanel();
@@ -238,80 +264,61 @@ public class MHQuanLyLopHoc extends JFrame
 			JLabel lblTen = new JLabel("Tên LH: ");
 			lblTen.setFont(new Font("Arial", Font.PLAIN, 15));
 			txtTen = new JTextField(30);
+			JLabel lbl1 = new JLabel("Ngày BĐ: ");
+			lbl1.setFont(new Font("Arial", Font.PLAIN, 15));
+			txtngaybd = new JTextField(30);
+		
+			
 			pnTen.add(lblTen);
 			pnTen.add(txtTen);
+			pnTen.add(lbl1);
+			pnTen.add(txtngaybd);
 			pnTopofBottom.add(pnTen);
+			
 			//pnMa loai
 			JPanel pnLoai = new JPanel();
 			pnLoai.setLayout(new FlowLayout(FlowLayout.CENTER));
 			JLabel lblLoai = new JLabel("Loại LH: ");
 			lblLoai.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtLoai = new JTextField(30);
-			pnLoai.add(lblLoai);
-			pnLoai.add(txtLoai);
-			pnTopofBottom.add(pnLoai);		
-			//pnMa mcth
-			JPanel pnCTH = new JPanel();
-			pnCTH.setLayout(new FlowLayout(FlowLayout.CENTER));
-			JLabel lblNXB = new JLabel("Mã CTH: ");
-			lblNXB.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtMaCH = new JTextField(30);
-			pnCTH.add(lblNXB);
-			pnCTH.add(txtMaCH);
-			pnTopofBottom.add(pnCTH);	
-			pnBottom.add(pnTopofBottom);
-			
-			//pnMa 
-			JPanel pnSoB = new JPanel();
-			pnSoB.setLayout(new FlowLayout(FlowLayout.CENTER));
-			JLabel lblNXBa = new JLabel("Số Buổi: ");
-			lblNXBa.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtSoBuoi = new JTextField(30);
-			pnSoB.add(lblNXBa);
-			pnSoB.add(txtSoBuoi);
-			pnTopofBottom.add(pnSoB);	
-			pnBottom.add(pnTopofBottom);
-			
-			//pnMa 
-			JPanel pnNBD = new JPanel();
-			pnNBD.setLayout(new FlowLayout(FlowLayout.CENTER));
-			JLabel lbl1 = new JLabel("Ngày BĐ: ");
-			lbl1.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtngaybd = new JTextField(30);
-			pnNBD.add(lbl1);
-			pnNBD.add(txtngaybd);
-			pnTopofBottom.add(pnNBD);	
-			pnBottom.add(pnTopofBottom);
-			
-			//pnMa 
-			JPanel pnNKT = new JPanel();
-			pnNKT.setLayout(new FlowLayout(FlowLayout.CENTER));
+			cboLoaiLH=new JComboBox<LoaiLopHoc>();
+			cboLoaiLH.setPreferredSize(new Dimension(332, 20));
 			JLabel lbl11 = new JLabel("Ngày KT: ");
 			lbl11.setFont(new Font("Arial", Font.PLAIN, 15));
 			txtngaykt = new JTextField(30);
-			pnNKT.add(lbl11);
-			pnNKT.add(txtngaykt);
-			pnTopofBottom.add(pnNKT);	
+			pnLoai.add(lblLoai);
+			pnLoai.add(cboLoaiLH);
+			pnLoai.add(lbl11);
+			pnLoai.add(txtngaykt);
+			pnTopofBottom.add(pnLoai);		
+			
+			//pnMa mcth
+			JPanel pnCTH = new JPanel();
+			pnCTH.setLayout(new FlowLayout(FlowLayout.CENTER));
+			JLabel lblNXB = new JLabel("CTH: ");
+			lblNXB.setFont(new Font("Arial", Font.PLAIN, 15));
+			cboCTH=new JComboBox<CTH>();
+			cboCTH.setPreferredSize(new Dimension(332, 20));
+			JLabel lbl111 = new JLabel("GV: ");
+			lbl111.setFont(new Font("Arial", Font.PLAIN, 15));
+			cboGV=new JComboBox<GiangVien>();
+			cboGV.setPreferredSize(new Dimension(332, 20));
+			pnCTH.add(lblNXB);
+			pnCTH.add(cboCTH);
+			pnCTH.add(lbl111);
+			pnCTH.add(cboGV);
+			pnTopofBottom.add(pnCTH);	
 			pnBottom.add(pnTopofBottom);
 			
-			//pnMa 
-			JPanel pnGV = new JPanel();
-			pnGV.setLayout(new FlowLayout(FlowLayout.CENTER));
-			JLabel lbl111 = new JLabel("Ngày KT: ");
-			lbl111.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtMagv = new JTextField(30);
-			pnGV.add(lbl111);
-			pnGV.add(txtMagv);
-			pnTopofBottom.add(pnGV);	
-			pnBottom.add(pnTopofBottom);
 
-			lblMa.setPreferredSize(lbl1.getPreferredSize());
-			lblTen.setPreferredSize(lbl1.getPreferredSize());
-			lbl11.setPreferredSize(lbl1.getPreferredSize());
-			lblNXB.setPreferredSize(lbl1.getPreferredSize());
+
+			lblMa.setPreferredSize(lblLoai.getPreferredSize());
+			lblTen.setPreferredSize(lblLoai.getPreferredSize());
+			lblNXB.setPreferredSize(lblLoai.getPreferredSize());
+			
 			lblNXBa.setPreferredSize(lbl1.getPreferredSize());
+			lbl11.setPreferredSize(lbl1.getPreferredSize());
 			lbl111.setPreferredSize(lbl1.getPreferredSize());
-			lblLoai.setPreferredSize(lbl1.getPreferredSize());
+			 
 			
 
 			//pnButton
@@ -337,6 +344,39 @@ public class MHQuanLyLopHoc extends JFrame
 			this.setVisible(true);
 		}
 
+		private void hienThiDanhMucLenList() {
+			KetNoiLLH dmService=new KetNoiLLH();
+			Vector<LoaiLopHoc>vec=dmService.docToanBoDanhMuc();
+			//lisLoaiLH.setListData(vec);
+			cboLoaiLH.removeAllItems();
+			for(LoaiLopHoc dm : vec)
+			{
+				cboLoaiLH.addItem(dm);
+			}
+		}
+		
+		private void hienThicboCTH() {
+			KetNoiCTH dmService=new KetNoiCTH();
+			Vector<CTH>vec=dmService.docToanBoDanhMuc();
+			
+			cboCTH.removeAllItems();
+			for(CTH dm : vec)
+			{
+				cboCTH.addItem(dm);
+			}
+		}
+		
+		private void hienThicboGV() {
+			KetNoiGV dmService=new KetNoiGV();
+			Vector<GiangVien>vec=dmService.docToanBoDanhMuc();
+			
+			cboGV.removeAllItems();
+			for(GiangVien dm : vec)
+			{
+				cboGV.addItem(dm);
+			}
+		}
+		
 		protected void CapNhatLopHoc() 
 		{
 			LopHoc LH = new LopHoc();
@@ -377,7 +417,7 @@ public class MHQuanLyLopHoc extends JFrame
 			}
 		}
 
-		protected void LuuMoiLH() 
+		protected void LuuMoiLH()  
 		{
 			LopHoc LH = new LopHoc();
 			LH.setMaLH(txtMa.getText());
@@ -385,8 +425,19 @@ public class MHQuanLyLopHoc extends JFrame
 			LH.setLoaiLH(txtLoai.getText());
 			LH.setMaCTH(txtMaCH.getText());
 			LH.setSoBuoi(Integer.parseInt(txtSoBuoi.getText()));
-			//LH.setNgayBD(txtngaybd.getText());
-			//LH.setNgayKT(txtngaykt.getText());
+			JOptionPane.showMessageDialog(null, txtngaybd.getText());
+			try {
+				LH.setNgayBD(df.parse(txtngaybd.getText().trim()));
+			} catch (ParseException e) {
+				
+				e.printStackTrace();
+			}
+			try {
+				LH.setNgayKT(df.parse(txtngaykt.getText().trim()));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			LH.setMaGV(txtMagv.getText());
 
 			KetNoiLH kn =  new KetNoiLH();
@@ -409,7 +460,7 @@ public class MHQuanLyLopHoc extends JFrame
 			a = knLH.LayMaLH();
 			MaLopHoc=a.getMaLH();
 
-			int ViTriCuoi=MaLopHoc.lastIndexOf("T");
+			int ViTriCuoi=MaLopHoc.lastIndexOf("H");
 			String TenMa=MaLopHoc.substring(ViTriCuoi+1);
 			int b = Integer.parseInt(TenMa);
 			int c = b+1;
@@ -449,7 +500,6 @@ public class MHQuanLyLopHoc extends JFrame
 				String a1 = txtTim.getText();
 				KetNoiLH knLH = new KetNoiLH();
 				dsLHTim = knLH.TimLopHoc(a1);
-				JOptionPane.showMessageDialog(null,a1);	
 				dtmLopHoc.setRowCount(0);
 				for(LopHoc a : dsLHTim)
 				{

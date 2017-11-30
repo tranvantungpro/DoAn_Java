@@ -17,7 +17,7 @@ public class KetNoiLH extends KetNoiSQL
 		ArrayList<LopHoc> dsGT= new ArrayList<LopHoc>();
 		try 
 		{
-			String sql ="select * from LopHoc ORDER BY MaGT ASC";
+			String sql ="select * from LopHoc ORDER BY MaLH ASC";
 			preStatement=conn.prepareStatement(sql);
 			result=preStatement.executeQuery();
 			while(result.next())
@@ -46,7 +46,7 @@ public class KetNoiLH extends KetNoiSQL
 		ArrayList<LopHoc> dsGTTim= new ArrayList<LopHoc>();
 		try
 		{
-			String sql= "select * from LopHoc where TenLP like concat('%', ?, '%') collate sql_latin1_general_cp1_ci_as";
+			String sql= "select * from LopHoc where TenLH like concat('%', ?, '%') collate sql_latin1_general_cp1_ci_as";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, tenLH);
 			result=preStatement.executeQuery();
