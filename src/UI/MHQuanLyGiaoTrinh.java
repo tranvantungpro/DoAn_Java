@@ -38,7 +38,7 @@ public class MHQuanLyGiaoTrinh extends JFrame
 {
 	//delare
 	JTextField txtMa, txtTen, txtLoai, txtNXB, txtTim;  
-	JButton btnThem, btnXoa, btnSua, btnTimKiem, btnTaoMoi;
+	JButton btnThem, btnXoa, btnSua, btnTimKiem, btnTaoMoi, btnQuayLai;
 	DefaultTableModel dtmGiaoTrinh;
 	JTable  tblGiaoTrinh;
 
@@ -163,6 +163,23 @@ public class MHQuanLyGiaoTrinh extends JFrame
 
 			}
 		});
+		
+		btnQuayLai.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				QuayLai();
+				ManHinhChinh ui = new ManHinhChinh("Quản Lý Trung Tâm Tin Học");
+				ui.showWindows();
+				
+			}
+		});
+	}
+
+	protected void QuayLai() 
+	{
+		this.dispose(); 
+		
 	}
 
 	protected void NhapTT() {
@@ -259,10 +276,12 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		btnXoa = new JButton("Xóa");
 		btnSua = new JButton("Cập nhật");
 		btnTaoMoi =new JButton("Tạo Mới");
+		btnQuayLai = new JButton("Quay lại");
+		pnButton.add(btnTaoMoi);
 		pnButton.add(btnThem);
 		pnButton.add(btnXoa);
 		pnButton.add(btnSua);
-		pnButton.add(btnTaoMoi);
+		pnButton.add(btnQuayLai);
 		pnBottom.add(pnButton);
 
 	}
@@ -285,12 +304,12 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		KetNoiGT kn =  new KetNoiGT();
 		if(kn.CapNhatGiaoTrinh(gt) > 0)
 		{
-			JOptionPane.showMessageDialog(null, "Cập nhật GT thành công");
+			JOptionPane.showMessageDialog(null, "Cập nhật giáo trình thành công");
 			HienThiToanBoGT();
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Cập nhật GT thất bại");
+			JOptionPane.showMessageDialog(null, "Cập nhật giáo trình thất bại");
 		}
 
 	}
@@ -302,12 +321,12 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		KetNoiGT kn =  new KetNoiGT();
 		if(kn.XoaGiaoTrinh(gt) > 0)
 		{
-			JOptionPane.showMessageDialog(null, "Xóa GT thành công");
+			JOptionPane.showMessageDialog(null, "Xóa giáo trình thành công");
 			HienThiToanBoGT();
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Xóa GT thất bại");
+			JOptionPane.showMessageDialog(null, "Xóa giáo trình thất bại");
 		}
 	}
 
@@ -321,12 +340,12 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		KetNoiGT kn =  new KetNoiGT();
 		if(kn.ThemMoiGiaoTrinh(gt) > 0)
 		{
-			JOptionPane.showMessageDialog(null, "Lưu GT thành công");
+			JOptionPane.showMessageDialog(null, "Lưu giáo trình thành công");
 			HienThiToanBoGT();
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Lưu GT thất bại");
+			JOptionPane.showMessageDialog(null, "Lưu giáo trình thất bại");
 		}
 
 	}

@@ -3,8 +3,11 @@ package Service;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
 
+import Moudle.GiangVien;
 import Moudle.LopHoc;
 
 public class KetNoiLH extends KetNoiSQL
@@ -175,5 +178,46 @@ public class KetNoiLH extends KetNoiSQL
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public Vector<LopHoc> docToanBoLopHoc()
+	{
+		Vector<LopHoc> vec=new Vector<LopHoc>();
+		try
+		{
+			String sql="select * from LopHoc";
+			Statement statement=conn.createStatement();
+			ResultSet result=statement.executeQuery(sql);
+			while(result.next())
+			{
+				LopHoc dm=new LopHoc();
+				dm.setMaLH(result.getString(1));
+				dm.setTenLH(result.getString(2)); 
+				vec.add(dm);
+			}			
+			
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return vec;
+	}
+	
+	public int XepLop(String gv, String lh)
+	{
+		try
+		{
+			String sql= "update LopHoc set MaGV=? where TenLH=? ";
+			preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1,  gv);
+			preStatement.setString(2, lh); 
+			return preStatement.executeUpdate();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return -1;
 	}
 }

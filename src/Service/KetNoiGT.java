@@ -47,7 +47,7 @@ public class KetNoiGT extends KetNoiSQL
 		try
 		{
 			String sql= "select * from GiaoTrinh where TenGT like concat('%', ?, '%') collate sql_latin1_general_cp1_ci_as";
-			//JOptionPane.showMessageDialog(null, sql);
+	
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, tenGT);
 			result=preStatement.executeQuery();

@@ -15,6 +15,7 @@ import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,6 +37,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import java.util.Calendar;
+import java.util.Date;
 
 import Moudle.CTH;
 import Moudle.GiangVien;
@@ -51,7 +53,7 @@ public class MHQuanLyLopHoc extends JFrame
 {
 	//delare
 		JTextField txtMa, txtTen, txtLoai, txtMaCH, txtSoBuoi, txtngaybd, txtngaykt, txtMagv, txtTim;  
-		JButton btnThem, btnXoa, btnSua, btnTimKiem, btnTaoMoi;
+		JButton btnThem, btnXoa, btnSua, btnTimKiem, btnTaoMoi, btnXepLich, btnQuayLai;
 		DefaultTableModel dtmLopHoc;
 		JTable  tblLopHoc;
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -62,6 +64,7 @@ public class MHQuanLyLopHoc extends JFrame
 		JComboBox<LoaiLopHoc>cboLoaiLH;
 		JComboBox<CTH>cboCTH;
 		JComboBox<GiangVien>cboGV;
+		Calendar cal = Calendar.getInstance();
 		
 		 
 
@@ -158,12 +161,12 @@ public class MHQuanLyLopHoc extends JFrame
 					LopHoc LH = dsLH.get(row);
 					txtMa.setText(LH.getMaLH());
 					txtTen.setText(LH.getTenLH());
-					cboLoaiLH.setSelectedItem(LH.getLoaiLH());
-					cboCTH.setSelectedItem(LH.getMaCTH());
-					txtSoBuoi.setText(Integer.toString(LH.getSoBuoi()));
-					//txtngaybd.setText(df.format(LH.getNgayBD()));
-					//txtngaykt.setText(df.format(LH.getNgayKT()));
-					cboGV.setSelectedItem(LH.getMaGV());
+					hienThicboLoaiLHthemMa(LH.getLoaiLH());
+					hienThicboCTHthemMa(LH.getMaCTH());
+					txtSoBuoi.setText(Integer.toString(LH.getSoBuoi()));  
+					txtngaybd.setText(df.format(LH.getNgayBD()));
+					txtngaykt.setText(df.format(LH.getNgayKT()));
+					 hienThicboGVthemMa(LH.getMaGV());
 				}
 			});
 
@@ -171,6 +174,7 @@ public class MHQuanLyLopHoc extends JFrame
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
+				
 					CapNhatLopHoc();
 
 				}
@@ -179,19 +183,80 @@ public class MHQuanLyLopHoc extends JFrame
 			btnTaoMoi.addActionListener(new ActionListener() {
 
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent e) 
+				{
 					txtMa.setText(LayMaLH());
-					txtTen.setText("");
-					txtLoai.setText("");
-					txtMaCH.setText("");
+					txtTen.setText(""); 
 					txtSoBuoi.setText("");
-					txtngaybd.setText("");
-					txtngaykt.setText("");
-					txtMagv.setText("");
+					txtngaybd.setText(LayNgayHienHanh());
+					txtngaykt.setText(""); 
 					HienThiToanBoLH();
-
+					hienThiDanhMucLenList();
+					hienThicboCTH();
+					hienThicboGV();
+					cboGV.setSelectedItem(null);
 				}
 			});
+		
+			btnXepLich.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					MHXepLichGV xeplich = new MHXepLichGV("Xếp Lịch Giảng Viên");
+//					xeplich.setFocusable(true);
+//					xeplich.setVisible(true);
+					xeplich.ShowWindow();
+				}
+			});
+		
+			btnQuayLai.addActionListener(new ActionListener() 
+			{	
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					QuayLai();
+					ManHinhChinh ui = new ManHinhChinh("Quản Lý Trung Tâm Tin Học");
+					ui.showWindows();
+				}
+			});
+		}
+
+		public void QuayLai() 
+		{
+			this.dispose(); 
+		}
+
+		protected void hienThicboCTHthemMa(String maCTH) {
+			KetNoiCTH kncth=new KetNoiCTH();
+			Vector<CTH>vec1=kncth.hienThicbocththemMa(maCTH); 
+			cboCTH.removeAllItems();
+			
+			KetNoiCTH dmService=new KetNoiCTH();
+			Vector<CTH>vec=dmService.docToanBoDanhMuc();
+			CTH a = new CTH();
+			a = (CTH) vec1.toArray()[0];
+			for(CTH dm : vec)
+			{
+				cboCTH.addItem(dm);
+				if(dm.getTenCTH().equals(a.getTenCTH())) 
+					cboCTH.setSelectedItem(dm);
+			} 
+		}
+
+		public  void hienThicboLoaiLHthemMa(String ma) {
+			KetNoiLLH knllh=new KetNoiLLH();
+			Vector<LoaiLopHoc>vec1=knllh.hienThicboLLHthemMa(ma);
+			cboLoaiLH.removeAllItems();
+			
+			KetNoiLLH knllh1=new KetNoiLLH();
+			Vector<LoaiLopHoc>vec=knllh1.docToanBoDanhMuc();
+			LoaiLopHoc a = new LoaiLopHoc();
+			a = (LoaiLopHoc) vec1.toArray()[0];
+			for(LoaiLopHoc dm : vec)
+			{
+				cboLoaiLH.addItem(dm);
+				if(dm.getTenLoaiLH().equals(a.getTenLoaiLH())) 
+					cboLoaiLH.setSelectedItem(dm);
+			}
 		}
 
 		protected void NhapTT() {
@@ -231,11 +296,11 @@ public class MHQuanLyLopHoc extends JFrame
 			dtmLopHoc.addColumn("Mã LH");
 			dtmLopHoc.addColumn("Tên LH");
 			dtmLopHoc.addColumn("Loại LH");
-			dtmLopHoc.addColumn("Mã CTH");
+			dtmLopHoc.addColumn("Tên CTH");
 			dtmLopHoc.addColumn("Số Buổi");
 			dtmLopHoc.addColumn("Ngày BĐ");
 			dtmLopHoc.addColumn("Ngày KT");
-			dtmLopHoc.addColumn("Mã GV"); 
+			dtmLopHoc.addColumn("Tên GV"); 
 			
 			tblLopHoc = new JTable(dtmLopHoc);
 			JScrollPane sptable = new JScrollPane(tblLopHoc, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -328,10 +393,14 @@ public class MHQuanLyLopHoc extends JFrame
 			btnXoa = new JButton("Xóa");
 			btnSua = new JButton("Cập nhật");
 			btnTaoMoi =new JButton("Tạo Mới");
+			btnXepLich = new JButton("Xếp lịch giảng viên");
+			btnQuayLai = new JButton("Quay lại");
+			pnButton.add(btnTaoMoi);
 			pnButton.add(btnThem);
 			pnButton.add(btnXoa);
 			pnButton.add(btnSua);
-			pnButton.add(btnTaoMoi);
+			pnButton.add(btnXepLich);
+			pnButton.add(btnQuayLai);
 			pnBottom.add(pnButton);
 
 		}
@@ -339,7 +408,6 @@ public class MHQuanLyLopHoc extends JFrame
 		public void showWindow()
 		{
 			this.setSize(900, 700);
-			//this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 			this.setLocationRelativeTo(null);
 			this.setVisible(true);
 		}
@@ -366,7 +434,7 @@ public class MHQuanLyLopHoc extends JFrame
 			}
 		}
 		
-		private void hienThicboGV() {
+		public void hienThicboGV() {
 			KetNoiGV dmService=new KetNoiGV();
 			Vector<GiangVien>vec=dmService.docToanBoDanhMuc();
 			
@@ -377,26 +445,62 @@ public class MHQuanLyLopHoc extends JFrame
 			}
 		}
 		
+		public void hienThicboGVthemMa(String magv) 
+		{
+			KetNoiGV kngv=new KetNoiGV();
+			Vector<GiangVien>vec1=kngv.hienThicboGVthemMa(magv);
+			cboGV.removeAllItems();
+			
+			KetNoiGV knllh1=new KetNoiGV();
+			Vector<GiangVien>vec=knllh1.docToanBoDanhMuc();
+			GiangVien a = new GiangVien();
+			a = (GiangVien) vec1.toArray()[0];
+			for(GiangVien dm : vec)
+			{
+				cboGV.addItem(dm);
+				if(dm.getTenGV().equals(a.getTenGV()))
+					cboGV.setSelectedItem(dm);
+			}
+		}
+		
 		protected void CapNhatLopHoc() 
 		{
 			LopHoc LH = new LopHoc();
 			LH.setMaLH(txtMa.getText());
 			LH.setTenLH(txtTen.getText());
-			LH.setLoaiLH(txtLoai.getText());
-			LH.setMaCTH(txtMaCH.getText());
+			LH.setLoaiLH(cboLoaiLH.getSelectedItem().toString());
+			
+			LH.setMaCTH(LayMaCTH(cboCTH.getSelectedItem().toString()));
 			LH.setSoBuoi(Integer.parseInt(txtSoBuoi.getText()));
-			//LH.setNgayBD(txtngaybd.getText());
-			//LH.setNgayKT(txtngaykt.getText());
-			LH.setMaGV(txtMagv.getText());
+			
+			//ngaybd
+			Date sqlDate = null;
+			try {
+				sqlDate = new java.sql.Date(df.parse(txtngaybd.getText()).getTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			LH.setNgayBD(sqlDate);
+			
+			//ngaykt
+			Date sqlDate1 = null;
+			try {
+				sqlDate1 = new java.sql.Date(df.parse(txtngaykt.getText()).getTime());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			LH.setNgayKT(sqlDate1);
+			///
+			LH.setMaGV(LayMaGV(cboGV.getSelectedItem().toString()));
 			KetNoiLH kn =  new KetNoiLH();
 			if(kn.CapNhatLopHoc(LH) > 0)
 			{
-				JOptionPane.showMessageDialog(null, "Cập nhật LH thành công");
+				JOptionPane.showMessageDialog(null, "Cập nhật lớp học thành công");
 				HienThiToanBoLH();
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Cập nhật LH thất bại");
+				JOptionPane.showMessageDialog(null, "Cập nhật lớp học thất bại");
 			}
 
 		}
@@ -408,47 +512,57 @@ public class MHQuanLyLopHoc extends JFrame
 			KetNoiLH kn =  new KetNoiLH();
 			if(kn.XoaLopHoc(LH) > 0)
 			{
-				JOptionPane.showMessageDialog(null, "Xóa LH thành công");
+				JOptionPane.showMessageDialog(null, "Xóa lớp học thành công");
 				HienThiToanBoLH();
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Xóa LH thất bại");
+				JOptionPane.showMessageDialog(null, "Xóa lớp học thất bại");
 			}
 		}
 
 		protected void LuuMoiLH()  
 		{
+			 
 			LopHoc LH = new LopHoc();
 			LH.setMaLH(txtMa.getText());
 			LH.setTenLH(txtTen.getText());
-			LH.setLoaiLH(txtLoai.getText());
-			LH.setMaCTH(txtMaCH.getText());
+			LH.setLoaiLH(cboLoaiLH.getSelectedItem().toString()); 
+			LH.setMaCTH(LayMaCTH(cboCTH.getSelectedItem().toString()));
+			LH.setMaCTH(LayMaCTH(cboCTH.getSelectedItem().toString()));
 			LH.setSoBuoi(Integer.parseInt(txtSoBuoi.getText()));
-			JOptionPane.showMessageDialog(null, txtngaybd.getText());
+			
+			
+			//ngaybd
+			Date sqlDate = null;
 			try {
-				LH.setNgayBD(df.parse(txtngaybd.getText().trim()));
+				sqlDate = new java.sql.Date(df.parse(txtngaybd.getText()).getTime());
 			} catch (ParseException e) {
-				
 				e.printStackTrace();
 			}
+			LH.setNgayBD(sqlDate);
+			
+			//ngaykt
+			Date sqlDate1 = null;
 			try {
-				LH.setNgayKT(df.parse(txtngaykt.getText().trim()));
+				sqlDate1 = new java.sql.Date(df.parse(txtngaykt.getText()).getTime());
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			LH.setMaGV(txtMagv.getText());
-
+			LH.setNgayKT(sqlDate1);
+			///
+			 
+			LH.setMaGV(LayMaGV(cboGV.getSelectedItem().toString()));
+			//them
 			KetNoiLH kn =  new KetNoiLH();
 			if(kn.ThemMoiLopHoc(LH) > 0)
 			{
-				JOptionPane.showMessageDialog(null, "Lưu LH thành công");
+				JOptionPane.showMessageDialog(null, "Lưu lớp học thành công");
 				HienThiToanBoLH();
 			}
 			else
 			{
-				JOptionPane.showMessageDialog(null, "Lưu LH thất bại");
+				JOptionPane.showMessageDialog(null, "Lưu lớp học thất bại");
 			}
 
 		}
@@ -524,17 +638,6 @@ public class MHQuanLyLopHoc extends JFrame
 				JOptionPane.showMessageDialog(null, "Sai cú pháp. Vui lòng kiểm tra lại");
 				return 1;
 			}
-
-			if(txtLoai.getText().equals(""))
-			{
-				return 1;
-			}
-
-			if(txtMaCH.getText().equals(""))
-			{
-				return 1;
-			}
-			
 			if(txtngaybd.getText().equals(""))
 			{
 				return 1;
@@ -544,12 +647,7 @@ public class MHQuanLyLopHoc extends JFrame
 			{
 				return 1;
 			}
-			
-			
-			if(txtMagv.getText().equals(""))
-			{
-				return 1;
-			}
+			 
 			
 			if(txtSoBuoi.getText().equals(""))
 			{
@@ -564,5 +662,28 @@ public class MHQuanLyLopHoc extends JFrame
 			return knLH.KiemTraTonTai(txtTen.getText());
 			 
 		}
+		
+		public String LayNgayHienHanh()
+		{
+			Date t = cal.getTime();
+			return df.format(t);
+		}
 
+		public String LayMaCTH(String tenllh)
+		{
+			KetNoiCTH knLLH = new KetNoiCTH();
+			CTH a = new CTH();
+			a = knLLH.LayMaCTH(tenllh);
+			 
+			return a.getMaCTH();
+		}
+		
+		public String LayMaGV(String tengv)
+		{
+			KetNoiGV knGV = new KetNoiGV();
+			GiangVien a = new GiangVien();
+			a = knGV.LayMaGV(tengv);
+			 
+			return a.getMaGV();
+		}
 }

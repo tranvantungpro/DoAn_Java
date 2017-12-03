@@ -22,4 +22,22 @@ public class KetNoiSQL
 		}
 		return conn;
 	}
+	
+	public static Connection getConnect( )
+	{
+		String  a= "trantung\trantung";
+		String data = "quanlytrungtamth";
+		try 
+		{
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			String connectionUrl=
+					"jdbc:sqlserver://"+a+":1433;databaseName="+data+";integratedSecurity=true;";
+			conn= DriverManager.getConnection(connectionUrl);
+		} catch (SQLException e) {
+			System.out.println("SQL Exception: "+ e.toString());
+		} catch (ClassNotFoundException cE) {
+			System.out.println("Class Not Found Exception: "+ cE.toString());
+		}
+		return conn;
+	}
 }

@@ -77,7 +77,7 @@ public class ManHinhChinh extends JFrame
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				Hide();
 				MHQuanLyGiaoTrinh giaotrinh  = new  MHQuanLyGiaoTrinh("Quản Lý Giáo Trình");
 				giaotrinh.showWindow();		
 				
@@ -111,17 +111,59 @@ public class ManHinhChinh extends JFrame
 			}
 			
 			@Override
+			public void mouseClicked(MouseEvent e) 
+			{
+				Hide() ;
+				MHQuanLyLopHoc lophoc = new MHQuanLyLopHoc("Quản Lý Lớp Học");
+				lophoc.showWindow();
+				
+			}
+		});
+		
+		mnuQLHV.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
 			public void mouseClicked(MouseEvent e) {
-				MHQuanLyLopHoc ui = new MHQuanLyLopHoc("Quản Lý Lớp Học");
-				ui.showWindow();
+				Hide() ;
+				MHQuanLyHocVien hocvien = new MHQuanLyHocVien("Quản Lý Học Viên");
+				hocvien.showWindow();
 				
 			}
 		});
 	}
 	
+	public void Hide() 
+	{
+		this.dispose(); 
+	}
+	
 	public void showWindows() 
 	{
-		this.setSize(1350, 700);
+		this.setSize(800, 500);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

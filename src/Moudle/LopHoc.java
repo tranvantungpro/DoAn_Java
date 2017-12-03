@@ -61,6 +61,11 @@ public class LopHoc
 		MaGV = maGV;
 	}
 	
+	@Override
+	public String toString() {
+		return this.getTenLH();
+	}
+	
 	
 	
 }
