@@ -101,4 +101,26 @@ public class KetNoiGV extends KetNoiSQL
 		return null;
 	}
 	
+	public String LayTenGV(String magv) {
+		try 
+		{
+			String sql = "Select * from GiangVien where MaGV=?";
+			preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1, magv);
+			result=preStatement.executeQuery();
+			while(result.next())
+			{
+				GiangVien gt = new GiangVien();
+				gt.setMaGV(result.getString(1));
+				gt.setTenGV(result.getString(2)); 
+				return gt.getTenGV();
+			}
+		}
+		catch (Exception e) 
+		{
+			  
+		}
+		return ""; 
+	}
+	
 }

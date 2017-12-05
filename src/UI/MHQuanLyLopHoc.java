@@ -110,7 +110,7 @@ public class MHQuanLyLopHoc extends JFrame
 					 }
 					 else
 					 {
-						 JOptionPane.showMessageDialog(null, "Giáo trình đã tồn tại. Vui lòng nhập lại!");
+						 JOptionPane.showMessageDialog(null, "Lớp học đã tồn tại. Vui lòng nhập lại!");
 						 btnTaoMoi.doClick();
 					 }
 					 
@@ -123,7 +123,16 @@ public class MHQuanLyLopHoc extends JFrame
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					XoaLopHoc();
+					if(KiemTaCuPhap()==0)
+					{
+
+						XoaLopHoc();
+						 
+					}
+					else
+					{
+						btnTaoMoi.doClick();
+					}
 
 				}
 			});
@@ -174,8 +183,17 @@ public class MHQuanLyLopHoc extends JFrame
 
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
-				
-					CapNhatLopHoc();
+					if(KiemTaCuPhap()==0)
+					{
+
+						CapNhatLopHoc();
+						 
+					}
+					else
+					{
+						btnTaoMoi.doClick();
+					}
+
 
 				}
 			});
@@ -277,7 +295,7 @@ public class MHQuanLyLopHoc extends JFrame
 			JPanel pnBottom = new JPanel();
 			pnBottom.setLayout(new BoxLayout(pnBottom, BoxLayout.Y_AXIS));
 			JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pnTop, pnBottom);
-			sp.setOneTouchExpandable(true);
+			//sp.setOneTouchExpandable(true);
 			con.add(sp, BorderLayout.CENTER);
 
 			//pnTim
@@ -293,14 +311,14 @@ public class MHQuanLyLopHoc extends JFrame
 
 			//pnTop
 			dtmLopHoc = new DefaultTableModel();
-			dtmLopHoc.addColumn("Mã LH");
-			dtmLopHoc.addColumn("Tên LH");
-			dtmLopHoc.addColumn("Loại LH");
-			dtmLopHoc.addColumn("Tên CTH");
+			dtmLopHoc.addColumn("Mã Lớp Học");
+			dtmLopHoc.addColumn("Tên Lớp Học");
+			dtmLopHoc.addColumn("Loại Loại Học");
+			dtmLopHoc.addColumn("Chương Trình Học");
 			dtmLopHoc.addColumn("Số Buổi");
-			dtmLopHoc.addColumn("Ngày BĐ");
-			dtmLopHoc.addColumn("Ngày KT");
-			dtmLopHoc.addColumn("Tên GV"); 
+			dtmLopHoc.addColumn("Ngày Bắt Đầu");
+			dtmLopHoc.addColumn("Ngày Kết Thúc");
+			dtmLopHoc.addColumn("Tên Giảng Viên"); 
 			
 			tblLopHoc = new JTable(dtmLopHoc);
 			JScrollPane sptable = new JScrollPane(tblLopHoc, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -308,81 +326,91 @@ public class MHQuanLyLopHoc extends JFrame
 			//pnBottom
 			JPanel pnTopofBottom = new JPanel();
 			pnTopofBottom.setLayout(new BoxLayout(pnTopofBottom, BoxLayout.Y_AXIS));
+			
+			//
+//			JPanel pntrai =  new JPanel();
+//			JPanel pnphai = new JPanel();
+//			JSplitPane sp1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pntrai, pnphai);
+//			//sp1.setOneTouchExpandable(true);
+//
+//			pntrai.setPreferredSize(new Dimension(100, 0));
+//			pnTopofBottom.add(sp1);
+			//
 			//pnMa Ma
 			JPanel pnMa = new JPanel();
 			pnMa.setLayout(new FlowLayout(FlowLayout.CENTER));
-			JLabel lblMa = new JLabel("Mã LH: ");
+			JLabel lblMa = new JLabel("Mã lớp học:");
 			lblMa.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtMa = new JTextField(30);
+			txtMa = new JTextField(20);
 			txtMa.setEditable(false);
-			JLabel lblNXBa = new JLabel("Số Buổi: ");
-			lblNXBa.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtSoBuoi = new JTextField(30);
+			JLabel lblsoBuoi = new JLabel("Số Buổi: ");
+			lblsoBuoi.setFont(new Font("Arial", Font.PLAIN, 15));
+			txtSoBuoi = new JTextField(20);
 			pnMa.add(lblMa);
 			pnMa.add(txtMa);
-			pnMa.add(lblNXBa);
+			pnMa.add(lblsoBuoi);
 			pnMa.add(txtSoBuoi);
 			pnTopofBottom.add(pnMa);
 			//pnMa Ten
 			JPanel pnTen = new JPanel();
 			pnTen.setLayout(new FlowLayout(FlowLayout.CENTER));
-			JLabel lblTen = new JLabel("Tên LH: ");
+			JLabel lblTen = new JLabel("Tên lớp học: ");
 			lblTen.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtTen = new JTextField(30);
-			JLabel lbl1 = new JLabel("Ngày BĐ: ");
-			lbl1.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtngaybd = new JTextField(30);
+			txtTen = new JTextField(20);
+			JLabel lblnbd = new JLabel("Ngày bắt đầu: ");
+			lblnbd.setFont(new Font("Arial", Font.PLAIN, 15));
+			txtngaybd = new JTextField(20);
 		
 			
 			pnTen.add(lblTen);
 			pnTen.add(txtTen);
-			pnTen.add(lbl1);
+			pnTen.add(lblnbd);
 			pnTen.add(txtngaybd);
 			pnTopofBottom.add(pnTen);
 			
 			//pnMa loai
 			JPanel pnLoai = new JPanel();
 			pnLoai.setLayout(new FlowLayout(FlowLayout.CENTER));
-			JLabel lblLoai = new JLabel("Loại LH: ");
+			JLabel lblLoai = new JLabel("Loại lớp học: ");
 			lblLoai.setFont(new Font("Arial", Font.PLAIN, 15));
 			cboLoaiLH=new JComboBox<LoaiLopHoc>();
-			cboLoaiLH.setPreferredSize(new Dimension(332, 20));
-			JLabel lbl11 = new JLabel("Ngày KT: ");
-			lbl11.setFont(new Font("Arial", Font.PLAIN, 15));
-			txtngaykt = new JTextField(30);
+			cboLoaiLH.setPreferredSize(new Dimension(270, 20));
+			JLabel lblnkt = new JLabel("Ngày kết thúc: ");
+			lblnkt.setFont(new Font("Arial", Font.PLAIN, 15));
+			txtngaykt = new JTextField(20);
 			pnLoai.add(lblLoai);
 			pnLoai.add(cboLoaiLH);
-			pnLoai.add(lbl11);
+			pnLoai.add(lblnkt);
 			pnLoai.add(txtngaykt);
 			pnTopofBottom.add(pnLoai);		
 			
 			//pnMa mcth
 			JPanel pnCTH = new JPanel();
 			pnCTH.setLayout(new FlowLayout(FlowLayout.CENTER));
-			JLabel lblNXB = new JLabel("CTH: ");
-			lblNXB.setFont(new Font("Arial", Font.PLAIN, 15));
+			JLabel lblcth = new JLabel("Chương trình học: ");
+			lblcth.setFont(new Font("Arial", Font.PLAIN, 15));
 			cboCTH=new JComboBox<CTH>();
-			cboCTH.setPreferredSize(new Dimension(332, 20));
-			JLabel lbl111 = new JLabel("GV: ");
-			lbl111.setFont(new Font("Arial", Font.PLAIN, 15));
+			cboCTH.setPreferredSize(new Dimension(270, 20));
+			JLabel lblgv = new JLabel("Giảng viên: ");
+			lblgv.setFont(new Font("Arial", Font.PLAIN, 15));
 			cboGV=new JComboBox<GiangVien>();
-			cboGV.setPreferredSize(new Dimension(332, 20));
-			pnCTH.add(lblNXB);
+			cboGV.setPreferredSize(new Dimension(270, 20));
+			pnCTH.add(lblcth);
 			pnCTH.add(cboCTH);
-			pnCTH.add(lbl111);
+			pnCTH.add(lblgv);
 			pnCTH.add(cboGV);
 			pnTopofBottom.add(pnCTH);	
 			pnBottom.add(pnTopofBottom);
 			
 
 
-			lblMa.setPreferredSize(lblLoai.getPreferredSize());
-			lblTen.setPreferredSize(lblLoai.getPreferredSize());
-			lblNXB.setPreferredSize(lblLoai.getPreferredSize());
+			//lblMa.setPreferredSize(lblLoai.getPreferredSize());
+//			lblTen.setPreferredSize(lblLoai.getPreferredSize());
+//			lblcth.setPreferredSize(lblLoai.getPreferredSize());
 			
-			lblNXBa.setPreferredSize(lbl1.getPreferredSize());
-			lbl11.setPreferredSize(lbl1.getPreferredSize());
-			lbl111.setPreferredSize(lbl1.getPreferredSize());
+//			lblNXBa.setPreferredSize(lbl1.getPreferredSize());
+//			lbl11.setPreferredSize(lbl1.getPreferredSize());
+//			lbl111.setPreferredSize(lbl1.getPreferredSize());
 			 
 			
 
@@ -589,15 +617,21 @@ public class MHQuanLyLopHoc extends JFrame
 			dtmLopHoc.setRowCount(0);
 			for(LopHoc a : dsLH)
 			{
+				KetNoiCTH knlh = new KetNoiCTH(); 
+				String b  = knlh.LayTenCTH(a.getMaCTH());
+				
+				KetNoiGV kngv = new KetNoiGV(); 
+				String c  = kngv.LayTenGV(a.getMaGV());
+				
 				Vector<Object> vec = new Vector<Object>();
 				vec.add(a.getMaLH());
 				vec.add(a.getTenLH());
 				vec.add(a.getLoaiLH());
-				vec.add(a.getMaCTH());
+				vec.add(b);
 				vec.add(a.getSoBuoi());
 				vec.add(a.getNgayBD());
 				vec.add(a.getNgayKT());
-				vec.add(a.getMaGV());
+				vec.add(c);
 				dtmLopHoc.addRow(vec);
 			}
 		} 

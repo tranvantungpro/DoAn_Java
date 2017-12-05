@@ -11,6 +11,13 @@ public class HocVien
 	private String SDT;
 	private String Email;
 	private String MaLH;
+	private String TrangThai;
+	public String getTrangThai() {
+		return TrangThai;
+	}
+	public void setTrangThai(String trangThai) {
+		TrangThai = trangThai;
+	}
 	public String getMaHV() {
 		return MaHV;
 	}
@@ -52,5 +59,10 @@ public class HocVien
 	}
 	public void setMaLH(String maLH) {
 		MaLH = maLH;
+	}
+	
+	@Override
+	public String toString() {
+		return this.getTenHV();
 	}
 }

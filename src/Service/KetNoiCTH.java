@@ -16,7 +16,8 @@ import javax.swing.JOptionPane;
 
 import Moudle.CTH;
 import Moudle.GiangVien;
-import Moudle.LoaiLopHoc;;
+import Moudle.LoaiLopHoc;
+import Moudle.LopHoc;;
 public class KetNoiCTH extends KetNoiSQL
 {
 	PreparedStatement preStatement=null;
@@ -91,4 +92,28 @@ public class KetNoiCTH extends KetNoiSQL
 		}
 		return null;
 	}
+
+	public String LayTenCTH(String macth) {
+		try 
+		{
+			String sql = "Select * from ChuongTrinhHoc where MaCTH=?";
+			preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1, macth);
+			result=preStatement.executeQuery();
+			while(result.next())
+			{
+				CTH gt = new CTH();
+				gt.setMaCTH(result.getString(1));
+				gt.setTenCTH(result.getString(2)); 
+				return gt.getTenCTH();
+			}
+		}
+		catch (Exception e) 
+		{
+			  
+		}
+		return ""; 
+	}
+
+	
 }

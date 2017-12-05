@@ -7,6 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
+import Moudle.CTH;
 import Moudle.GiangVien;
 import Moudle.LopHoc;
 
@@ -160,6 +163,28 @@ public class KetNoiLH extends KetNoiSQL
 		return null;
 	}
 	
+	public LopHoc LayMalophoc(String tenlh)
+	{
+		try 
+		{
+			String sql = "Select * from LopHoc Where TenLH=?";
+			preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1, tenlh);
+			result=preStatement.executeQuery();
+			while(result.next())
+			{
+				LopHoc gt = new LopHoc();
+				gt.setMaLH(result.getString(1));
+				return gt;
+			}
+		}
+		catch (Exception e) 
+		{
+			  
+		}
+		return null;
+	}
+	
 	public int KiemTraTonTai(String TenGT)
 	{
 		try 
@@ -219,5 +244,53 @@ public class KetNoiLH extends KetNoiSQL
 			e.printStackTrace();
 		}
 		return -1;
+	}
+
+	public Vector<LopHoc> HienThiLopHocTheoMa(String malh)
+	{
+		Vector<LopHoc> vec=new Vector<LopHoc>();
+		try
+		{
+			String sql="select * from LopHoc where MaLH=?";
+			preStatement=conn.prepareStatement(sql);
+			preStatement.setString(1, malh);
+			result=preStatement.executeQuery();
+			while(result.next())
+			{
+				LopHoc dm=new LopHoc();
+				dm.setMaLH(result.getString(1));
+				dm.setTenLH(result.getString(2));
+				vec.add(dm);
+			}			
+			
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return vec;
+	}
+	
+	public String LayTenLopHoc1(String malh)
+	{
+		try 
+		{
+			String sql = "Select * from LopHoc where MaLH=?";
+			preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1, malh);
+			result=preStatement.executeQuery();
+			while(result.next())
+			{
+				LopHoc gt = new LopHoc();
+				gt.setMaLH(result.getString(1));
+				gt.setTenLH(result.getString(2)); 
+				return gt.getTenLH();
+			}
+		}
+		catch (Exception e) 
+		{
+			  
+		}
+		return "";
 	}
 }

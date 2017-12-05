@@ -89,9 +89,7 @@ public class MHQuanLyGiaoTrinh extends JFrame
 					 JOptionPane.showMessageDialog(null, "Giáo trình đã tồn tại. Vui lòng nhập lại!");
 					 btnTaoMoi.doClick();
 				 }
-				 
-
-
+				  
 			}
 		});
 
@@ -200,7 +198,7 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		JPanel pnBottom = new JPanel();
 		pnBottom.setLayout(new BoxLayout(pnBottom, BoxLayout.Y_AXIS));
 		JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pnTop, pnBottom);
-		sp.setOneTouchExpandable(true);
+		//sp.setOneTouchExpandable(true);
 		con.add(sp, BorderLayout.CENTER);
 
 		//pnTim
@@ -216,10 +214,10 @@ public class MHQuanLyGiaoTrinh extends JFrame
 
 		//pnTop
 		dtmGiaoTrinh = new DefaultTableModel();
-		dtmGiaoTrinh.addColumn("Mã GT");
-		dtmGiaoTrinh.addColumn("Tên GT");
-		dtmGiaoTrinh.addColumn("Loại");
-		dtmGiaoTrinh.addColumn("NXB");
+		dtmGiaoTrinh.addColumn("Mã Giáo Trình");
+		dtmGiaoTrinh.addColumn("Tên Giáo Trình");
+		dtmGiaoTrinh.addColumn("Loại Giáo Trình");
+		dtmGiaoTrinh.addColumn("Nhà Xuất Bản");
 		tblGiaoTrinh = new JTable(dtmGiaoTrinh);
 		JScrollPane sptable = new JScrollPane(tblGiaoTrinh, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		pnTop.add(sptable);
@@ -229,7 +227,7 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		//pnMa Ma
 		JPanel pnMa = new JPanel();
 		pnMa.setLayout(new FlowLayout(FlowLayout.CENTER));
-		JLabel lblMa = new JLabel("Mã GT: ");
+		JLabel lblMa = new JLabel("Mã giáo trình: ");
 		lblMa.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtMa = new JTextField(30);
 		txtMa.setEditable(false);
@@ -239,7 +237,7 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		//pnMa Ten
 		JPanel pnTen = new JPanel();
 		pnTen.setLayout(new FlowLayout(FlowLayout.CENTER));
-		JLabel lblTen = new JLabel("Tên GT: ");
+		JLabel lblTen = new JLabel("Tên giáo trình: ");
 		lblTen.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtTen = new JTextField(30);
 		pnTen.add(lblTen);
@@ -248,7 +246,7 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		//pnMa loai
 		JPanel pnLoai = new JPanel();
 		pnLoai.setLayout(new FlowLayout(FlowLayout.CENTER));
-		JLabel lblLoai = new JLabel("Loại GT: ");
+		JLabel lblLoai = new JLabel("Loại giáo trình: ");
 		lblLoai.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtLoai = new JTextField(30);
 		pnLoai.add(lblLoai);
@@ -257,7 +255,7 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		//pnMa nxb
 		JPanel pnNXB = new JPanel();
 		pnNXB.setLayout(new FlowLayout(FlowLayout.CENTER));
-		JLabel lblNXB = new JLabel("NXB GT: ");
+		JLabel lblNXB = new JLabel("Nhà xuất bản: ");
 		lblNXB.setFont(new Font("Arial", Font.PLAIN, 15));
 		txtNXB = new JTextField(30);
 		pnNXB.add(lblNXB);
@@ -265,9 +263,9 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		pnTopofBottom.add(pnNXB);	
 		pnBottom.add(pnTopofBottom);
 
-		lblMa.setPreferredSize(lblNXB.getPreferredSize());
-		lblTen.setPreferredSize(lblNXB.getPreferredSize());
-		lblLoai.setPreferredSize(lblNXB.getPreferredSize());
+		lblMa.setPreferredSize(lblLoai.getPreferredSize());
+		lblTen.setPreferredSize(lblLoai.getPreferredSize());
+		lblNXB.setPreferredSize(lblLoai.getPreferredSize());
 
 		//pnButton
 		JPanel pnButton = new JPanel();

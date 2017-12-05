@@ -32,11 +32,17 @@ import javax.swing.table.DefaultTableModel;
 
 import Moudle.CTH;
 import Moudle.GiangVien;
+import Moudle.GiaoTrinh;
 import Moudle.HocVien;
+import Moudle.LoaiLopHoc;
 import Moudle.LopHoc;
+import Moudle.TrangThai;
 import Moudle.HocVien;
+import Service.KetNoiCTH;
+import Service.KetNoiGT;
 import Service.KetNoiHV;
 import Service.KetNoiLH;
+import Service.KetNoiTT;
 
 public class MHQuanLyHocVien extends JFrame 
 {
@@ -48,12 +54,17 @@ public class MHQuanLyHocVien extends JFrame
 	 ArrayList<HocVien> dsHV ;
 	 static String Mahocvien = "";
 	 DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	 JComboBox<LopHoc> cboLopHoc;
+	 JComboBox<TrangThai> cboTrangThai;
+
 
 	public MHQuanLyHocVien(String tieude) {
 		super("Quản Lý Học Viên");
 		addContronls();
 		addEvents();
 		HienThiToanBoHV();
+		hienThicboMLHa();
+		hienThicboTT();
 		}
 
 	private void addContronls() {
@@ -63,11 +74,11 @@ public class MHQuanLyHocVien extends JFrame
 		//create slip
 		JPanel pnTop = new JPanel();
 		pnTop.setLayout(new BorderLayout());
-		pnTop.setPreferredSize(new Dimension(0, 505));
+		pnTop.setPreferredSize(new Dimension(0, 490));
 		JPanel pnBottom = new JPanel();
 		pnBottom.setLayout(new BoxLayout(pnBottom, BoxLayout.Y_AXIS));
 		JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pnTop, pnBottom);
-		sp.setOneTouchExpandable(true);
+		//sp.setOneTouchExpandable(true);
 		con.add(sp, BorderLayout.CENTER);
 
 		//pnTim
@@ -90,6 +101,7 @@ public class MHQuanLyHocVien extends JFrame
 		dmHocVien.addColumn("Số Điện Thoại");
 		dmHocVien.addColumn("Email");
 		dmHocVien.addColumn("Lớp Học"); 
+		dmHocVien.addColumn("Trạng Thái"); 
 		
 		tblHocVien = new JTable(dmHocVien);
 		JScrollPane sptable = new JScrollPane(tblHocVien, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -145,8 +157,26 @@ public class MHQuanLyHocVien extends JFrame
 		pnTopofBottom.add(pnNS);	 
 		pnBottom.add(pnTopofBottom);  
 		
+		JPanel pntt = new JPanel();
+		pntt.setLayout(new FlowLayout(FlowLayout.CENTER));
+		JLabel lblLoai = new JLabel("Lớp học: ");
+		lblLoai.setFont(new Font("Arial", Font.PLAIN, 15));
+		cboLopHoc=new JComboBox<LopHoc>();
+		cboLopHoc.setPreferredSize(new Dimension(325, 20));
+
+		JLabel lbltt = new JLabel("Trạng thái: ");
+		lbltt.setFont(new Font("Arial", Font.PLAIN, 15));
+		cboTrangThai=new JComboBox<TrangThai>();
+		cboTrangThai.setPreferredSize(new Dimension(325, 20));
+		pntt.add(lblLoai);
+		pntt.add(cboLopHoc);
+		pntt.add(lbltt);
+		pntt.add(cboTrangThai);
+		pnTopofBottom.add(pntt);	 
+		pnBottom.add(pnTopofBottom);
+		
 		lblMahv.setPreferredSize(lblTenhv1.getPreferredSize());
-		lblns.setPreferredSize(lblTenhv1.getPreferredSize()); 
+		lblns.setPreferredSize(lblLoai.getPreferredSize()); 
 		   
 		
 		//pnButton
@@ -189,7 +219,9 @@ public class MHQuanLyHocVien extends JFrame
 				txtDiaChi.setText("");
 				txtSDT.setText(""); 
 				txtEmail.setText("");  
-				
+				cboLopHoc.setSelectedItem("");
+				cboTrangThai.setSelectedItem("Mới");
+				HienThiToanBoHV();
 			}
 		});
 		
@@ -197,7 +229,25 @@ public class MHQuanLyHocVien extends JFrame
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				LuuHocVien();
+				if(KiemTraTonTai()==0)
+				 {
+					if(KiemTaCuPhap()==0)
+					{
+						LuuHocVien();
+						 
+					}
+					else
+					{
+						btnTaoMoi.doClick();
+					}
+				 }
+				 else
+				 {
+					 JOptionPane.showMessageDialog(null, "Mã học viên không hợp lệ. Vui nhấn Tạo mới");
+					 btnTaoMoi.doClick();
+				 }
+				 
+				
 				
 			}
 		});
@@ -206,7 +256,23 @@ public class MHQuanLyHocVien extends JFrame
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				XoaHocVien();
+				if(KiemTaCuPhap()==0)
+				{
+					XoaHocVien();
+				}
+				else
+				{
+					btnTaoMoi.doClick();
+				}
+				
+			}
+		});
+		 
+		 btnTim.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				HienThiTim();
 				
 			}
 		});
@@ -249,7 +315,9 @@ public class MHQuanLyHocVien extends JFrame
 				txtSDT.setText(LH.getSDT());
 				txtEmail.setText(LH.getEmail());
 				txtMaHV.setText(LH.getMaLH());
-				txtMaHV.setText(LH.getMaHV());
+				txtMaHV.setText(LH.getMaHV()); 
+				hienThicboLopthemMa(LH.getMaLH());
+				hienThiCboTrangThaiTheoMa(LH.getTrangThai());
 				
 			}
 		});
@@ -258,7 +326,14 @@ public class MHQuanLyHocVien extends JFrame
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				CapNhatHocVien();
+				if(KiemTaCuPhap()==0)
+				{
+					CapNhatHocVien(); 
+				}
+				else
+				{
+					btnTaoMoi.doClick();
+				}
 				
 			}
 		});
@@ -273,8 +348,158 @@ public class MHQuanLyHocVien extends JFrame
 				
 			}
 		});
+	
+		 btnChuyenLop.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MHChuyenLop chuyenlop = new MHChuyenLop("Chuyển Lớp");
+				chuyenlop.ShowWindow();
+			}
+		});
+		 
+		 btnBaoLuu.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(KiemTaCuPhap()==0)
+				{
+					BaoLuu();
+				}
+				else
+				{
+					btnTaoMoi.doClick();
+				}
+				
+			}
+		});
 	}
 	
+	protected void BaoLuu() {
+		 
+		HocVien HV = new HocVien();
+		HV.setMaHV(txtMaHV.getText()); 
+		HV.setTrangThai("Bảo lưu");
+	 
+		if(cboLopHoc.getSelectedItem()==null)
+		{
+			JOptionPane.showMessageDialog(null, "Học viên chưa học tại trung tâm!");
+		}
+		else
+		{
+			KetNoiHV kn =  new KetNoiHV();
+			if(kn.BaoLuuHoVien(HV) > 0)
+			{
+				JOptionPane.showMessageDialog(null, "Bảo lưu học viên thành công");
+				HienThiToanBoHV(); 
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Bảo lưu học viên thất bại");
+			}
+		}
+	}
+
+	protected void hienThiCboTrangThaiTheoMa(String trangThai) {
+		if(trangThai.equals(""))
+		{
+			cboTrangThai.setSelectedItem(null);
+		}
+		else
+		{
+			KetNoiTT kncth=new KetNoiTT();
+			Vector<TrangThai>vec1=kncth.HienThiTTTheoTen(trangThai); 
+			cboTrangThai.removeAllItems();
+			
+			KetNoiTT dmService=new KetNoiTT();
+			Vector<TrangThai>vec=dmService.docToanBoTrangThai();
+			TrangThai a = new TrangThai();
+			a = (TrangThai) vec1.toArray()[0];
+			for(TrangThai dm : vec)
+			{
+				cboTrangThai.addItem(dm);
+				if(dm.getTenTT().equals(a.getTenTT()))
+					cboTrangThai.setSelectedItem(dm);
+			} 
+		}
+	}
+
+	protected void hienThicboLopthemMa(String maLH) {
+		if(maLH.equals(""))
+		{
+			cboLopHoc.setSelectedItem(null);
+		}
+		else
+		{
+			KetNoiLH kncth=new KetNoiLH();
+			Vector<LopHoc>vec1=kncth.HienThiLopHocTheoMa(maLH); 
+			cboLopHoc.removeAllItems();
+			
+			KetNoiLH dmService=new KetNoiLH();
+			Vector<LopHoc>vec=dmService.docToanBoLopHoc();
+			LopHoc a = new LopHoc();
+			a = (LopHoc) vec1.toArray()[0];
+			for(LopHoc dm : vec)
+			{
+				cboLopHoc.addItem(dm);
+				if(dm.getTenLH().equals(a.getTenLH())) 
+					cboLopHoc.setSelectedItem(dm);
+			} 
+		}
+		
+	}
+
+	protected void HienThiTim() {
+
+		if(txtTim.getText().equals(""))
+		{
+			HienThiToanBoHV();
+			JOptionPane.showMessageDialog(null, "Vui lòng nhập học viên cần tìm!!!");
+		}
+		else
+		{
+			String a1 = txtTim.getText();
+			KetNoiHV kngt = new KetNoiHV();
+			dsHV = kngt.TimHocVien(a1);	
+			dmHocVien.setRowCount(0);
+			for(HocVien a : dsHV)
+			{
+				Vector<Object> vec = new Vector<Object>();
+				vec.add(a.getMaHV());
+				vec.add(a.getTenHV());
+				vec.add(a.getNgaySinh());
+				vec.add(a.getDiaChi());
+				vec.add(a.getSDT());
+				vec.add(a.getEmail());
+				vec.add(a.getMaLH());
+				
+				dmHocVien.addRow(vec);
+			}
+		}
+		
+	}
+
+	protected int KiemTraTonTai() {
+		KetNoiHV knLH = new KetNoiHV();
+		return knLH.KiemTraTonTai(txtTenHV.getText());
+	}
+
+	protected int KiemTaCuPhap() {
+		if(txtTenHV.getText().equals(""))
+		{
+			JOptionPane.showMessageDialog(null, "Sai cú pháp. Vui lòng kiểm tra lại");
+			return 1;
+		}
+		
+		if(txtSDT.getText().equals(""))
+		{
+			JOptionPane.showMessageDialog(null, "Sai cú pháp. Vui lòng kiểm tra lại");
+			return 1;
+		}
+		
+		return 0;
+	}
+
 	protected void QuayLai() {
 		this.dispose();
 		
@@ -295,17 +520,16 @@ public class MHQuanLyHocVien extends JFrame
 		HV.setDiaChi(txtDiaChi.getText());
 		HV.setSDT(txtSDT.getText());
 		HV.setEmail(txtEmail.getText());
-	 
+		HV.setTrangThai(cboTrangThai.getSelectedItem().toString());
 		KetNoiHV kn =  new KetNoiHV();
-		JOptionPane.showMessageDialog(null, kn.CapNhatHocVien(HV));
 		if(kn.CapNhatHocVien(HV) > 0)
 		{
-			JOptionPane.showMessageDialog(null, "Cập nhật lớp học thành công");
+			JOptionPane.showMessageDialog(null, "Cập nhật học viên thành công");
 			HienThiToanBoHV(); 
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Cập nhật lớp học thất bại");
+			JOptionPane.showMessageDialog(null, "Cập nhật học viên thất bại");
 		}
 		
 	}
@@ -318,12 +542,12 @@ public class MHQuanLyHocVien extends JFrame
 		KetNoiHV kn =  new KetNoiHV();
 		if(kn.XoaHocVien(LH) > 0)
 		{
-			JOptionPane.showMessageDialog(null, "Xóa lớp học thành công");
+			JOptionPane.showMessageDialog(null, "Xóa học viên thành công");
 			HienThiToanBoHV();
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Xóa lớp học thất bại");
+			JOptionPane.showMessageDialog(null, "Xóa học viên thất bại");
 		}
 	}
 
@@ -343,17 +567,19 @@ public class MHQuanLyHocVien extends JFrame
 		HV.setNgaySinh(sqlDate); 
 		HV.setDiaChi(txtDiaChi.getText());
 		HV.setSDT(txtSDT.getText());
-		HV.setEmail(txtEmail.getText());
+		HV.setEmail(txtEmail.getText()); 
+		//HV.setMaLH(cboLopHoc.setSelectedItem());
+		HV.setTrangThai("Mới");
 	 
 		KetNoiHV kn =  new KetNoiHV();
 		if(kn.ThemMoiHocVien(HV) > 0)
 		{
-			JOptionPane.showMessageDialog(null, "Lưu lớp học thành công");
+			JOptionPane.showMessageDialog(null, "Lưu học viên thành công");
 			HienThiToanBoHV(); 
 		}
 		else
 		{
-			JOptionPane.showMessageDialog(null, "Lưu lớp học thất bại");
+			JOptionPane.showMessageDialog(null, "Lưu học viên thất bại");
 		}
 
 		
@@ -385,7 +611,9 @@ public class MHQuanLyHocVien extends JFrame
 		dsHV = knHV.LayToanBoHocVien();
 		dmHocVien.setRowCount(0);
 		for(HocVien a : dsHV)
-		{
+		{ 	
+			KetNoiLH knlh = new KetNoiLH(); 
+			String b  = knlh.LayTenLopHoc1(a.getMaLH());
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(a.getMaHV());
 			vec.add(a.getTenHV());
@@ -393,10 +621,34 @@ public class MHQuanLyHocVien extends JFrame
 			vec.add(a.getDiaChi());
 			vec.add(a.getSDT());
 			vec.add(a.getEmail());
-			vec.add(a.getMaLH());
+			vec.add(b);
+			vec.add(a.getTrangThai());
 			dmHocVien.addRow(vec);
 		}
 	} 
+	 
+
+	public void hienThicboMLHa() {
+		KetNoiLH dmService=new KetNoiLH();
+		Vector<LopHoc>vec=dmService.docToanBoLopHoc();
+		
+		cboLopHoc.removeAllItems();
+		for(LopHoc dm : vec)
+		{
+			cboLopHoc.addItem(dm);
+		}
+	}
+	
+	public void hienThicboTT() {
+		KetNoiTT dmService=new KetNoiTT();
+		Vector<TrangThai>vec=dmService.docToanBoTrangThai();
+		
+		cboTrangThai.removeAllItems();
+		for(TrangThai dm : vec)
+		{
+			cboTrangThai.addItem(dm);
+		}
+	}
 	
 	 
 }

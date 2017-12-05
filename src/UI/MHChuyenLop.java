@@ -22,6 +22,7 @@ import Moudle.GiangVien;
 import Moudle.HocVien;
 import Moudle.LopHoc;
 import Service.KetNoiGV;
+import Service.KetNoiHV;
 import Service.KetNoiLH;
 
 public class MHChuyenLop extends JFrame
@@ -35,8 +36,8 @@ public class MHChuyenLop extends JFrame
 		super(tieude);
 		addControls();
 		addEvents();
-//		hienThicboLH();
-//		hienThicboHV();
+		hienThicboLH();
+		hienThicboHV();
 	}  
 
 	private void addControls() 
@@ -119,59 +120,67 @@ public class MHChuyenLop extends JFrame
  
 		});
 		
+		btnChuyenLop.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ChuyenLop(cboHocVien.getSelectedItem(), cboLopHoc.getSelectedItem());
+				
+			}
+		});
 		 
 	}
 	
 
-//	protected void XepLop(Object selectedItem, Object selectedItem2) 
-//	{
-//		 KetNoiLH knLH = new KetNoiLH();
-//		 if(knLH.XepLop(LayMaGV(cboGiangVien.getSelectedItem().toString()), cboLoHoc.getSelectedItem().toString())> 0)
-//			{
-//				JOptionPane.showMessageDialog(null, "Xếp lớp thành công");
-//			}
-//			else
-//			{
-//				JOptionPane.showMessageDialog(null, "Xếp lớp thất bại");
-//			}
-//		
-//	}
-//
+	protected void ChuyenLop(Object selectedItem, Object selectedItem2) 
+	{
+		 KetNoiHV knLH = new KetNoiHV();
+		 if(knLH.ChuyenLop(cboHocVien.getSelectedItem().toString(),LayMaLopHoc(cboLopHoc.getSelectedItem().toString()))> 0)
+			{
+				JOptionPane.showMessageDialog(null, "Chuyển lớp thành công");
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "Chuyển lớp thất bại");
+			}
+		
+	}
+
 	public void Quaylai() 
 	{
 		this.dispose(); 
 	}
-//
-//	public String LayMaGV(String tengv)
-//	{
-//		KetNoiGV knGV = new KetNoiGV();
-//		GiangVien a = new GiangVien();
-//		a = knGV.LayMaGV(tengv);
-//		 
-//		return a.getMaGV();
-//	}
-//	
-//	public void hienThicboGV() {
-//		KetNoiGV a=new KetNoiGV();
-//		Vector<GiangVien>vec=a.docToanBoDanhMuc();
-//		
-//		cboGiangVien.removeAllItems();
-//		for(GiangVien dm : vec)
-//		{
-//			cboGiangVien.addItem(dm);
-//		}
-//	}
-//	
-//	public void hienThicboLH() {
-//		KetNoiLH b=new KetNoiLH();
-//		Vector<LopHoc>vec=b.docToanBoLopHoc();
-//		//cboLoHoc.removeAllItems();
-//		for(LopHoc dm : vec)
-//		{
-//			cboLoHoc.addItem(dm);
-//		}
-//	}
-//	
+
+	public String LayMaLopHoc(String tenlh)
+	{
+		KetNoiLH knGV = new KetNoiLH();
+		LopHoc a = new LopHoc();
+		a = knGV.LayMalophoc(tenlh);
+		 
+		return a.getMaLH();
+	}
+	
+	public void hienThicboLH() {
+		KetNoiLH a=new KetNoiLH();
+		Vector<LopHoc>vec=a.docToanBoLopHoc();
+		
+		cboLopHoc.removeAllItems();
+		for(LopHoc dm : vec)
+		{
+			cboLopHoc.addItem(dm);
+		}
+	}
+	
+	public void hienThicboHV() {
+		KetNoiHV b=new KetNoiHV();
+		Vector<HocVien>vec=b.docToanBoHocVien();
+		//cboLoHoc.removeAllItems();
+		for(HocVien dm : vec)
+		{
+			cboHocVien.addItem(dm);
+		}
+	}
+	
 	public void ShowWindow()
 	{
 		this.setSize(450, 150);

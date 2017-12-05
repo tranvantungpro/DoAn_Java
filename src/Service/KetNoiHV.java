@@ -9,7 +9,9 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import Moudle.GiangVien;
 import Moudle.HocVien;
+import Moudle.LopHoc;
 import Moudle.HocVien;
 import Moudle.HocVien;
 
@@ -22,7 +24,7 @@ public class KetNoiHV extends KetNoiSQL
 	{
 		ArrayList<HocVien> dsGT= new ArrayList<HocVien>();
 		try 
-		{
+		{ 
 			String sql ="select * from HocVien ORDER BY MaHV ASC";
 			preStatement=conn.prepareStatement(sql);
 			result=preStatement.executeQuery();
@@ -34,8 +36,9 @@ public class KetNoiHV extends KetNoiSQL
 				lh.setNgaySinh(result.getDate(3));
 				lh.setDiaChi(result.getString(4));
 				lh.setSDT(result.getString(5));
-				lh.setEmail(result.getString(6));
-				lh.setMaLH(result.getString(7)); 
+				lh.setEmail(result.getString(6)); 
+				lh.setMaLH( result.getString(7)); 
+				lh.setTrangThai(result.getString(8)); 
 				dsGT.add(lh);
 			}
 		} 
@@ -46,6 +49,13 @@ public class KetNoiHV extends KetNoiSQL
 		return dsGT;
 	}
 	
+	public String LayTenLopHoc(String string) 
+	{
+		KetNoiLH knlh = new KetNoiLH(); 
+		return  knlh.LayTenLopHoc1(string);
+				
+	}
+
 	public String LayMaHVien()
 	{
 		try 
@@ -71,7 +81,7 @@ public class KetNoiHV extends KetNoiSQL
 	{
 		try
 		{
-			String sql= "insert into HocVien VALUES (?,?,?,?,?,?,?)";
+			String sql= "insert into HocVien VALUES (?,?,?,?,?,?,?,?)";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, lh.getMaHV());
 			preStatement.setString(2, lh.getTenHV());
@@ -80,6 +90,7 @@ public class KetNoiHV extends KetNoiSQL
 			preStatement.setString(5, lh.getSDT());
 			preStatement.setString(6, lh.getEmail());  
 			preStatement.setString(7, "");  
+			preStatement.setString(8, lh.getTrangThai());  
 			
 			return preStatement.executeUpdate();
 			
@@ -110,6 +121,7 @@ public class KetNoiHV extends KetNoiSQL
 				lh.setSDT(result.getString(5));
 				lh.setEmail(result.getString(6));
 				lh.setMaLH(result.getString(7)); 
+				lh.setTrangThai(result.getString(8)); 
 				dsGTTim.add(lh);
 			}
 			
@@ -141,14 +153,15 @@ public class KetNoiHV extends KetNoiSQL
 	{
 		try
 		{
-			String sql= "update HocVien set TenHV=?, NgaySinh=?, DiaChi=?, SDT=?, Email=? where MaHV=?";
+			String sql= "update HocVien set TenHV=?, NgaySinh=?, DiaChi=?, SDT=?, Email=?, TrangThai=? where MaHV=?";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, gt.getTenHV());
 			preStatement.setDate(2, (Date) gt.getNgaySinh());
 			preStatement.setString(3, gt.getDiaChi());
 			preStatement.setString(4, gt.getSDT());
-			preStatement.setString(5,gt.getEmail()); 
-			preStatement.setString(6,gt.getMaHV()); 
+			preStatement.setString(5,gt.getEmail());
+			preStatement.setString(6, gt.getTrangThai()); 
+			preStatement.setString(7,gt.getMaHV()); 
 			return preStatement.executeUpdate();
 		}
 		catch(Exception e)
@@ -158,13 +171,28 @@ public class KetNoiHV extends KetNoiSQL
 		return -1;
 	}
 	
-	 
+	public int  BaoLuuHoVien(HocVien gt)
+	{
+		try
+		{
+			String sql= "update HocVien set  TrangThai=? where MaHV=?";
+			preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1, gt.getTrangThai()); 
+			preStatement.setString(2,gt.getMaHV()); 
+			return preStatement.executeUpdate();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return -1;
+	}
 	
 	public int KiemTraTonTai(String TenGT)
 	{
 		try 
 		{
-			String sql= "select * from HocVien where TenLH =?";
+			String sql= "select * from HocVien where TenHV =?";
 			preStatement=conn.prepareStatement(sql);
 			preStatement.setString(1, TenGT);
 			result=preStatement.executeQuery();
@@ -204,14 +232,14 @@ public class KetNoiHV extends KetNoiSQL
 		return vec;
 	}
 	
-	public int XepLop(String gv, String lh)
+	public int ChuyenLop(String hv, String lh)
 	{
 		try
 		{
-			String sql= "update HocVien set MaGV=? where TenLH=? ";
+			String sql= "update HocVien set MaLH=? where TenHV=? ";
 			preStatement = conn.prepareStatement(sql);
-			preStatement.setString(1,  gv);
-			preStatement.setString(2, lh); 
+			preStatement.setString(1, lh);
+			preStatement.setString(2, hv); 
 			return preStatement.executeUpdate();
 		}
 		catch(Exception e)
@@ -220,4 +248,28 @@ public class KetNoiHV extends KetNoiSQL
 		}
 		return -1;
 	}
+	
+	public HocVien LayMaHvien1(String tengv)
+	{
+		try 
+		{
+			String sql = "Select * from HocVien where TenHV=?";
+			preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1, tengv);
+			result=preStatement.executeQuery();
+			while(result.next())
+			{
+				HocVien gt = new HocVien();
+				gt.setMaHV(result.getString(1));
+				return gt;
+			}
+		}
+		catch (Exception e) 
+		{
+			  
+		}
+		return null;
+	}
+
+	 
 }

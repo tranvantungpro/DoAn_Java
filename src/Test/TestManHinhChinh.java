@@ -17,14 +17,14 @@ public class TestManHinhChinh
 //		MHQuanLyGiaoTrinh ui = new MHQuanLyGiaoTrinh("Quản Lý Giáo Trình");
 //		ui.showWindow();
 //		
-//		MHQuanLyLopHoc ui = new MHQuanLyLopHoc("lop hoc");
-//				ui.showWindow();
+		MHQuanLyLopHoc ui = new MHQuanLyLopHoc("lop hoc");
+				ui.showWindow();
 //		MHXepLichGV ui = new MHXepLichGV("Xếp Lịch Giảng Viên");
 //		ui.ShowWindow();
 		
 //		MHQuanLyHocVien hocvien = new MHQuanLyHocVien("Quản Lý học Viên");
 //		hocvien.showWindow();
-		MHChuyenLop cl = new MHChuyenLop("Chuyển Lớp");
-		cl.ShowWindow();
+//		MHChuyenLop cl = new MHChuyenLop("Chuyển Lớp");
+//		cl.ShowWindow();
 	}
 }
