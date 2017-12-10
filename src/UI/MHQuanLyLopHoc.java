@@ -66,9 +66,6 @@ public class MHQuanLyLopHoc extends JFrame
 		JComboBox<GiangVien>cboGV;
 		Calendar cal = Calendar.getInstance();
 		
-		 
-
-
 		public MHQuanLyLopHoc (String tieude)
 		{
 			super(tieude);

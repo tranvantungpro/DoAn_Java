@@ -1,5 +1,6 @@
 package Service;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +18,9 @@ public class KetNoiLH extends KetNoiSQL
 {
 	PreparedStatement preStatement=null;
 	ResultSet result=null;
+	//phần này để demo
+	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
+	Connection conn = a.getConnect();
 	
 	public ArrayList<LopHoc> LayToanBoLopHoc()
 	{
@@ -275,6 +279,7 @@ public class KetNoiLH extends KetNoiSQL
 	{
 		try 
 		{
+			
 			String sql = "Select * from LopHoc where MaLH=?";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, malh);
@@ -284,6 +289,7 @@ public class KetNoiLH extends KetNoiSQL
 				LopHoc gt = new LopHoc();
 				gt.setMaLH(result.getString(1));
 				gt.setTenLH(result.getString(2)); 
+				//JOptionPane.showMessageDialog(null, "ten:"+gt.getTenLH()); // nó chưa chạy tới cái này
 				return gt.getTenLH();
 			}
 		}

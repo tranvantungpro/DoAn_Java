@@ -19,6 +19,10 @@ public class ManHinhChinh extends JFrame
 	JMenu mnuQLHV;
 	JMenu mnuQLLH;
 	JMenu mnuQLGD;
+	JMenu mnuQLNS;
+	JMenu mnuQLGV;
+	JMenu mnuQLPH;
+	
 	JMenu mnuBaoCao;
 
 	
@@ -38,13 +42,17 @@ public class ManHinhChinh extends JFrame
 		mnuQLHV = new JMenu("Quản Lý Học Viên");
 		mnuQLLH = new JMenu("Quản Lý Lớp Học");
 		mnuQLGD = new JMenu("Quản Lý Ghi Danh");
+		mnuQLNS=new JMenu("Quản lí Nhân Viên");
+		mnuQLGV=new JMenu("Quản lí Giáo Viên");
+		mnuQLPH=new JMenu("Quản lí Phòng Học");
 		mnuBaoCao = new JMenu("Báo Cáo");
 		mnuBar.add(mnuQLGT);
 		mnuBar.add(mnuQLHV);
 		mnuBar.add(mnuQLLH);
 		mnuBar.add(mnuQLGD);
-		
-		
+		mnuBar.add(mnuQLNS);
+		mnuBar.add(mnuQLGV);
+		mnuBar.add(mnuQLPH);
 	}
 
 	private void addEvents() 
@@ -151,6 +159,105 @@ public class ManHinhChinh extends JFrame
 				Hide() ;
 				MHQuanLyHocVien hocvien = new MHQuanLyHocVien("Quản Lý Học Viên");
 				hocvien.showWindow();
+				
+			}
+		});
+		mnuQLNS.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Hide() ;
+				ManHinhQuanLiNhanVien nhanvien = new ManHinhQuanLiNhanVien("Quản Lý Nhân Viên");
+				nhanvien.showWindow();
+				
+			}
+		});
+		mnuQLGV.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Hide() ;
+				ManHinhQuanLiGiangVien giaovien = new ManHinhQuanLiGiangVien("Quản Lý Giáo Viên");
+				giaovien.showWindow();
+				
+			}
+		});
+		mnuQLPH.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Hide() ;
+				ManHinhQuanLiNhanVien phonghoc = new ManHinhQuanLiNhanVien("Quản Lý Phòng Học");
+				phonghoc.showWindow();
 				
 			}
 		});
