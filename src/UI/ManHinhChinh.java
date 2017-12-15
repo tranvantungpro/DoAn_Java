@@ -256,8 +256,8 @@ public class ManHinhChinh extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Hide() ;
-				ManHinhQuanLiNhanVien phonghoc = new ManHinhQuanLiNhanVien("Quản Lý Phòng Học");
-				phonghoc.showWindow();
+				ManHinhPhongHoc phonghoc = new ManHinhPhongHoc("Quản Lý Phòng Học");
+				phonghoc.showWindown();
 				
 			}
 		});

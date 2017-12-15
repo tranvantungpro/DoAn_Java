@@ -12,14 +12,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -35,17 +33,14 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Moudle.BangChamCong;
 import Moudle.GiangVien;
-import Moudle.Luong;
-import Moudle.NhanSu;
-import Moudle.PhongBan;
+import Service.KetNoiBangChamCong;
 import Service.KetNoiGV;
-import Service.KetNoiLuong;
-import Service.KetNoiNV;
-import Service.KetNoiPhongBan;
 
-public class ManHinhLuogGV extends JFrame {
-	public ManHinhLuogGV (String title)
+
+public class ManHinhQuanLiChamCongGV extends JFrame {
+	public ManHinhQuanLiChamCongGV (String title)
 	{
 		super(title);
 		addContronls();
@@ -53,18 +48,22 @@ public class ManHinhLuogGV extends JFrame {
 		showWindow();
 		HienThiToanBoLuong();
 		hienThiDanhMucLenList();
-		hienThicboPB();
+		hienThicboGV();
+		hienThicboLyDo();
+		hienThicboCa();
 	}
-	JTextField txtHsl, txtMaGV, txtTenGV, txtHSluong, txtLuongcb ,txtTim;  
+	JTextField txtMaCC, txtMaGV, txtTenGV, txtNgayCC, txtCa ,txtLyDo,txtTim;  
 	JButton btnThem, btnXoa, btnSua, btnTimKiem, btnTaoMoi, btnIn, btnQuayLai,btnTinhLuong;
 	DefaultTableModel dtmNhanSu;
 	JTable  tblNhanSu;
 	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-	ArrayList<Luong> dsL = null;
-	ArrayList<Luong> dsThem = null;
-	ArrayList<Luong> dsLTim = null;
-	static String MaHSL = "";
-	JComboBox<GiangVien>cboPB;
+	ArrayList<BangChamCong> dsL = null;
+	ArrayList<BangChamCong> dsThem = null;
+	ArrayList<BangChamCong> dsLTim = null;
+	static String MaCC = "";
+	JComboBox<BangChamCong>cboCa;
+	JComboBox<BangChamCong>cboLyDo;
+	JComboBox<GiangVien>cboGV;
 	Calendar cal = Calendar.getInstance();
 
 
@@ -164,14 +163,14 @@ public class ManHinhLuogGV extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				int row=tblNhanSu.getSelectedRow();
 				if(row==-1)return; 
-				Luong ns = dsL.get(row);
-				txtHsl.setText(ns.getMaHSL());
-				txtMaGV.setText(ns.getMaGV());
-				hienThicboPBthemMa(ns.getTenGV());
-//				(int) txtHSluong.setText( ns.getHsoL());
-//				txtLuongcb.setText(ns.getLuongCb());
-//				
-				
+				BangChamCong ns = dsL.get(row);
+				txtMaCC.setText(ns.getMaCC());		
+				hienThicboGVthemMa(ns.getMaGV());
+				hienThicboCathemMa(Float.toString(ns.getCa()));
+				hienThicboLyDothemMa(ns.getLyDo());
+				//hiện thị tên gv
+				txtNgayCC.setText(df.format(ns.getNgayCC()));
+			
 				
 			}
 		});
@@ -200,28 +199,32 @@ public class ManHinhLuogGV extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				txtHsl.setText(LayMaNS());
+				txtMaCC.setText(LayMaNS());
 				txtTenGV.setText(""); 
 				txtMaGV.setText("");
-				txtHSluong.setText("");
-				txtLuongcb.setText("");
+				
 				HienThiToanBoLuong();
 				hienThiDanhMucLenList();
-				hienThicboPB();
-				cboPB.setSelectedItem(null);
+				hienThicboGV();
+				cboGV.setSelectedItem(null);
+				hienThicboCa();
+				cboCa.setSelectedItem(null);
+				hienThicboLyDo();
+				cboLyDo.setSelectedItem(null);
 			}
 		});
 
-//		btnTinhLuong.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				MHXepLichGV xeplich = new MHXepLichGV("Tính Lương");
-////				xeplich.setFocusable(true);
-////				xeplich.setVisible(true);
-//				//xeplich.ShowWindow();
-//			}
-//		});
+		btnTinhLuong.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ManHinhTinhLuong xeplich = new ManHinhTinhLuong("Tính Lương");
+				ManHinhQuanLiChamCongGV.this.hide();
+				xeplich.setFocusable(true);
+				xeplich.setVisible(true);
+				xeplich.showWindown();
+			}
+		});
 
 		btnQuayLai.addActionListener(new ActionListener() 
 		{	
@@ -239,10 +242,10 @@ public class ManHinhLuogGV extends JFrame {
 		this.dispose(); 
 	}
 
-	protected void hienThicboPhongBanthemMa(String magv) {
+	protected void hienThicboGiangVienthemMa(String magv) {
 		KetNoiGV knpb=new KetNoiGV();
 		Vector<GiangVien>vec1=knpb.hienThicboGVthemMa(magv); 
-		cboPB.removeAllItems();
+		cboGV.removeAllItems();
 		
 		KetNoiGV dmService=new KetNoiGV();
 		Vector<GiangVien>vec=dmService.docToanBoDanhMuc();
@@ -250,9 +253,9 @@ public class ManHinhLuogGV extends JFrame {
 		a = (GiangVien) vec1.toArray()[0];
 		for(GiangVien dm : vec)
 		{
-			cboPB.addItem(dm);
+			cboGV.addItem(dm);
 			if(dm.getTenGV().equals(a.getTenGV()))
-				cboPB.setSelectedItem(dm);
+				cboGV.setSelectedItem(dm);
 		} 
 	}
 
@@ -286,10 +289,10 @@ public class ManHinhLuogGV extends JFrame {
 		JPanel pnMa=new JPanel();
 		pnMa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//pnMa.setPreferredSize(new Dimension(10,20));
-		JLabel lblMaLuong=new JLabel("Mã Hệ Số Lương");
-		txtHsl=new JTextField(20);
+		JLabel lblMaLuong=new JLabel("Mã Chấm công");
+		txtMaCC=new JTextField(20);
 		pnMa.add(lblMaLuong);
-		pnMa.add(txtHsl);
+		pnMa.add(txtMaCC);
 		pnThongTinChiTiet.add(pnMa);
 		 
 		JPanel pnMaGV=new JPanel();
@@ -303,30 +306,32 @@ public class ManHinhLuogGV extends JFrame {
 		JPanel pnTenGV = new JPanel();
 		pnTenGV.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel lblTenGV = new JLabel("Tên Giang vien: ");
-		lblTenGV.setFont(new Font("Arial", Font.PLAIN, 15));
-		cboPB=new JComboBox<GiangVien>();
-		cboPB.setPreferredSize(new Dimension(270, 20));
+	//	lblTenGV.setFont(new Font("Arial", Font.PLAIN, 15));
+		cboGV=new JComboBox<GiangVien>();
+		cboGV.setPreferredSize(new Dimension(270, 20));
 		pnTenGV.add(lblTenGV);
-		pnTenGV.add(cboPB);
+		pnTenGV.add(cboGV);
 		pnThongTinChiTiet.add(pnTenGV);
 		
-		JPanel pnHSL=new JPanel();
-		pnHSL.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblHSL=new JLabel("Hệ số lương");
-		txtHSluong=new JTextField(20);
-		pnHSL.add(lblHSL);
-		pnHSL.add(txtHSluong);
-		pnThongTinChiTiet.add(pnHSL);
-		 
-		JPanel pnLcb=new JPanel();
-		pnLcb.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JLabel lblLcb=new JLabel("Lương căn bản");
-		txtLuongcb=new JTextField(20);
-		pnLcb.add(lblLcb);
-		pnLcb.add(txtLuongcb);
-		pnThongTinChiTiet.add(pnLcb);
+		JPanel pnCa = new JPanel();
+		pnCa.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JLabel lblCa = new JLabel("Ca: ");
+		//lblCa.setFont(new Font("Arial", Font.PLAIN, 15));
+		cboCa=new JComboBox<BangChamCong>();
+		cboCa.setPreferredSize(new Dimension(270, 20));
+		pnCa.add(lblCa);
+		pnCa.add(cboCa);
+		pnThongTinChiTiet.add(pnCa);
 
-
+		JPanel pnLyDo = new JPanel();
+		pnLyDo.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JLabel lblLyDo = new JLabel("Lý Do: ");
+		//lblLyDo.setFont(new Font("Arial", Font.PLAIN, 15));
+		cboLyDo=new JComboBox<BangChamCong>();
+		cboLyDo.setPreferredSize(new Dimension(270, 20));
+		pnLyDo.add(lblLyDo);
+		pnLyDo.add(cboLyDo);
+		pnThongTinChiTiet.add(pnLyDo);
 		
 		JPanel pnButtonChiTiet=new JPanel();
 		pnButtonChiTiet.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -352,23 +357,24 @@ public class ManHinhLuogGV extends JFrame {
 		pnMain.add(pnTim,BorderLayout.SOUTH);
 		pnThongTinChiTiet.add(pnButtonChiTiet);
 		//làm cho đẹp
-		lblMaLuong.setPreferredSize(lblLcb.getPreferredSize());
-		lblMaGV.setPreferredSize(lblLcb.getPreferredSize());
-		lblTenGV.setPreferredSize(lblLcb.getPreferredSize());
-		lblHSL.setPreferredSize(lblLcb.getPreferredSize());
-		lblLcb.setPreferredSize(lblLcb.getPreferredSize());
+		lblMaLuong.setPreferredSize(lblTenGV.getPreferredSize());
+		lblMaGV.setPreferredSize(lblTenGV.getPreferredSize());
+		lblTenGV.setPreferredSize(lblTenGV.getPreferredSize());
+		lblCa.setPreferredSize(lblTenGV.getPreferredSize());
+		lblLyDo.setPreferredSize(lblTenGV.getPreferredSize());
 		
 		JPanel pnNorth=new JPanel();
 		pnNorth.setLayout(new BorderLayout());
 		
 		
 		//pnTop
+		
 		dtmNhanSu = new DefaultTableModel();
-		dtmNhanSu.addColumn("Mã Hệ số lương");
+		dtmNhanSu.addColumn("Mã Chấm Công");
 		dtmNhanSu.addColumn("Mã Nhân Viên");
 		dtmNhanSu.addColumn("Tên Nhân Viên");
-		dtmNhanSu.addColumn("Hệ Số Lương");
-		dtmNhanSu.addColumn("Lương Căn Bản");
+		dtmNhanSu.addColumn("Ca");
+		dtmNhanSu.addColumn("Lý Do");
 	
 		
 		
@@ -391,29 +397,29 @@ public class ManHinhLuogGV extends JFrame {
 		KetNoiGV dmService=new KetNoiGV();
 		Vector<GiangVien>vec=dmService.docToanBoDanhMuc();
 		//lisLoaiLH.setListData(vec);
-		cboPB.removeAllItems();
+		cboGV.removeAllItems();
 		for(GiangVien dm : vec)
 		{
-			cboPB.addItem(dm);
+			cboGV.addItem(dm);
 		}
 	}
 
 
-	public void hienThicboPB() {
+	public void hienThicboGV() {
 		KetNoiGV dmService=new KetNoiGV();
 		Vector<GiangVien>vec=dmService.docToanBoDanhMuc();
-		cboPB.removeAllItems();
+		cboGV.removeAllItems();
 		for(GiangVien dm : vec)
 		{
-			cboPB.addItem(dm);
+			cboGV.addItem(dm);
 		}
 	}
 
-	public void hienThicboPBthemMa(String magv) 
+	public void hienThicboGVthemMa(String magv) 
 	{
 		KetNoiGV kngv=new KetNoiGV();
 		Vector<GiangVien>vec1=kngv.hienThicboGVthemMa(magv);
-		cboPB.removeAllItems();
+		cboGV.removeAllItems();
 		
 		KetNoiGV knllh1=new KetNoiGV();
 		Vector<GiangVien>vec=knllh1.docToanBoDanhMuc();
@@ -421,23 +427,73 @@ public class ManHinhLuogGV extends JFrame {
 		a = (GiangVien) vec1.toArray()[0];
 		for(GiangVien dm : vec)
 		{
-			cboPB.addItem(dm);
+			cboGV.addItem(dm);
 			if(dm.getTenGV().equals(a.getTenGV()))
-				cboPB.setSelectedItem(dm);
+				cboGV.setSelectedItem(dm);
 		}
 	}
-
+	public void hienThicboLyDo() {
+		KetNoiBangChamCong dmService=new KetNoiBangChamCong();
+		Vector<BangChamCong>vec=dmService.docToanBoDanhMuc();
+		cboLyDo.removeAllItems();
+		for(BangChamCong dm : vec)
+		{
+			cboLyDo.addItem(dm);
+		}
+	}
+	public void hienThicboCa() {
+		KetNoiBangChamCong dmService=new KetNoiBangChamCong();
+		Vector<BangChamCong>vec=dmService.docToanBoDanhMuc();
+		cboCa.removeAllItems();
+		for(BangChamCong dm : vec)
+		{
+			cboCa.addItem(dm);
+		}
+	}
+	public void hienThicboCathemMa(String macc) 
+	{
+		KetNoiBangChamCong kngv=new KetNoiBangChamCong();
+		Vector<BangChamCong>vec1=kngv.hienThicboCathemMa(macc);
+		cboCa.removeAllItems();
+		
+		KetNoiBangChamCong knllh1=new KetNoiBangChamCong();
+		Vector<BangChamCong>vec=knllh1.docToanBoDanhMuc();
+		BangChamCong a = new BangChamCong();
+		a = (BangChamCong) vec1.toArray()[0];
+		for(BangChamCong dm : vec)
+		{
+			cboCa.addItem(dm);
+			//if(dm.getCa().equals(a.getCa()))
+				cboCa.setSelectedItem(dm);
+		}
+	}
+	public void hienThicboLyDothemMa(String macc) 
+	{
+		KetNoiBangChamCong kngv=new KetNoiBangChamCong();
+		Vector<BangChamCong>vec1=kngv.hienThicboLyDothemMa(macc);
+		cboLyDo.removeAllItems();
+		
+		KetNoiBangChamCong knllh1=new KetNoiBangChamCong();
+		Vector<BangChamCong>vec=knllh1.docToanBoDanhMuc();
+		BangChamCong a = new BangChamCong();
+		a = (BangChamCong) vec1.toArray()[0];
+		for(BangChamCong dm : vec)
+		{
+			cboLyDo.addItem(dm);
+			if(dm.getLyDo().equals(a.getLyDo()))
+				cboLyDo.setSelectedItem(dm);
+		}
+	}
 	protected void CapNhatNS() 
 	{
-		Luong ns = new Luong();
-		ns.setMaHSL(txtHsl.getText());
+		BangChamCong ns = new BangChamCong();
+		ns.setMaCC(txtMaCC.getText());
 		ns.setMaGV(txtMaGV.getText());
-		ns.setTenGV(LayMaGV(cboPB.getSelectedItem().toString()));	
-//		ns.setHsoL(txtHSluong.getText());
-//		ns.setLuongCb(txtLuongcb.getText());
+		ns.setMaGV(LayMaGV(cboGV.getSelectedItem().toString()));	
+		
 		
 		///
-		KetNoiLuong kn =  new KetNoiLuong();
+		KetNoiBangChamCong kn =  new KetNoiBangChamCong();
 		if(kn.CapNhatLuong(ns) > 0)
 		{
 			JOptionPane.showMessageDialog(null, "Cập nhật lớp học thành công");
@@ -452,9 +508,9 @@ public class ManHinhLuogGV extends JFrame {
 
 	protected void XoaLopHoc() 
 	{
-		Luong ns = new Luong();
-		ns.setMaHSL(txtHsl.getText());
-		KetNoiLuong kn =  new KetNoiLuong();
+		BangChamCong ns = new BangChamCong();
+		ns.setMaCC(txtMaCC.getText());
+		KetNoiBangChamCong kn =  new KetNoiBangChamCong();
 		if(kn.XoaLuong(ns) > 0)
 		{
 			JOptionPane.showMessageDialog(null, "Xóa lớp học thành công");
@@ -469,15 +525,15 @@ public class ManHinhLuogGV extends JFrame {
 	protected void LuuMoiLH()  
 	{
 		 
-		Luong ns = new Luong();
-		ns.setMaHSL(txtHsl.getText());
+		BangChamCong ns = new BangChamCong();
+		ns.setMaCC(txtMaCC.getText());
 		ns.setMaGV(txtMaGV.getText());
-		ns.setTenGV(LayMaGV(cboPB.getSelectedItem().toString()));	
+		ns.setMaGV(LayMaGV(cboGV.getSelectedItem().toString()));	
 //		ns.setHsoL(txtHSluong.getText());
 //		ns.setLuongCb(txtLuongcb.getText());
 		
 		//them
-		KetNoiLuong kn =  new KetNoiLuong();
+		KetNoiBangChamCong kn =  new KetNoiBangChamCong();
 		if(kn.ThemMoiLuong(ns) > 0)
 		{
 			JOptionPane.showMessageDialog(null, "Lưu lớp học thành công");
@@ -499,34 +555,32 @@ public class ManHinhLuogGV extends JFrame {
 	}
 	public String LayMaNS()
 	{
-		KetNoiLuong knns = new KetNoiLuong();
-		Luong a = new Luong();
-		a = knns.LayMaLuong();
-		MaHSL= a.getMaHSL();
+		KetNoiBangChamCong knns = new KetNoiBangChamCong();
+		BangChamCong a = new BangChamCong();
+		a = knns.LayMaCC();
+		MaCC= a.getMaCC();
 
-		int ViTriCuoi=MaHSL.lastIndexOf("L");
-		String TenMa=MaHSL.substring(ViTriCuoi+1);
+		int ViTriCuoi=MaCC.lastIndexOf("C");
+		String TenMa=MaCC.substring(ViTriCuoi+1);
 		int b = Integer.parseInt(TenMa);
 		int c = b+1;
-		String MaNS = String.format("L%03d", c);
+		String MaNS = String.format("C%03d", c);
 		return MaNS;
 	}
 
 	public void HienThiToanBoLuong()
 	{
-		KetNoiLuong knnv = new KetNoiLuong();
+		KetNoiBangChamCong knnv = new KetNoiBangChamCong();
 		dsL = knnv.LayToanBoLuong();
 		dtmNhanSu.setRowCount(0);
-		for(Luong a : dsL)
+		for(BangChamCong a : dsL)
 		{
 			KetNoiGV knlh = new KetNoiGV(); 
 			String b  = knlh.LayTenGV(a.getMaGV());	
 			Vector<Object> vec = new Vector<Object>();
-			vec.add(a.getMaHSL());
+			vec.add(a.getMaCC());
 			vec.add(a.getMaGV());
 			vec.add(b);
-			vec.add(a.getHsoL());
-			vec.add(a.getLuongCb());
 			
 			dtmNhanSu.addRow(vec);
 		}
@@ -542,17 +596,16 @@ public class ManHinhLuogGV extends JFrame {
 		else
 		{
 			String a1 = txtTim.getText();
-			KetNoiLuong knns = new KetNoiLuong();
+			KetNoiBangChamCong knns = new KetNoiBangChamCong();
 			dsLTim = knns.TimLuong(a1);
 			dtmNhanSu.setRowCount(0);
-			for(Luong a : dsLTim)
+			for(BangChamCong a : dsLTim)
 			{
 				Vector<Object> vec = new Vector<Object>();
-				vec.add(a.getHsoL());
+				vec.add(a.getMaCC());
 				vec.add(a.getMaGV());
-				vec.add(a.getTenGV());
-				vec.add(a.getHsoL());
-				vec.add(a.getLuongCb());
+				
+				
 				
 				dtmNhanSu.addRow(vec);
 			}
@@ -572,7 +625,7 @@ public class ManHinhLuogGV extends JFrame {
 
 	public int KiemTraTonTai()
 	{
-		KetNoiLuong knns = new KetNoiLuong();
+		KetNoiBangChamCong knns = new KetNoiBangChamCong();
 		return knns.KiemTraTonTai(txtTenGV.getText());
 		 
 	}

@@ -44,8 +44,10 @@ public class KetNoiGV extends KetNoiSQL
 				dm.setTenGV(result.getString(2)); 
 				dm.setDiaChi(result.getString(3));
 				dm.setSdt(result.getString(4));
-				dm.setNgayVL(result.getDate(5));
-				dm.setNgayKT(result.getDate(6));
+				dm.setHsl(result.getFloat(5));
+				dm.setLuongCb(result.getFloat(6));	
+				dm.setNgayVL(result.getDate(7));
+				dm.setNgayKT(result.getDate(8));
 				vec.add(dm);
 			}			
 			
@@ -69,11 +71,13 @@ public class KetNoiGV extends KetNoiSQL
 			{
 				GiangVien dm=new GiangVien();
 				dm.setMaGV(result.getString(1));
-				dm.setTenGV(result.getString(2)); 
+				dm.setTenGV(result.getString(2));
 				dm.setSdt(result.getString(3));
-				dm.setDiaChi(result.getString(4));			
-				dm.setNgayVL(result.getDate(5));
-				dm.setNgayKT(result.getDate(6));
+				dm.setDiaChi(result.getString(4));
+				dm.setHsl(result.getFloat(5));
+				dm.setLuongCb(result.getFloat(6));	
+				dm.setNgayVL(result.getDate(7));
+				dm.setNgayKT(result.getDate(8));
 				vec.add(dm);
 			}			
 			
@@ -97,14 +101,17 @@ public class KetNoiGV extends KetNoiSQL
 			while(result.next())
 			{
 				
-				GiangVien ns=new GiangVien();
-				ns.setMaGV(result.getString(1));
-				ns.setTenGV(result.getString(2)); 
-				ns.setSdt(result.getString(3));
-				ns.setDiaChi(result.getString(4));
-				ns.setNgayVL(result.getDate(5));
-				ns.setNgayKT(result.getDate(6));
-				dsGv.add(ns);
+				GiangVien gv=new GiangVien();
+				gv.setMaGV(result.getString(1));
+				gv.setTenGV(result.getString(2)); 
+				gv.setSdt(result.getString(3));
+				gv.setDiaChi(result.getString(4));
+				
+				gv.setHsl(result.getFloat(5));
+				gv.setLuongCb(result.getFloat(6));	
+				gv.setNgayVL(result.getDate(7));
+				gv.setNgayKT(result.getDate(8));
+				dsGv.add(gv);
 			}
 			
 		}
@@ -118,14 +125,16 @@ public class KetNoiGV extends KetNoiSQL
 	{
 		try
 		{
-			String sql= "insert into GiangVien VALUES (?,?,?,?,?,?)";
+			String sql= "insert into GiangVien VALUES (?,?,?,?,?,?,?,?)";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, gv.getMaGV());
 			preStatement.setString(2, gv.getTenGV());
 			preStatement.setString(3, gv.getSdt());
-			preStatement.setString(4, gv.getDiaChi());
-			preStatement.setDate(5,(Date)  gv.getNgayVL());
-			preStatement.setDate(6, (Date) gv.getNgayKT());
+			preStatement.setFloat(4, gv.getHsl());
+			preStatement.setFloat(5, gv.getLuongCb());
+			preStatement.setString(6, gv.getDiaChi());
+			preStatement.setDate(7,(Date)  gv.getNgayVL());
+			preStatement.setDate(8, (Date) gv.getNgayKT());
 			
 			return preStatement.executeUpdate();
 			
@@ -158,15 +167,17 @@ public class KetNoiGV extends KetNoiSQL
 		try
 		{
 			
-			String sql= "update GiangVien set TenGV=?, Sdt=?, DiaChi=?, NgayVaoLam=?,NgayKetThuc=? where MaGV=?";
-			preStatement = conn.prepareStatement(sql);
-			
+			String sql= "update GiangVien set TenGV=?, Sdt=?, DiaChi=?,HeSoLuong=?,LuongCB=?, NgayVaoLam=?,NgayKetThuc=? where MaGV=?";
+			preStatement = conn.prepareStatement(sql);			
 			preStatement.setString(1, gv.getTenGV());
 			preStatement.setString(2, gv.getSdt());
 			preStatement.setString(3, gv.getDiaChi());
-			preStatement.setDate(4,(Date)  gv.getNgayVL());
-			preStatement.setDate(5, (Date) gv.getNgayKT());
-			preStatement.setString(6, gv.getMaGV());
+			preStatement.setFloat(4, gv.getHsl());
+			preStatement.setFloat(5, gv.getLuongCb());
+			preStatement.setDate(6, (Date) gv.getNgayVL());
+			preStatement.setDate(7, (Date) gv.getNgayKT());
+			preStatement.setString(8, gv.getMaGV());
+			
 			return preStatement.executeUpdate();
 		}
 		catch(Exception e)
@@ -276,10 +287,12 @@ public GiangVien LayMaGV(String tengv)
 				GiangVien dm=new GiangVien();
 				dm.setMaGV(result.getString(1));
 				dm.setTenGV(result.getString(2)); 
-				dm.setDiaChi(result.getString(3));
 				dm.setSdt(result.getString(4));
-				dm.setNgayVL(result.getDate(5));
-				dm.setNgayKT(result.getDate(6));
+				dm.setDiaChi(result.getString(3));
+				dm.setHsl(result.getFloat(5));
+				dm.setLuongCb(result.getFloat(6));	
+				dm.setNgayVL(result.getDate(7));
+				dm.setNgayKT(result.getDate(8));
 				vec.add(dm);
 			}			
 			

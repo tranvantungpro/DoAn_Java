@@ -10,6 +10,23 @@ public class GiangVien
 	private String TenGV;
 	private String DiaChi;
 	private String sdt;
+	private float LuongCb,hsl;
+	public float getLuongCb() {
+		return LuongCb;
+	}
+
+	public void setLuongCb(float luongCb) {
+		LuongCb = luongCb;
+	}
+
+	public float getHsl() {
+		return hsl;
+	}
+
+	public void setHsl(float hsl) {
+		this.hsl = hsl;
+	}
+
 	private Date NgayVL;
 	private Date NgayKT;
 	
@@ -51,12 +68,17 @@ public class GiangVien
 		super();
 	}
 
-	public GiangVien(String maGV, String tenGV, String diaChi, String sdt, Date ngayVL, Date ngayKT) {
+	
+
+	public GiangVien(String maGV, String tenGV, String diaChi, String sdt, float luongCb, float hsl, Date ngayVL,
+			Date ngayKT) {
 		super();
 		MaGV = maGV;
 		TenGV = tenGV;
 		DiaChi = diaChi;
 		this.sdt = sdt;
+		LuongCb = luongCb;
+		this.hsl = hsl;
 		NgayVL = ngayVL;
 		NgayKT = ngayKT;
 	}

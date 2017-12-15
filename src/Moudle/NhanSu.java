@@ -7,7 +7,6 @@ public class NhanSu {
 	private String TenNV;
 	private String DiaChi;
 	private String sdt;
-	private String Maphongban;
 	private Date NgayVL,NgayKT;
 	
 	public Date getNgayVL() {
@@ -47,20 +46,15 @@ public class NhanSu {
 		this.sdt = sdt;
 	}
 	
-	public String getMaphongban() {
-		return Maphongban;
-	}
-	public void setMaphongban(String maphongban) {
-		this.Maphongban = maphongban;
-	}
+
 	
-	public NhanSu(String maNV, String tenNV, String diaChi, String sdt, String maphongban, Date ngayVL, Date ngayKT) {
+	public NhanSu(String maNV, String tenNV, String diaChi, String sdt,  Date ngayVL, Date ngayKT) {
 		super();
 		MaNV = maNV;
 		TenNV = tenNV;
 		DiaChi = diaChi;
 		this.sdt = sdt;
-		Maphongban = maphongban;
+		
 		NgayVL = ngayVL;
 		NgayKT = ngayKT;
 	}

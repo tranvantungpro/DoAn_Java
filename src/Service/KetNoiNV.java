@@ -29,10 +29,9 @@ public class KetNoiNV extends KetNoiSQLQuyen {
 				dm.setMaNV(result.getString(1));
 				dm.setTenNV(result.getString(2)); 
 				dm.setSdt(result.getString(3));
-				dm.setDiaChi(result.getString(4));
-				dm.setMaphongban(result.getString(5));
-				dm.setNgayVL(result.getDate(6));
-				dm.setNgayKT(result.getDate(7));
+				dm.setDiaChi(result.getString(4));		
+				dm.setNgayVL(result.getDate(5));
+				dm.setNgayKT(result.getDate(6));
 				vec.add(dm);
 			}			
 		}
@@ -57,9 +56,8 @@ public class KetNoiNV extends KetNoiSQLQuyen {
 				ns.setTenNV(result.getString(2)); 
 				ns.setSdt(result.getString(3));
 				ns.setDiaChi(result.getString(4));
-				ns.setMaphongban(result.getString(5));
-				ns.setNgayVL(result.getDate(6));
-				ns.setNgayKT(result.getDate(7));	
+				ns.setNgayVL(result.getDate(5));
+				ns.setNgayKT(result.getDate(6));	
 				dsGT.add(ns);
 			}
 		} 
@@ -87,9 +85,8 @@ public class KetNoiNV extends KetNoiSQLQuyen {
 				ns.setTenNV(result.getString(2)); 
 				ns.setSdt(result.getString(3));
 				ns.setDiaChi(result.getString(4));
-				ns.setMaphongban(result.getString(5));
-				ns.setNgayVL(result.getDate(6));
-				ns.setNgayKT(result.getDate(7));
+				ns.setNgayVL(result.getDate(5));
+				ns.setNgayKT(result.getDate(6));
 				dsNS.add(ns);
 			}
 			
@@ -104,15 +101,14 @@ public class KetNoiNV extends KetNoiSQLQuyen {
 	{
 		try
 		{
-			String sql= "insert into NhanSu VALUES (?,?,?,?,?,?,?)";
+			String sql= "insert into NhanSu VALUES (?,?,?,?,?,?)";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, ns.getMaNV());
 			preStatement.setString(2, ns.getTenNV());
 			preStatement.setString(3, ns.getSdt());
 			preStatement.setString(4, ns.getDiaChi());
-			preStatement.setString(5, ns.getMaphongban());
-			preStatement.setDate(6,(Date)  ns.getNgayVL());
-			preStatement.setDate(7, (Date) ns.getNgayKT());
+			preStatement.setDate(5,(Date)  ns.getNgayVL());
+			preStatement.setDate(6, (Date) ns.getNgayKT());
 			
 			return preStatement.executeUpdate();
 			
@@ -144,15 +140,14 @@ public class KetNoiNV extends KetNoiSQLQuyen {
 	{
 		try
 		{
-			String sql= "update NhanSu set TenNS=?, Sdt=?, DiaChi=?, MaPB=?,NgayVaoLam=?,NgayKetThuc=? where MaNS=?";
+			String sql= "update NhanSu set TenNS=?, Sdt=?, DiaChi=?,NgayVaoLam=?,NgayKetThuc=? where MaNS=?";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, ns.getTenNV());
 			preStatement.setString(2, ns.getSdt());
 			preStatement.setString(3, ns.getDiaChi());
-			preStatement.setString(4, ns.getMaphongban());
-			preStatement.setDate(5,(Date)  ns.getNgayVL());
-			preStatement.setDate(6, (Date) ns.getNgayKT());	
-			preStatement.setString(7,ns.getMaNV()); 
+			preStatement.setDate(4,(Date)  ns.getNgayVL());
+			preStatement.setDate(5, (Date) ns.getNgayKT());	
+			preStatement.setString(6,ns.getMaNV()); 
 			return preStatement.executeUpdate();
 		}
 		catch(Exception e)

@@ -33,8 +33,8 @@ import javax.swing.table.DefaultTableModel;
 import Moudle.GiangVien;
 import Moudle.LopHoc;
 import Moudle.NhanSu;
-import Moudle.Luong;
-import Moudle.PhongBan;
+import Moudle.BangChamCong;
+
 
 public class ManHinhXemLichGD extends JFrame{
 	DefaultTableModel dtnLich,dtnLich1;
@@ -42,6 +42,7 @@ public class ManHinhXemLichGD extends JFrame{
 	JTextArea txtThongTin;
 	JTextField txtMaPH,txtTenPH,txtSucChua,txtTrangThai,txtTim;
 	JButton btnTimKiem,btnThoat;
+	JComboBox<BangChamCong>cboThang;
 	Connection con=null;
 	Statement sta=null;
 	ResultSet result=null;
@@ -56,6 +57,7 @@ public ManHinhXemLichGD (String title)
 	showWindown();
 	ketNoiCoSoDuLieu();
 	HienThiToanBoLichGD();
+	
 }
 
 
@@ -73,6 +75,7 @@ public void addEvent() {
 			}
 			else {
 			xuLyTimKiem();
+			xuLyTimKiem1();
 			
 		}
 		}
@@ -128,18 +131,11 @@ protected void xuLyTimKiem() {
 	// TODO Auto-generated method stub
 	try
 	{
-		String sql= "{call TKGiangVien(?) }";
-		String sql1= "{call TKSoLopDay (?) }";
+		String sql= "{call TKGiangVien(?) }";		
 		CallableStatement callStatement=con.prepareCall(sql);
-		CallableStatement callStatement1=con.prepareCall(sql1);
-		callStatement.setString(1,txtTim.getText());	
-		callStatement1.setString(1,txtTim.getText());
-		result=callStatement.executeQuery();
-		result1=callStatement1.executeQuery();
-		
+		callStatement.setString(1,txtTim.getText());			
+		result=callStatement.executeQuery();		
 		dtnLich.setRowCount(0);
-		dtnLich1.setRowCount(0);
-		//JOptionPane.showMessageDialog(null, dtnPhongHoc1);
 		while(result.next())
 		{
 			Vector<Object> vec=new Vector<Object>();
@@ -148,12 +144,35 @@ protected void xuLyTimKiem() {
 			vec.add(result.getString("TenLH"));
 			vec.add(result.getString("TenPH"));
 			dtnLich.addRow(vec);
-		}
+		}				
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	
+}
+protected void xuLyTimKiem1() {
+	// TODO Auto-generated method stub
+	try
+	{
+		
+		String sql1= "{call TKSoLopDay (?) }";
+		
+		CallableStatement callStatement1=con.prepareCall(sql1);
+		
+		callStatement1.setString(1,txtTim.getText());
+	
+		result1=callStatement1.executeQuery();
+		
+		
+		dtnLich1.setRowCount(0);
+			
 		while(result1.next())
 		{
 			Vector<Object> vec1=new Vector<Object>();
-			vec1.add(result.getString("TenGV"));
-			vec1.add(result.getString("solopgiangday"));
+			vec1.add(result1.getString("TenGV"));
+			vec1.add(result1.getString("solopgiangday"));
 			dtnLich1.addRow(vec1);
 		}
 		
@@ -164,7 +183,6 @@ protected void xuLyTimKiem() {
 	}
 	
 }
-
 
 private void addcontrols() {
 	// TODO Auto-generated method stub

@@ -6,11 +6,13 @@ import UI.MHQuanLyHocVien;
 import UI.MHQuanLyLopHoc;
 import UI.MHXepLichGV;
 import UI.ManHinhChinh;
-import UI.ManHinhLuogGV;
+import UI.ManHinhQuanLiChamCongGV;
 import UI.ManHinhPhongHoc;
 import UI.ManHinhQuanLiGiangVien;
 import UI.ManHinhQuanLiNhanVien;
+import UI.ManHinhTinhLuong;
 import UI.ManHinhXemLichGD;
+
 
 public class TestManHinhChinh 
 {
@@ -22,7 +24,7 @@ public class TestManHinhChinh
 //		MHQuanLyGiaoTrinh ui = new MHQuanLyGiaoTrinh("Quản Lý Giáo Trình");
 //		ui.showWindow();
 //		
-		ManHinhQuanLiGiangVien ui = new ManHinhQuanLiGiangVien("Lịch dạy");
+		ManHinhQuanLiNhanVien ui = new ManHinhQuanLiNhanVien("Lịch dạy");
 				ui.showWindow();
 //		MHXepLichGV ui = new MHXepLichGV("Xếp Lịch Giảng Viên");
 //		ui.ShowWindow();

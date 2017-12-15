@@ -35,6 +35,8 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.sun.corba.se.impl.ior.JIDLObjectKeyTemplate;
+
 import Moudle.GiangVien;
 import Moudle.LopHoc;
 import Moudle.PhongHoc;
@@ -67,6 +69,7 @@ public ManHinhPhongHoc (String title)
 	showWindown();
 	ketNoiCoSoDuLieu();
 	HienThiToanBoPhongHoc();
+	//xuLyTimKiem1();
 }
 
 
@@ -84,6 +87,7 @@ public void addEvent() {
 			}
 			else {
 			xuLyTimKiem();
+				xuLyTimKiem1();
 			
 		}
 		}
@@ -140,17 +144,10 @@ protected void xuLyTimKiem() {
 	try
 	{
 		String sql= "{call QuanLiPhongHoc(?) }";
-		String sql1= "{call QLi(?) }";
 		CallableStatement callStatement=con.prepareCall(sql);
-		CallableStatement callStatement1=con.prepareCall(sql1);
 		callStatement.setString(1,txtTim.getText());	
-		callStatement1.setString(1,txtTim.getText());
 		result=callStatement.executeQuery();
-		result1=callStatement1.executeQuery();
-		
 		dtnPhongHoc.setRowCount(0);
-		dtnPhongHoc1.setRowCount(0);
-		//JOptionPane.showMessageDialog(null, dtnPhongHoc1);
 		while(result.next())
 		{
 			Vector<Object> vec=new Vector<Object>();
@@ -160,11 +157,28 @@ protected void xuLyTimKiem() {
 			vec.add(result.getString("TenLH"));
 			dtnPhongHoc.addRow(vec);
 		}
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	
+}
+protected void xuLyTimKiem1() {
+	// TODO Auto-generated method stub
+	try
+	{
+		String sql1= "{call QLi(?) }";
+		CallableStatement callStatement1=con.prepareCall(sql1);
+	//	CallableStatement callStatement1=con.prepareCall("{call QuanLi}");	
+		callStatement1.setString(1,txtTim.getText());
+		result1=callStatement1.executeQuery();
+		dtnPhongHoc1.setRowCount(0);
 		while(result1.next())
 		{
 			Vector<Object> vec1=new Vector<Object>();
-			vec1.add(result.getString("TenPH"));
-			vec1.add(result.getString("solopgiangday"));
+			vec1.add(result1.getString("TenPH"));
+			vec1.add(result1.getString("solopgiangday"));
 			dtnPhongHoc1.addRow(vec1);
 		}
 		

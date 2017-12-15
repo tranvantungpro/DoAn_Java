@@ -39,12 +39,12 @@ import Moudle.CTH;
 import Moudle.GiangVien;
 
 import Moudle.NhanSu;
-import Moudle.PhongBan;
+
 import Service.KetNoiCTH;
 import Service.KetNoiGV;
 
 import Service.KetNoiNV;
-import Service.KetNoiPhongBan;
+
 
 public class ManHinhQuanLiNhanVien extends JFrame{
 public ManHinhQuanLiNhanVien (String title)
@@ -54,8 +54,8 @@ public ManHinhQuanLiNhanVien (String title)
 	addEvents();
 	showWindow();
 	HienThiToanBoNS();
-	hienThiDanhMucLenList();
-	hienThicboPB();
+	
+	
 }
 JTextField txtMa, txtTen, txtsdt, txtdiachi, txtPB,txtNgayBt,txtNgayKT ,txtTim;  
 JButton btnThem, btnXoa, btnSua, btnTimKiem, btnTaoMoi, btnTinhLuong, btnQuayLai;
@@ -66,7 +66,7 @@ ArrayList<NhanSu> dsNs = null;
 ArrayList<NhanSu> dsThem = null;
 ArrayList<NhanSu> dsnsTim = null;
 static String MaNS = "";
-JComboBox<PhongBan>cboPB;
+
 Calendar cal = Calendar.getInstance();
 
 
@@ -171,7 +171,7 @@ private void addEvents()
 			txtTen.setText(ns.getTenNV());
 			txtsdt.setText(ns.getSdt());
 			txtdiachi.setText(ns.getDiaChi());
-			hienThicboPBthemMa(ns.getMaphongban());
+			
 			txtNgayBt.setText(df.format(ns.getNgayVL()));
 			txtNgayKT.setText(df.format(ns.getNgayKT()));
 			
@@ -209,10 +209,10 @@ private void addEvents()
 			txtNgayBt.setText(LayNgayHienHanh());
 			txtNgayKT.setText(""); 
 			HienThiToanBoNS();
-			hienThiDanhMucLenList();
-			hienThicboPB();
+		
+			
 
-			cboPB.setSelectedItem(null);
+			
 		}
 	});
 
@@ -243,22 +243,7 @@ public void QuayLai()
 	this.dispose(); 
 }
 
-protected void hienThicboPhongBanthemMa(String mapb) {
-	KetNoiPhongBan knpb=new KetNoiPhongBan();
-	Vector<PhongBan>vec1=knpb.hienThicbocththemMa(mapb); 
-	cboPB.removeAllItems();
-	
-	KetNoiPhongBan dmService=new KetNoiPhongBan();
-	Vector<PhongBan>vec=dmService.docToanBoDanhMuc();
-	PhongBan a = new PhongBan();
-	a = (PhongBan) vec1.toArray()[0];
-	for(PhongBan dm : vec)
-	{
-		cboPB.addItem(dm);
-		if(dm.getTenPB().equals(a.getTenPB()))
-			cboPB.setSelectedItem(dm);
-	} 
-}
+
 
 
 protected void NhapTT() {
@@ -320,15 +305,8 @@ private void addContronls()
 	pnDiachi.add(txtdiachi);
 	pnThongTinChiTiet.add(pnDiachi);
 
-	JPanel pnLoai = new JPanel();
-	pnLoai.setLayout(new FlowLayout(FlowLayout.LEFT));
-	JLabel lblLoai = new JLabel("Phòng ban: ");
-	lblLoai.setFont(new Font("Arial", Font.PLAIN, 15));
-	cboPB=new JComboBox<PhongBan>();
-	cboPB.setPreferredSize(new Dimension(270, 20));
-	pnLoai.add(lblLoai);
-	pnLoai.add(cboPB);
-	pnThongTinChiTiet.add(pnLoai);
+	
+	
 	JPanel pnngSinh=new JPanel();
 	pnngSinh.setLayout(new FlowLayout(FlowLayout.LEFT));
 	JLabel lblVL=new JLabel("Ngày Vào Làm");
@@ -350,6 +328,17 @@ private void addContronls()
 	
 	JPanel pnButtonChiTiet=new JPanel();
 	pnButtonChiTiet.setLayout(new FlowLayout(FlowLayout.RIGHT));
+	
+	JPanel pnChucNang=new JPanel();
+	pnChucNang.setLayout(new FlowLayout());
+	pnChucNang.add(pnButtonChiTiet);
+	pnMain.add(pnChucNang);
+	Border boderchucnang=BorderFactory
+			.createLineBorder(Color.RED);
+ 	TitledBorder bodertitlechucnang=new TitledBorder(boderchucnang,"Chức năng");
+ 	pnChucNang.setBorder(bodertitlechucnang);
+ 	bodertitlechucnang.setTitleColor(Color.RED);
+ 	
 	btnTaoMoi=new JButton("Tạo Mới");
 	btnThem=new JButton("Thêm");
 	btnSua=new JButton("Cập Nhật");
@@ -363,22 +352,22 @@ private void addContronls()
 	pnTim.add(lblTim);
 	pnTim.add(txtTim);
 	pnTim.add(btnTimKiem);
-	pnButtonChiTiet.add(btnTaoMoi);
-	pnButtonChiTiet.add(btnThem);
-	pnButtonChiTiet.add(btnSua);
-	pnButtonChiTiet.add(btnXoa);
-	pnButtonChiTiet.add(btnQuayLai);
-	pnButtonChiTiet.add(btnTinhLuong);
-	pnMain.add(pnTim,BorderLayout.SOUTH);
-	pnThongTinChiTiet.add(pnButtonChiTiet);
+	pnChucNang.add(btnTaoMoi);
+	pnChucNang.add(btnThem);
+	pnChucNang.add(btnSua);
+	pnChucNang.add(btnXoa);
+	pnChucNang.add(btnQuayLai);
+	pnChucNang.add(btnTinhLuong);
+	pnMain.add(pnTim,BorderLayout.CENTER);
+	pnChucNang.add(pnButtonChiTiet);
 	//làm cho đẹp
 	lblMa.setPreferredSize(lblVL.getPreferredSize());
 	lblTen.setPreferredSize(lblVL.getPreferredSize());
 	lblVL.setPreferredSize(lblVL.getPreferredSize());
 	lblDiaChi.setPreferredSize(lblVL.getPreferredSize());
 	lblSdt.setPreferredSize(lblVL.getPreferredSize());
-	lblNgKt.setPreferredSize(lblLoai.getPreferredSize());
-	lblLoai.setPreferredSize(lblLoai.getPreferredSize());
+	lblNgKt.setPreferredSize(lblVL.getPreferredSize());
+	
 	
 	JPanel pnNorth=new JPanel();
 	pnNorth.setLayout(new BorderLayout());
@@ -390,7 +379,6 @@ private void addContronls()
 	dtmNhanSu.addColumn("Tên Nhân sự");
 	dtmNhanSu.addColumn("số điện thoại");
 	dtmNhanSu.addColumn("Địa chỉ");
-	dtmNhanSu.addColumn("Tên phòng ban");
 	dtmNhanSu.addColumn("Ngày Bắt Đầu");
 	dtmNhanSu.addColumn("Ngày Kết Thúc");
 	
@@ -410,45 +398,12 @@ public void showWindow()
 	this.setVisible(true);
 }
 
-private void hienThiDanhMucLenList() {
-	KetNoiPhongBan dmService=new KetNoiPhongBan();
-	Vector<PhongBan>vec=dmService.docToanBoDanhMuc();
-	//lisLoaiLH.setListData(vec);
-	cboPB.removeAllItems();
-	for(PhongBan dm : vec)
-	{
-		cboPB.addItem(dm);
-	}
-}
 
 
-public void hienThicboPB() {
-	KetNoiPhongBan dmService=new KetNoiPhongBan();
-	Vector<PhongBan>vec=dmService.docToanBoDanhMuc();
-	cboPB.removeAllItems();
-	for(PhongBan dm : vec)
-	{
-		cboPB.addItem(dm);
-	}
-}
 
-public void hienThicboPBthemMa(String magv) 
-{
-	KetNoiPhongBan kngv=new KetNoiPhongBan();
-	Vector<PhongBan>vec1=kngv.hienThicbocththemMa(magv);
-	cboPB.removeAllItems();
-	
-	KetNoiPhongBan knllh1=new KetNoiPhongBan();
-	Vector<PhongBan>vec=knllh1.docToanBoDanhMuc();
-	PhongBan a = new PhongBan();
-	a = (PhongBan) vec1.toArray()[0];
-	for(PhongBan dm : vec)
-	{
-		cboPB.addItem(dm);
-		if(dm.getTenPB().equals(a.getTenPB()))
-			cboPB.setSelectedItem(dm);
-	}
-}
+
+
+
 
 protected void CapNhatNS() 
 {
@@ -458,7 +413,7 @@ protected void CapNhatNS()
 	ns.setSdt(txtsdt.getText());
 	ns.setDiaChi(txtdiachi.getText());
 	//ns.setMaphongban(cboPB.getSelectedItem().toString());
-	ns.setMaphongban(LayMaPB(cboPB.getSelectedItem().toString()));
+	
 	//ngaybd
 	Date sqlDate = null;
 	try {
@@ -514,7 +469,7 @@ protected void LuuMoiLH()
 	ns.setTenNV(txtTen.getText());
 	ns.setSdt(txtsdt.getText());
 	ns.setDiaChi(txtdiachi.getText());
-	ns.setMaphongban(LayMaPB(cboPB.getSelectedItem().toString()));	
+	
 	//ngaybd
 	Date sqlDate = null;
 	try {
@@ -547,14 +502,7 @@ protected void LuuMoiLH()
 	}
 
 }
-public String LayMaPB(String tenpb)
-{
-	KetNoiPhongBan knLLH = new KetNoiPhongBan();
-	PhongBan a = new PhongBan();
-	a = knLLH.LayMaPB(tenpb);
-	 
-	return a.getMaPB();
-}
+
 public String LayMaNS()
 {
 	KetNoiNV knns = new KetNoiNV();
@@ -577,14 +525,13 @@ public void HienThiToanBoNS()
 	dtmNhanSu.setRowCount(0);
 	for(NhanSu a : dsNs)
 	{
-		KetNoiPhongBan knlh = new KetNoiPhongBan(); 
-		String b  = knlh.LayTenPB(a.getMaphongban());	
+		
 		Vector<Object> vec = new Vector<Object>();
 		vec.add(a.getMaNV());
 		vec.add(a.getTenNV());
 		vec.add(a.getSdt());
 		vec.add(a.getDiaChi());
-		vec.add(b);
+	
 		vec.add(a.getNgayVL());
 		vec.add(a.getNgayKT());
 		
@@ -612,7 +559,6 @@ public void HienThiTim()
 			vec.add(a.getTenNV());
 			vec.add(a.getSdt());
 			vec.add(a.getDiaChi());
-			vec.add(a.getMaphongban());
 			vec.add(a.getNgayVL());
 			vec.add(a.getNgayKT());
 			dtmNhanSu.addRow(vec);
