@@ -27,8 +27,8 @@ public class KetNoiGV extends KetNoiSQL
 {
 	PreparedStatement preStatement=null;
 	ResultSet result=null;
-	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
-	Connection conn = a.getConnect();
+//	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
+//	Connection conn = a.getConnect();
 	public Vector<GiangVien> docToanBoDanhMuc()
 	{
 		Vector<GiangVien> vec=new Vector<GiangVien>();
@@ -188,7 +188,7 @@ public class KetNoiGV extends KetNoiSQL
 	}
 
 	
-public GiangVien LayMaGV(String tengv)
+	public GiangVien LayMaGV(String tengv)
 	{
 		try 
 		{
@@ -200,6 +200,7 @@ public GiangVien LayMaGV(String tengv)
 			{
 				GiangVien gt = new GiangVien();
 				gt.setMaGV(result.getString(1));
+				gt.setSoLop(result.getInt(9));
 				return gt;
 			}
 		}
@@ -274,25 +275,26 @@ public GiangVien LayMaGV(String tengv)
 		
 	}
 
-	public Vector<GiangVien> hienThicboGVthemMa(String magv) {
+	public Vector<GiangVien> hienThiGVLenCbo(String magv) {
 		// TODO Auto-generated method stub
 		Vector<GiangVien> vec=new Vector<GiangVien>();
 		try
 		{
-			String sql="select * from GiangVien where TenGV=?";
-			Statement statement=conn.createStatement();
-			ResultSet result=statement.executeQuery(sql);
+			String sql="select * from GiangVien where MaGV=?";
+			preStatement=conn.prepareStatement(sql);
+			preStatement.setString(1, magv);
+			result=preStatement.executeQuery();
 			while(result.next())
 			{
 				GiangVien dm=new GiangVien();
 				dm.setMaGV(result.getString(1));
 				dm.setTenGV(result.getString(2)); 
-				dm.setSdt(result.getString(4));
-				dm.setDiaChi(result.getString(3));
-				dm.setHsl(result.getFloat(5));
-				dm.setLuongCb(result.getFloat(6));	
-				dm.setNgayVL(result.getDate(7));
-				dm.setNgayKT(result.getDate(8));
+//				dm.setSdt(result.getString(4));
+//				dm.setDiaChi(result.getString(3));
+//				dm.setHsl(result.getFloat(5));
+//				dm.setLuongCb(result.getFloat(6));	
+//				dm.setNgayVL(result.getDate(7));
+//				dm.setNgayKT(result.getDate(8));
 				vec.add(dm);
 			}			
 			
@@ -303,6 +305,47 @@ public GiangVien LayMaGV(String tengv)
 		}
 		return vec;
 		
+	}
+
+	public int CapNhatSoLopGiangVien(String magv, int solop) 
+	{
+		try
+		{
+			
+			String sql= "update GiangVien set  SoLop=? where MaGV=?";
+			preStatement = conn.prepareStatement(sql);			
+			preStatement.setInt(1, solop);
+			preStatement.setString(2, magv); 
+			
+			return preStatement.executeUpdate();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
+	public GiangVien SoLopHT(String tengv) {
+		try 
+		{
+			String sql= "select * from GiangVien where TenGV =?";
+			preStatement=conn.prepareStatement(sql);
+			preStatement.setString(1, tengv);
+			result=preStatement.executeQuery();
+			while(result.next())
+			{
+				GiangVien a = new GiangVien();
+				a.setMaGV(result.getString(1));
+				a.setSoLop(result.getInt(9));
+				return a;
+			}
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	

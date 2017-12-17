@@ -124,13 +124,48 @@ public class MHChuyenLop extends JFrame
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ChuyenLop(cboHocVien.getSelectedItem(), cboLopHoc.getSelectedItem());
+				if(KiemTraTT(cboHocVien.getSelectedItem().toString()) != 0)
+				{
+					if(KiemTraSS(cboLopHoc.getSelectedItem().toString())!=0)
+						ChuyenLop(cboHocVien.getSelectedItem(), cboLopHoc.getSelectedItem());
+				}
+				
 				
 			}
 		});
 		 
 	}
 	
+
+	protected int KiemTraSS(String tenlh) {
+		KetNoiLH lh = new KetNoiLH();
+		LopHoc a = new LopHoc();
+		a = lh.KiemTraSSLH(tenlh);
+		if(a.getSiSoHT() == a.getSiso())
+		{
+			JOptionPane.showMessageDialog(null, "Lớp học đã đầy học viên");
+			return 0;
+		}
+		return 1;
+	}
+
+	protected int KiemTraTT(String tenhv) {
+		KetNoiHV knLH = new KetNoiHV();
+		HocVien a = new HocVien();
+		a  = knLH.KiemTraTTHV(tenhv);
+		if(a.getTrangThai().equals("Bảo lưu"))
+		{
+			JOptionPane.showMessageDialog(null, "Học viên đang bảo lưu, không thể chuyển lớp");
+			return 0;
+		}
+		if(a.getTrangThai().equals("Mới"))
+		{
+			JOptionPane.showMessageDialog(null, "Học viên mới, không thể chuyển lớp");
+			return 0;
+		}
+		
+		return 1;
+	}
 
 	protected void ChuyenLop(Object selectedItem, Object selectedItem2) 
 	{

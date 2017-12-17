@@ -5,6 +5,8 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyListener;
 import java.sql.Connection;
 
 import javax.security.auth.kerberos.KerberosTicket;
@@ -16,6 +18,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.sun.glass.events.KeyEvent;
 
 import Service.KetNoiSQL;
 
@@ -84,6 +88,17 @@ public class ManHinhCSDL extends JFrame
 				
 			}
 		});
+		
+		txtDatabase.addKeyListener(new KeyAdapter() 
+        {
+            public void keyPressed(KeyEvent evt)
+            {
+                if(KeyEvent.getKeyCodeForChar((char) 0) == KeyEvent.VK_ENTER)
+                {
+                    System.out.println("Pressed");
+                }
+            }
+        });
 	}
 	
 	protected void XuLyTruyXuatSQL(String server, String database) 
@@ -104,6 +119,7 @@ public class ManHinhCSDL extends JFrame
 			
 		
 	}
+
 
 	public void ShowWindow()
 	{

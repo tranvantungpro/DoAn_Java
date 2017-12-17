@@ -74,7 +74,7 @@ public class KetNoiCTH extends KetNoiSQL
 	public CTH LayMaCTH(String tencth)
 	{
 		try 
-		{
+		{ 
 			String sql = "Select * from ChuongTrinhHoc where TenCTH=?";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, tencth);
@@ -83,6 +83,8 @@ public class KetNoiCTH extends KetNoiSQL
 			{
 				CTH gt = new CTH();
 				gt.setMaCTH(result.getString(1));
+				gt.setTenCTH(result.getString(2));
+				gt.setSoBuoi(result.getInt(3));
 				return gt;
 			}
 		}

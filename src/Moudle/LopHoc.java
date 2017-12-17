@@ -7,11 +7,39 @@ public class LopHoc
 	private String MaLH;
 	private String TenLH;
 	private String LoaiLH;
-	private String MaCTH;
-	private int SoBuoi;
+	private String MaCTH; 
 	private Date NgayBD;
 	private Date NgayKT;
 	private String MaGV;
+	private int MaTG;
+	private String MaPH;
+	private int Siso;
+	private int SiSoHT;
+	 
+	public int getSiSoHT() {
+		return SiSoHT;
+	}
+	public void setSiSoHT(int siSoHT) {
+		SiSoHT = siSoHT;
+	}
+	public int getSiso() {
+		return Siso;
+	}
+	public void setSiso(int siso) {
+		Siso = siso;
+	}
+	public int getMaTG() {
+		return MaTG;
+	}
+	public void setMaTG(int i) {
+		MaTG = i;
+	}
+	public String getMaPH() {
+		return MaPH;
+	}
+	public void setMaPH(String maPH) {
+		MaPH = maPH;
+	}
 	public String getMaLH() {
 		return MaLH;
 	}
@@ -35,13 +63,7 @@ public class LopHoc
 	}
 	public void setMaCTH(String maCTH) {
 		MaCTH = maCTH;
-	}
-	public int getSoBuoi() {
-		return SoBuoi;
-	}
-	public void setSoBuoi(int soBuoi) {
-		SoBuoi = soBuoi;
-	}
+	} 
 	public Date getNgayBD() {
 		return NgayBD;
 	}

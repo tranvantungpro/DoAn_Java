@@ -10,11 +10,11 @@ import java.util.Vector;
 
 import Moudle.NhanSu;
 
-public class KetNoiNV extends KetNoiSQLQuyen {
+public class KetNoiNV extends KetNoiSQL {
 	PreparedStatement preStatement=null;
 	ResultSet result=null;
-	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
-	Connection conn = a.getConnect();
+//	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
+//	Connection conn = a.getConnect();
 	public Vector<NhanSu> docToanBoDanhMuc()
 	{
 		Vector<NhanSu> vec=new Vector<NhanSu>();

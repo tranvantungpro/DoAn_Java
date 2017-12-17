@@ -19,8 +19,8 @@ public class KetNoiLH extends KetNoiSQL
 	PreparedStatement preStatement=null;
 	ResultSet result=null;
 	//phần này để demo
-	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
-	Connection conn = a.getConnect();
+//	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
+//	Connection conn = a.getConnect();
 	
 	public ArrayList<LopHoc> LayToanBoLopHoc()
 	{
@@ -36,11 +36,14 @@ public class KetNoiLH extends KetNoiSQL
 				lh.setMaLH(result.getString(1));
 				lh.setTenLH(result.getString(2));
 				lh.setLoaiLH(result.getString(3));
-				lh.setMaCTH(result.getString(4));
-				lh.setSoBuoi(result.getInt(5));
-				lh.setNgayBD(result.getDate(6));
-				lh.setNgayKT(result.getDate(7));
-				lh.setMaGV(result.getString(8));
+				lh.setMaCTH(result.getString(4)); 
+				lh.setNgayBD(result.getDate(5));
+				lh.setNgayKT(result.getDate(6));
+				lh.setMaGV(result.getString(7));
+				lh.setMaTG(result.getInt(8));
+				lh.setMaPH(result.getString(9));
+				lh.setSiso(result.getInt(10));
+				lh.setSiSoHT(result.getInt(11));
 				dsGT.add(lh);
 			}
 		} 
@@ -66,11 +69,13 @@ public class KetNoiLH extends KetNoiSQL
 				lh.setMaLH(result.getString(1));
 				lh.setTenLH(result.getString(2));
 				lh.setLoaiLH(result.getString(3));
-				lh.setMaCTH(result.getString(4));
-				lh.setSoBuoi(result.getInt(5));
-				lh.setNgayBD(result.getDate(6));
-				lh.setNgayKT(result.getDate(7));
-				lh.setMaGV(result.getString(8));
+				lh.setMaCTH(result.getString(4)); 
+				lh.setNgayBD(result.getDate(5));
+				lh.setNgayKT(result.getDate(6));
+				lh.setMaGV(result.getString(7));
+				lh.setMaTG(result.getInt(8));
+				lh.setMaPH(result.getString(9));
+				lh.setSiso(result.getInt(10));
 				dsGTTim.add(lh);
 			}
 			
@@ -86,16 +91,19 @@ public class KetNoiLH extends KetNoiSQL
 	{
 		try
 		{
-			String sql= "insert into LopHoc VALUES (?,?,?,?,?,?,?,?)";
+			String sql= "insert into LopHoc VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, lh.getMaLH());
 			preStatement.setString(2, lh.getTenLH());
 			preStatement.setString(3, lh.getLoaiLH());
-			preStatement.setString(4, lh.getMaCTH());
-			preStatement.setInt(5, lh.getSoBuoi());
-			preStatement.setDate(6, (Date) lh.getNgayBD());
-			preStatement.setDate(7, (Date) lh.getNgayKT());
-			preStatement.setString(8, lh.getMaGV());
+			preStatement.setString(4, lh.getMaCTH()); 
+			preStatement.setDate(5, (Date) lh.getNgayBD());
+			preStatement.setDate(6, (Date) lh.getNgayKT());
+			preStatement.setString(7, lh.getMaGV());
+			preStatement.setInt(8, lh.getMaTG());
+			preStatement.setString(9, lh.getMaPH());
+			preStatement.setInt(10, lh.getSiso());
+			preStatement.setInt(11, lh.getSiSoHT());
 			
 			return preStatement.executeUpdate();
 			
@@ -127,16 +135,19 @@ public class KetNoiLH extends KetNoiSQL
 	{
 		try
 		{
-			String sql= "update LopHoc set TenLH=?, LoaiLH=?, MaCTH=?, SoBuoi=?, NgayBD=?, NgayKT=?, MaGV=? where MaLH=? ";
+			String sql= "update LopHoc set TenLH=?, LoaiLH=?, MaCTH=?,  NgayBD=?, NgayKT=?,  MaTG=?, MaPH=?, SiSo=? where MaLH=? ";
 			preStatement = conn.prepareStatement(sql);
+			preStatement = conn.prepareStatement(sql);
+			
 			preStatement.setString(1, gt.getTenLH());
 			preStatement.setString(2, gt.getLoaiLH());
-			preStatement.setString(3, gt.getMaCTH());
-			preStatement.setInt(4, gt.getSoBuoi());
-			preStatement.setDate(5, (Date) gt.getNgayBD());
-			preStatement.setDate(6, (Date) gt.getNgayKT());
-			preStatement.setString(7, gt.getMaGV());
-			preStatement.setString(8, gt.getMaLH());
+			preStatement.setString(3, gt.getMaCTH()); 
+			preStatement.setDate(4, (Date) gt.getNgayBD());
+			preStatement.setDate(5, (Date) gt.getNgayKT()); 
+			preStatement.setInt(6, gt.getMaTG());
+			preStatement.setString(7, gt.getMaPH());
+			preStatement.setInt(8, gt.getSiso());
+			preStatement.setString(9, gt.getMaLH());
 			return preStatement.executeUpdate();
 		}
 		catch(Exception e)
@@ -179,6 +190,7 @@ public class KetNoiLH extends KetNoiSQL
 			{
 				LopHoc gt = new LopHoc();
 				gt.setMaLH(result.getString(1));
+				gt.setMaGV(result.getString(7));
 				return gt;
 			}
 		}
@@ -298,5 +310,30 @@ public class KetNoiLH extends KetNoiSQL
 			  
 		}
 		return "";
+	}
+
+	public LopHoc KiemTraSSLH(String tenlh) {
+		try 
+		{
+			
+			String sql = "Select * from LopHoc where TenLH=?";
+			preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1, tenlh);
+			result=preStatement.executeQuery();
+			while(result.next())
+			{
+				LopHoc gt = new LopHoc();
+				gt.setMaLH(result.getString(1));
+				gt.setTenLH(result.getString(2)); 
+				gt.setSiso(result.getInt(10));
+				gt.setSiSoHT(result.getInt(11));
+				return gt;
+			}
+		}
+		catch (Exception e) 
+		{
+			  
+		}
+		return null; 
 	}
 }

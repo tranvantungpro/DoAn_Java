@@ -10,11 +10,11 @@ import java.util.Vector;
 import Moudle.BangChamCong;
 import Moudle.GiangVien;
 
-public class KetNoiBangChamCong extends KetNoiSQLQuyen {
+public class KetNoiBangChamCong extends KetNoiSQL {
 	PreparedStatement preStatement=null;
 	ResultSet result=null;
-	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
-	Connection conn = a.getConnect();
+//	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
+//	Connection conn = a.getConnect();
 	public Vector<BangChamCong> docToanBoDanhMuc()
 	{
 		Vector<BangChamCong> vec=new Vector<BangChamCong>();

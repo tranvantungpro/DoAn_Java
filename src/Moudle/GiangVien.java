@@ -11,6 +11,16 @@ public class GiangVien
 	private String DiaChi;
 	private String sdt;
 	private float LuongCb,hsl;
+	private int SoLop;
+	
+	public int getSoLop() {
+		return SoLop;
+	}
+
+	public void setSoLop(int soLop) {
+		SoLop = soLop;
+	}
+
 	public float getLuongCb() {
 		return LuongCb;
 	}

@@ -31,7 +31,7 @@ public class MHXepLichGV extends JFrame
 	JComboBox<LopHoc> cboLoHoc;
 	JComboBox<GiangVien> cboGiangVien;
 	JButton btnXepLop,btnQuayLai;
-	
+
 	public MHXepLichGV (String Tieude)
 	{
 		super(Tieude);
@@ -45,12 +45,12 @@ public class MHXepLichGV extends JFrame
 	{
 		Container con = getContentPane();
 		con.setLayout(new BorderLayout());
-	
+
 		//pnServer
 		JPanel pnTop= new JPanel();
 		JPanel pnBottom = new JPanel();
 		pnBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
-		
+
 		JPanel pnLopHoc = new JPanel();
 		JLabel lblLop = new JLabel("Lớp học:");
 		lblLop.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -60,7 +60,7 @@ public class MHXepLichGV extends JFrame
 		pnLopHoc.add(cboLoHoc);
 		pnTop.add(pnLopHoc);
 		con.add(pnTop, BorderLayout.NORTH);
-		
+
 		JPanel pnGv = new JPanel();
 		JLabel lblGv = new JLabel("Giảng Viên:");
 		lblGv.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -70,7 +70,7 @@ public class MHXepLichGV extends JFrame
 		pnGv.add(cboGiangVien);
 		pnTop.add(pnGv);
 		con.add(pnTop);
-		
+
 		JPanel pnButton = new JPanel();
 		btnXepLop = new JButton("Xếp lớp");
 		btnQuayLai = new JButton("Quay lại");
@@ -78,59 +78,103 @@ public class MHXepLichGV extends JFrame
 		pnBottom.add(btnQuayLai);
 		con.add(pnBottom, BorderLayout.SOUTH);
 		lblLop.setPreferredSize(lblGv.getPreferredSize());
-		
+
 	}
-	
+
 	private void addEvents() 
 	{ 
 		btnQuayLai.addMouseListener(new MouseListener() {
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
 				Quaylai();
 			}
- 
+
 		});
-		
+
 		btnXepLop.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				XepLop(cboGiangVien.getSelectedItem(), cboLoHoc.getSelectedItem());
+				if(KiemTraGiangVienCuaLopHoc(cboLoHoc.getSelectedItem().toString()) != 0)
+				{
+					if(KiemTraSoLopGiangVien(cboGiangVien.getSelectedItem().toString()) != 0)
+					{
+						XepLop(cboGiangVien.getSelectedItem(), cboLoHoc.getSelectedItem());
+					}
+				}
 			}
 		});
 	}
-	
+
+
+	protected int KiemTraGiangVienCuaLopHoc(String tenlh) {
+		KetNoiLH a = new KetNoiLH();
+		LopHoc lh = new LopHoc();
+		lh =  a.LayMalophoc(tenlh);
+		
+		if(lh.getMaGV()!= null)
+		{
+			JOptionPane.showMessageDialog(null ,"Lớp học đã có giảng viên, không thể xếp lớp", "Thông báo", JOptionPane.PLAIN_MESSAGE);
+			return 0;
+		}
+		return 1;
+	}
+
+	protected int KiemTraSoLopGiangVien(String tengv) {
+		KetNoiGV gv = new KetNoiGV();
+		GiangVien a = new GiangVien();
+		a = gv.LayMaGV(tengv);
+
+		if(a.getSoLop() == 3)
+		{
+			JOptionPane.showMessageDialog(null, "Giảng viên đã dạy 3 lớp, vui lòng chọn giảng viên khác!");
+			return 0;
+		}
+		return 1;
+	}
 
 	protected void XepLop(Object selectedItem, Object selectedItem2) 
 	{
-		 KetNoiLH knLH = new KetNoiLH();
-		 if(knLH.XepLop(LayMaGV(cboGiangVien.getSelectedItem().toString()), cboLoHoc.getSelectedItem().toString())> 0)
+		String aa = cboGiangVien.getSelectedItem().toString();
+		String bb = cboLoHoc.getSelectedItem().toString();
+		String cc =  LayMaGV(aa);
+		JOptionPane.showMessageDialog(null, cc);
+		KetNoiLH knLH = new KetNoiLH();
+		KetNoiGV gv = new  KetNoiGV(); 
+		GiangVien a = new GiangVien();
+		a = gv.SoLopHT(aa);
+
+		int solop =  a.getSoLop();
+
+		if(knLH.XepLop(cc, bb)> 0)
+		{
+			if(gv.CapNhatSoLopGiangVien(cc, solop+1) >0)
 			{
 				JOptionPane.showMessageDialog(null, "Xếp lớp thành công");
 			}
@@ -138,7 +182,8 @@ public class MHXepLichGV extends JFrame
 			{
 				JOptionPane.showMessageDialog(null, "Xếp lớp thất bại");
 			}
-		
+		}
+
 	}
 
 	public void Quaylai() 
@@ -151,31 +196,31 @@ public class MHXepLichGV extends JFrame
 		KetNoiGV knGV = new KetNoiGV();
 		GiangVien a = new GiangVien();
 		a = knGV.LayMaGV(tengv);
-		 
+
 		return a.getMaGV();
 	}
-	
+
 	public void hienThicboGV() {
 		KetNoiGV a=new KetNoiGV();
 		Vector<GiangVien>vec=a.docToanBoDanhMuc();
-		
+
 		cboGiangVien.removeAllItems();
 		for(GiangVien dm : vec)
 		{
 			cboGiangVien.addItem(dm);
 		}
 	}
-	
+
 	public void hienThicboLH() {
 		KetNoiLH b=new KetNoiLH();
 		Vector<LopHoc>vec=b.docToanBoLopHoc();
-		//cboLoHoc.removeAllItems();
+		cboLoHoc.removeAllItems();
 		for(LopHoc dm : vec)
 		{
 			cboLoHoc.addItem(dm);
 		}
 	}
-	
+
 	public void ShowWindow()
 	{
 		this.setSize(450, 150);

@@ -1,3 +1,4 @@
+
 package Test;
 
 import UI.MHChuyenLop;
@@ -24,14 +25,17 @@ public class TestManHinhChinh
 //		MHQuanLyGiaoTrinh ui = new MHQuanLyGiaoTrinh("Quản Lý Giáo Trình");
 //		ui.showWindow();
 //		
-		ManHinhQuanLiNhanVien ui = new ManHinhQuanLiNhanVien("Lịch dạy");
-				ui.showWindow();
+//		ManHinhQuanLiNhanVien ui = new ManHinhQuanLiNhanVien("Lịch dạy");
+//				ui.showWindow();
 //		MHXepLichGV ui = new MHXepLichGV("Xếp Lịch Giảng Viên");
 //		ui.ShowWindow();
 		
-//		MHQuanLyHocVien hocvien = new MHQuanLyHocVien("Quản Lý học Viên");
-//		hocvien.showWindow();
+		MHQuanLyHocVien hocvien = new MHQuanLyHocVien("Quản Lý học Viên");
+		hocvien.showWindow();
 //		MHChuyenLop cl = new MHChuyenLop("Chuyển Lớp");
 //		cl.ShowWindow();
+		
+//		MHQuanLyLopHoc ui = new MHQuanLyLopHoc("Lớp học");
+//		ui.showWindow();
 	}
 }

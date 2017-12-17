@@ -261,6 +261,8 @@ public class ManHinhChinh extends JFrame
 				
 			}
 		});
+		
+		
 	}
 	
 	public void Hide() 

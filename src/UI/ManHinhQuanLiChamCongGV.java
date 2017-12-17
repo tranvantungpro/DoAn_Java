@@ -244,7 +244,7 @@ public class ManHinhQuanLiChamCongGV extends JFrame {
 
 	protected void hienThicboGiangVienthemMa(String magv) {
 		KetNoiGV knpb=new KetNoiGV();
-		Vector<GiangVien>vec1=knpb.hienThicboGVthemMa(magv); 
+		Vector<GiangVien>vec1=knpb.hienThiGVLenCbo(magv); 
 		cboGV.removeAllItems();
 		
 		KetNoiGV dmService=new KetNoiGV();
@@ -418,7 +418,7 @@ public class ManHinhQuanLiChamCongGV extends JFrame {
 	public void hienThicboGVthemMa(String magv) 
 	{
 		KetNoiGV kngv=new KetNoiGV();
-		Vector<GiangVien>vec1=kngv.hienThicboGVthemMa(magv);
+		Vector<GiangVien>vec1=kngv.hienThiGVLenCbo(magv);
 		cboGV.removeAllItems();
 		
 		KetNoiGV knllh1=new KetNoiGV();

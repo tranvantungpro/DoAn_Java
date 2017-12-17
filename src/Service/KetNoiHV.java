@@ -80,7 +80,7 @@ public class KetNoiHV extends KetNoiSQL
 	public int  ThemMoiHocVien(HocVien lh)
 	{
 		try
-		{
+		{ 
 			String sql= "insert into HocVien VALUES (?,?,?,?,?,?,?,?)";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, lh.getMaHV());
@@ -89,9 +89,8 @@ public class KetNoiHV extends KetNoiSQL
 			preStatement.setString(4, lh.getDiaChi());
 			preStatement.setString(5, lh.getSDT());
 			preStatement.setString(6, lh.getEmail());  
-			preStatement.setString(7, "");  
-			preStatement.setString(8, lh.getTrangThai());  
-			
+			preStatement.setString(7, lh.getMaLH());  
+			preStatement.setString(8, lh.getTrangThai());   
 			return preStatement.executeUpdate();
 			
 		}
@@ -234,6 +233,8 @@ public class KetNoiHV extends KetNoiSQL
 	
 	public int ChuyenLop(String hv, String lh)
 	{
+		JOptionPane.showMessageDialog(null, hv);
+		JOptionPane.showMessageDialog(null, lh);
 		try
 		{
 			String sql= "update HocVien set MaLH=? where TenHV=? ";
@@ -269,6 +270,28 @@ public class KetNoiHV extends KetNoiSQL
 			  
 		}
 		return null;
+	}
+
+	public HocVien KiemTraTTHV(String tenhv) {
+		try 
+		{
+			String sql = "Select * from HocVien where TenHV=?";
+			preStatement = conn.prepareStatement(sql);
+			preStatement.setString(1, tenhv);
+			result=preStatement.executeQuery();
+			while(result.next())
+			{
+				HocVien gt = new HocVien();
+				gt.setMaHV(result.getString(1));
+				gt.setTrangThai(result.getString(8));
+				return gt;
+			}
+		}
+		catch (Exception e) 
+		{
+			  
+		}
+		return null; 
 	}
 
 	 
