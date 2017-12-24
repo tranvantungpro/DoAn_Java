@@ -8,6 +8,8 @@ package DAL;
 import DTO.HocVienDTO;
 import DTO.LopHocDTO;
 import DTO.NhanVienDTO;
+import Service.KetNoiSQL;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author Tran Lam Khanh Tuong
  */
-public class NhanVienDAL {
+public class NhanVienDAL  {
     
     DataAccess da = new DataAccess();
     

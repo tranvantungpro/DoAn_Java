@@ -6,6 +6,8 @@
 package DAL;
 
 import DTO.PhieuChiDTO;
+import Service.KetNoiSQL;
+
 import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -19,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Tran Lam Khanh Tuong
  */
-public class PhieuChiDAL {
+public class PhieuChiDAL   {
 
     DataAccess da = new DataAccess();
 
@@ -35,7 +37,7 @@ public class PhieuChiDAL {
                 Logger.getLogger(HocVienDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
             PreparedStatement preStatement = null;
-            preStatement = da.con.prepareStatement("select * from PhieuChi, NhanSu where PhieuChi.MaNhanVien=NhanSu.MaNS and Ngay >? and Ngay<? and MaNhanVien=?");
+            preStatement = da.conn.prepareStatement("select * from PhieuChi, NhanSu where PhieuChi.MaNhanVien=NhanSu.MaNS and Ngay >? and Ngay<? and MaNhanVien=?");
 
             preStatement.setString(1, ngaybatdau);
             preStatement.setString(2, ngayketthuc);
@@ -73,9 +75,9 @@ public class PhieuChiDAL {
                 Logger.getLogger(PhieuChiDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            da.con.setAutoCommit(false);
+            da.conn.setAutoCommit(false);
 
-            CallableStatement command = da.con.prepareCall("{call insertphieuchi(?,?,?)}");
+            CallableStatement command = da.conn.prepareCall("{call insertphieuchi(?,?,?)}");
 
             command.setString(1, maphieuchi);
             command.setString(2, manv);
@@ -83,10 +85,10 @@ public class PhieuChiDAL {
 
             command.execute();
             i = 0;
-            da.con.commit();
+            da.conn.commit();
         } catch (SQLException ex) {
             try {
-                da.con.rollback();
+                da.conn.rollback();
             } catch (SQLException ex1) {
                 ex1.printStackTrace();
             }

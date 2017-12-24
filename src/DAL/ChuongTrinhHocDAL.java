@@ -7,6 +7,8 @@ package DAL;
 
 import DTO.ChuongTrinhHocDTO;
 import DTO.HocVienDTO;
+import Service.KetNoiSQL;
+
 import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -22,7 +24,7 @@ import javax.swing.JOptionPane;
  *
  * @author Tran Lam Khanh Tuong
  */
-public class ChuongTrinhHocDAL {
+public class ChuongTrinhHocDAL  {
 
 
     ArrayList<ChuongTrinhHocDTO> list = new ArrayList<ChuongTrinhHocDTO>();
@@ -74,7 +76,7 @@ public class ChuongTrinhHocDAL {
                  Logger.getLogger(HocVienDAL.class.getName()).log(Level.SEVERE, null, ex);
              }
             PreparedStatement preStatement=null;
-            preStatement=da.con.prepareStatement("select * from ChuongTrinhHoc where TenCTH like ?");
+            preStatement=da.conn.prepareStatement("select * from ChuongTrinhHoc where TenCTH like ?");
             preStatement.setString(1,ten);
             dl=preStatement.executeQuery(); 
             ChuongTrinhHocDTO cth ;
@@ -108,19 +110,19 @@ public class ChuongTrinhHocDAL {
                 Logger.getLogger(ChuongTrinhHocDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            da.con.setAutoCommit(false);
+            da.conn.setAutoCommit(false);
 
-            CallableStatement command = da.con.prepareCall("{call inserchuongtrinhhoc(?,?)}");
+            CallableStatement command = da.conn.prepareCall("{call inserchuongtrinhhoc(?,?)}");
        
             command.setString(1,tenchuongtrinhhoc);
             command.setLong(2,tien);
             command.execute();
             i=0;
-            da.con.commit();
+            da.conn.commit();
         } catch (SQLException ex) {
             try
             {
-                da.con.rollback();
+                da.conn.rollback();
             }
             catch(SQLException ex1)
             {
@@ -149,17 +151,17 @@ public class ChuongTrinhHocDAL {
                 Logger.getLogger(ChuongTrinhHocDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            da.con.setAutoCommit(false);
+            da.conn.setAutoCommit(false);
 
-            CallableStatement command = da.con.prepareCall("{call deletechuongtrinhhoc(?)}");
+            CallableStatement command = da.conn.prepareCall("{call deletechuongtrinhhoc(?)}");
             command.setString(1, ma);
             command.execute();
             i=0;
-            da.con.commit();
+            da.conn.commit();
         } catch (SQLException ex) {
             try
             {
-                da.con.rollback();
+                da.conn.rollback();
             }
             catch(SQLException ex1)
             {
@@ -188,20 +190,20 @@ public class ChuongTrinhHocDAL {
                 Logger.getLogger(ChuongTrinhHocDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            da.con.setAutoCommit(false);
+            da.conn.setAutoCommit(false);
 
-            CallableStatement command = da.con.prepareCall("{call updatechuongtrinhhoc(?,?,?)}");
+            CallableStatement command = da.conn.prepareCall("{call updatechuongtrinhhoc(?,?,?)}");
        
             command.setString(1,machuongtrinhhoc);
             command.setString(2,tenchuongtrinhhoc);
             command.setLong(3,hocphi);
             command.execute();
             i=0;
-            da.con.commit();
+            da.conn.commit();
         } catch (SQLException ex) {
             try
             {
-                da.con.rollback();
+                da.conn.rollback();
             }
             catch(SQLException ex1)
             {

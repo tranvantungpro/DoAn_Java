@@ -6,6 +6,8 @@
 package DAL;
 
 import DTO.HocVienDTO;
+import Service.KetNoiSQL;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -78,7 +80,7 @@ public class HocVienDAL {
                  Logger.getLogger(HocVienDAL.class.getName()).log(Level.SEVERE, null, ex);
              }
             PreparedStatement preStatement=null;
-            preStatement=da.con.prepareStatement("select * from HocVien where TenHV like ?");
+            preStatement=da.conn.prepareStatement("select * from HocVien where TenHV like ?");
             preStatement.setString(1,ten);
             dl=preStatement.executeQuery(); 
             HocVienDTO hv ;

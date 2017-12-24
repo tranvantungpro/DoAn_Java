@@ -7,6 +7,8 @@ package DAL;
 
 import DTO.HocVienDTO;
 import DTO.LopHocDTO;
+import Service.KetNoiSQL;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Tran Lam Khanh Tuong
  */
-public class LopHocDAL {
+public class LopHocDAL  {
 
     DataAccess da= new DataAccess();
     
@@ -36,7 +38,7 @@ public class LopHocDAL {
              }
             //dl = da.Find("select * from HocVien",ten);
             PreparedStatement preStatement=null;
-            preStatement=da.con.prepareStatement("select * from LopHoc where MaCTH=?");
+            preStatement=da.conn.prepareStatement("select * from LopHoc where MaCTH=?");
             preStatement.setString(1,ten);
             dl=preStatement.executeQuery();  
             LopHocDTO lh ;

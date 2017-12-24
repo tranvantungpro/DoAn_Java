@@ -7,6 +7,8 @@ package DAL;
 
 import DTO.CTPCDTO;
 import DTO.PhieuChiDTO;
+import Service.KetNoiSQL;
+
 import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -20,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author Tran Lam Khanh Tuong
  */
-public class CTPCDAL {
+public class CTPCDAL  {
     
     DataAccess da = new DataAccess();
     
@@ -36,20 +38,20 @@ public class CTPCDAL {
                 Logger.getLogger(PhieuChiDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            da.con.setAutoCommit(false);
+            da.conn.setAutoCommit(false);
 
-            CallableStatement command = da.con.prepareCall("{call insertctpc(?,?,?)}");
+            CallableStatement command = da.conn.prepareCall("{call insertctpc(?,?,?)}");
        
             command.setString(1,maphieuchi);
             command.setString(2,noidung);
             command.setLong(3,tien);
             command.execute();
             i=0;
-            da.con.commit();
+            da.conn.commit();
         } catch (SQLException ex) {
             try
             {
-                da.con.rollback();
+                da.conn.rollback();
             }
             catch(SQLException ex1)
             {
@@ -77,7 +79,7 @@ public class CTPCDAL {
                 Logger.getLogger(HocVienDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
             PreparedStatement preStatement = null;
-            preStatement = da.con.prepareStatement("select * from CTPC where MaPhieuChi=?");
+            preStatement = da.conn.prepareStatement("select * from CTPC where MaPhieuChi=?");
 
             preStatement.setString(1,maphieuchi);
 
@@ -151,7 +153,7 @@ public class CTPCDAL {
             }
             PreparedStatement preStatement=null;
             //dl = da.GetData("select SoTienTra from PhieuThu where Ngay >=? and Ngay<=?");
-            preStatement=da.con.prepareStatement("select Tien from CTPC,PhieuChi where PhieuChi.MaPhieuChi=CTPC.MaPhieuChi and Ngay >=? and Ngay<=?");
+            preStatement=da.conn.prepareStatement("select Tien from CTPC,PhieuChi where PhieuChi.MaPhieuChi=CTPC.MaPhieuChi and Ngay >=? and Ngay<=?");
             preStatement.setString(1,ngaybatdau);
             preStatement.setString(2,ngayketthuc);
             dl=preStatement.executeQuery(); 

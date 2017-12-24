@@ -8,6 +8,8 @@ package DAL;
 import DTO.GiangVienDTO;
 import DTO.HocVienDTO;
 import DTO.LopHocDTO;
+import Service.KetNoiSQL;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Tran Lam Khanh Tuong
  */
-public class GiangVienDAL {
+public class GiangVienDAL  {
 
     DataAccess da = new DataAccess();
 
@@ -35,7 +37,7 @@ public class GiangVienDAL {
                 Logger.getLogger(HocVienDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
             PreparedStatement preStatement = null;
-            preStatement = da.con.prepareStatement("select * from GiangVien where MaGV=?");
+            preStatement = da.conn.prepareStatement("select * from GiangVien where MaGV=?");
             preStatement.setString(1, magv);
             dl = preStatement.executeQuery();
             GiangVienDTO gv;
@@ -78,7 +80,7 @@ public class GiangVienDAL {
                 Logger.getLogger(HocVienDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
             PreparedStatement preStatement = null;
-            preStatement = da.con.prepareStatement("select * from GiangVien where MaGV=?");
+            preStatement = da.conn.prepareStatement("select * from GiangVien where MaGV=?");
             preStatement.setString(1, magv);
             dl = preStatement.executeQuery();
             GiangVienDTO gv = null;

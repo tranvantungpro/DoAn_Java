@@ -9,6 +9,8 @@ import DTO.ChuongTrinhHocDTO;
 import DTO.HocVienDTO;
 import DTO.HocVien_NoDTO;
 import DTO.PhieuThuDTO;
+import Service.KetNoiSQL;
+
 import java.sql.CallableStatement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -22,7 +24,7 @@ import java.util.logging.Logger;
  *
  * @author Tran Lam Khanh Tuong
  */
-public class PhieuThuDAL {
+public class PhieuThuDAL  {
     
     DataAccess da = new DataAccess();
     
@@ -38,9 +40,9 @@ public class PhieuThuDAL {
                 Logger.getLogger(PhieuThuDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            da.con.setAutoCommit(false);
+            da.conn.setAutoCommit(false);
 
-            CallableStatement command = da.con.prepareCall("{call insertphieuthu(?,?,?,?,?,?)}");
+            CallableStatement command = da.conn.prepareCall("{call insertphieuthu(?,?,?,?,?,?)}");
        
             command.setString(1,mahocvien);
             command.setString(2,malop);
@@ -50,11 +52,11 @@ public class PhieuThuDAL {
             command.setDate(6, ngay);
             command.execute();
             i=0;
-            da.con.commit();
+            da.conn.commit();
         } catch (SQLException ex) {
             try
             {
-                da.con.rollback();
+                da.conn.rollback();
             }
             catch(SQLException ex1)
             {
@@ -119,7 +121,7 @@ public class PhieuThuDAL {
             }
             PreparedStatement preStatement=null;
             //dl = da.GetData("select SoTienTra from PhieuThu where Ngay >=? and Ngay<=?");
-            preStatement=da.con.prepareStatement("select SoTienTra from PhieuThu where Ngay >=? and Ngay<=?");
+            preStatement=da.conn.prepareStatement("select SoTienTra from PhieuThu where Ngay >=? and Ngay<=?");
             preStatement.setString(1,ngaybatdau);
             preStatement.setString(2,ngayketthuc);
             dl=preStatement.executeQuery(); 
@@ -192,7 +194,7 @@ public class PhieuThuDAL {
             }
             PreparedStatement preStatement=null;
             //dl = da.GetData("select SoTienTra from PhieuThu where Ngay >=? and Ngay<=?");
-            preStatement=da.con.prepareStatement("select SoTienNo from PhieuThu where Ngay >=? and Ngay<=?");
+            preStatement=da.conn.prepareStatement("select SoTienNo from PhieuThu where Ngay >=? and Ngay<=?");
             preStatement.setString(1,ngaybatdau);
             preStatement.setString(2,ngayketthuc);
             dl=preStatement.executeQuery(); 
@@ -272,7 +274,7 @@ public class PhieuThuDAL {
             
             PreparedStatement preStatement=null;
             //dl = da.GetData("select SoTienTra from PhieuThu where Ngay >=? and Ngay<=?");
-            preStatement=da.con.prepareStatement(sql);
+            preStatement=da.conn.prepareStatement(sql);
             //preStatement.setString(1,ngaybatdau);
             //preStatement.setString(2,ngayketthuc);
             dl=preStatement.executeQuery(); 

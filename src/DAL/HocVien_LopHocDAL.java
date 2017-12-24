@@ -13,11 +13,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+import Service.KetNoiSQL;
+
 /**
  *
  * @author Tran Lam Khanh Tuong
  */
-public class HocVien_LopHocDAL {
+public class HocVien_LopHocDAL  {
     
     DataAccess da = new DataAccess();
     
@@ -31,19 +33,19 @@ public class HocVien_LopHocDAL {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(HocVien_LopHocDAL.class.getName()).log(Level.SEVERE, null, ex);
             }
-            da.con.setAutoCommit(false);
+            da.conn.setAutoCommit(false);
             String insert = "insert into HocVien_LopHoc (MaHV,MaLH,Ngay) values(?, ?, ?)";
-            ps = da.con.prepareStatement(insert);
+            ps = da.conn.prepareStatement(insert);
             ps.setString(1,mahocvien);
             ps.setString(2, malophoc);
             ps.setDate(3, ngaydangky);
             //ps.setString(4,manv);
             ret = ps.executeUpdate();
-            da.con.commit();
+            da.conn.commit();
         } catch (SQLException ex) {
             try
             {
-                da.con.rollback();
+                da.conn.rollback();
             }
             catch(SQLException ex1)
             {

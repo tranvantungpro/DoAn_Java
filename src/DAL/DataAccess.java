@@ -12,19 +12,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import Service.KetNoiSQL;
+
 /**
  *
  * @author Tran Lam Khanh Tuong
  */
 public class DataAccess {
     
-    public Connection con=null;
+    public Connection conn=null;
     
     public void open() throws ClassNotFoundException, SQLException
     {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        String url="jdbc:sqlserver://DESKTOP-J937MOJ:1433;instance=MSSQLSERVER;databaseName=QuanLyTrungTamTH;user=sa;password=sa";
-        con=DriverManager.getConnection(url);
+       // String url="jdbc:sqlserver://TRANTUNG\\TRANTUNG:1433;instance=MSSQLSERVER;databaseName=QuanLyTrungTamTH;user=sa;password=sa";
+        String url="jdbc:sqlserver://TRANTUNG\\TRANTUNG:1433;instance=MSSQLSERVER;databaseName=QuanLyTrungTamTH;integratedSecurity=true;";
+        conn=DriverManager.getConnection(url);
         System.out.print("Chay vao open");
         
      
@@ -34,7 +37,7 @@ public class DataAccess {
     {
         ResultSet kq=null;
         
-        Statement statement = this.con.createStatement();
+        Statement statement = this.conn.createStatement();
         
         kq=statement.executeQuery(sql);
         
@@ -47,7 +50,7 @@ public class DataAccess {
         
         ResultSet result=null;
         
-        preStatement=this.con.prepareStatement(sql);
+        preStatement=this.conn.prepareStatement(sql);
         
         preStatement.setString(1,dk);
         
@@ -58,9 +61,9 @@ public class DataAccess {
     
     public void Close() throws SQLException
     {
-        if(this.con!=null)
+        if(this.conn!=null)
         {
-            this.con.close();
+            this.conn.close();
         }
     }
     
