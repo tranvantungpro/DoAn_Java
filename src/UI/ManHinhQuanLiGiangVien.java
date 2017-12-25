@@ -2,10 +2,12 @@ package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +23,8 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -36,8 +40,9 @@ import javax.swing.table.DefaultTableModel;
 
 import Moudle.GiangVien;
 import Moudle.NhanSu;
-
+import Moudle.TrangThaiNhanVien;
 import Service.KetNoiGV;
+import Service.KetNoiTrangThaiNhanVien;
 
 public class ManHinhQuanLiGiangVien extends JFrame{
 	public ManHinhQuanLiGiangVien (String title)
@@ -47,8 +52,9 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		addEvents();
 		showWindow();
 		HienThiToanBoNS();
+		hienThicboTT();
 	}
-	JTextField txtMa, txtTen, txtsdt, txtdiachi,txtHS,txtLuongCB,txtNgayBt,txtNgayKT ,txtTim;  
+	JTextField txtMa, txtTen, txtsdt, txtdiachi,txtHS,txtLuongCB,txtNgayBt,txtNgayKT ,txtTim,txtSoLop;  
 	JButton btnThem,btnXem, btnXoa, btnSua, btnTimKiem, btnTaoMoi,btnChamCong, btnTinhLuong, btnQuayLai;
 	DefaultTableModel dtmNhanSu;
 	JTable  tblNhanSu;
@@ -56,6 +62,7 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 	ArrayList<GiangVien> dsGV = null;
 	ArrayList<GiangVien> dsThem = null;
 	ArrayList<GiangVien> dsGVTim = null;
+	JComboBox<TrangThaiNhanVien>cboTT;
 	static String MaGV = "";
 	Calendar cal = Calendar.getInstance();
 
@@ -90,7 +97,7 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 				 }
 				 else
 				 {
-					 JOptionPane.showMessageDialog(null, "Lớp học đã tồn tại. Vui lòng nhập lại!");
+					 JOptionPane.showMessageDialog(null, "Giáo viên đã tồn tại. Vui lòng nhập lại!");
 					 btnTaoMoi.doClick();
 				 }
 				 
@@ -106,7 +113,7 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 				if(KiemTaCuPhap()==0)
 				{
 					int ret=JOptionPane.showConfirmDialog(null,
-							"Ban có chắc muốn xóa không Nhân Viên:"+txtTen.getText(),
+							"Ban có chắc muốn xóa Giáo Viên:"+txtTen.getText(),
 							"xác nhận xóa",
 							JOptionPane.OK_CANCEL_OPTION);
 					if(ret==JOptionPane.CANCEL_OPTION)
@@ -165,7 +172,8 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 				txtLuongCB.setText(Float.toString(ns.getLuongCb()));
 				txtNgayBt.setText(df.format(ns.getNgayVL()));
 				txtNgayKT.setText(df.format(ns.getNgayKT()));
-				
+				txtSoLop.setText(Integer.toString(ns.getSoLop()));
+				hienThicboTrangThaithemMa(ns.getMaTT());
 			}
 		});
 
@@ -201,8 +209,9 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 				txtLuongCB.setText("");
 				txtNgayBt.setText(LayNgayHienHanh());
 				txtNgayKT.setText(""); 
+				txtSoLop.setText("0");
 				HienThiToanBoNS();
-				
+				cboTT.setSelectedItem("Mới");
 			}
 		});
 
@@ -214,7 +223,7 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 				ui.setFocusable(true);
 				ui.setVisible(true);
 				ui.showWindown();
-				ManHinhQuanLiGiangVien.this.hide();
+				
 			}
 		});
 		btnChamCong.addActionListener(new ActionListener() {
@@ -236,7 +245,6 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 				ui.setFocusable(true);
 				ui.setVisible(true);
 				ui.showWindown();
-				ManHinhQuanLiGiangVien.this.hide();
 			}
 		});
 		btnQuayLai.addActionListener(new ActionListener() 
@@ -269,8 +277,14 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		con.setLayout(new BorderLayout());
 		JPanel pnMain=new JPanel();
 		pnMain.setLayout(new BoxLayout(pnMain,BoxLayout.Y_AXIS));
-		
-		
+		//Tiêu đề màn hình giáo viên
+		JPanel pnTieuDe = new JPanel();
+		JLabel lblTieude = new JLabel("QUẢN LÝ GIÁO VIÊN");
+		lblTieude.setForeground(Color.BLUE);
+		lblTieude.setFont(new Font("Times New Roman", Font.BOLD, 25));
+		lblTieude.setIcon(new ImageIcon("Hinh/QLGV.png"));
+		pnTieuDe.add(lblTieude);
+		pnMain.add(pnTieuDe);
 		
 		JPanel pnThongTinChiTiet=new JPanel();
 		//GridLayout(4, 2) là 4 dòng 2 cột
@@ -282,7 +296,7 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 	 	TitledBorder bodertitleSoThich=new TitledBorder(boderThongtinchitiet,"Thông tin chi tiết");
 	 	pnThongTinChiTiet.setBorder(bodertitleSoThich);
 	 	bodertitleSoThich.setTitleColor(Color.RED);
-
+	 
 		JPanel pnMa=new JPanel();
 		pnMa.setLayout(new FlowLayout(FlowLayout.LEFT));
 		//pnMa.setPreferredSize(new Dimension(10,20));
@@ -349,6 +363,24 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		pnNgaykt.add(txtNgayKT);
 		pnThongTinChiTiet.add(pnNgaykt);
 		
+		JPanel pnHS=new JPanel();
+		pnHS.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JLabel lblHS=new JLabel("Số lớp:");
+		txtSoLop=new JTextField(20);
+		pnHS.add(lblHS);
+		pnHS.add(txtSoLop);
+		pnThongTinChiTiet.add(pnHS);
+		
+		JPanel pnLyDo = new JPanel();
+		pnLyDo.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JLabel lblLyDo = new JLabel("Trang Thai: ");
+		//lblLyDo.setFont(new Font("Arial", Font.PLAIN, 15));
+		cboTT=new JComboBox<TrangThaiNhanVien>();
+		cboTT.setPreferredSize(new Dimension(270, 20));
+		pnLyDo.add(lblLyDo);
+		pnLyDo.add(cboTT);
+		pnThongTinChiTiet.add(pnLyDo);
+		
 		JPanel pnButtonChiTiet=new JPanel();
 		pnButtonChiTiet.setLayout(new FlowLayout(FlowLayout.CENTER));
 		btnTaoMoi=new JButton("Tạo Mới");
@@ -359,6 +391,15 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		btnChamCong = new JButton("Chấm công");
 		btnTinhLuong = new JButton("Tính Lương");
 		btnXem=new JButton("Xem lich giảng dạy");
+		
+		btnThem.setIcon(new ImageIcon("Hinh/save.png"));
+		btnXoa.setIcon(new ImageIcon("Hinh/delete.png"));
+		btnTaoMoi.setIcon(new ImageIcon("Hinh/plus.png"));
+		btnSua.setIcon(new ImageIcon("Hinh/update.png"));
+		btnQuayLai.setIcon(new ImageIcon("Hinh/QL.png"));
+		btnXem.setIcon(new ImageIcon("Hinh/Xem.png"));
+		btnTinhLuong.setIcon(new ImageIcon("Hinh/Luong.png"));
+		btnChamCong.setIcon(new ImageIcon("Hinh/CC1.png"));
 		
 		JPanel pnChucNang=new JPanel();
 		pnChucNang.setLayout(new FlowLayout());
@@ -386,6 +427,7 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		JLabel lblTim=new JLabel("Nhập dữ liệu:");
 		txtTim=new JTextField(20);
 		btnTimKiem=new JButton("Tìm");
+		btnTimKiem.setIcon(new ImageIcon("Hinh/TK.png"));
 		pnTim.add(lblTim);
 		pnTim.add(txtTim);
 		pnTim.add(btnTimKiem);
@@ -401,7 +443,7 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		lblLuongcb.setPreferredSize(lblLuongcb.getPreferredSize());
 		lblNgbd.setPreferredSize(lblLuongcb.getPreferredSize());
 		lblNgKt.setPreferredSize(lblLuongcb.getPreferredSize());
-		
+		lblLyDo.setPreferredSize(lblLuongcb.getPreferredSize());
 		
 		
 		//pnTop
@@ -414,7 +456,8 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		dtmNhanSu.addColumn("Lương căn bản");
 		dtmNhanSu.addColumn("Ngày Bắt Đầu");
 		dtmNhanSu.addColumn("Ngày Kết Thúc");
-		
+		dtmNhanSu.addColumn("Số Lớp");
+		dtmNhanSu.addColumn("Trang Thai");
 		
 		tblNhanSu = new JTable(dtmNhanSu);
 		JScrollPane sptable = new JScrollPane(tblNhanSu, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -431,7 +474,39 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		this.setVisible(true);
 	}
 
-	
+	public void hienThicboTrangThaithemMa(String magv) 
+	{
+		KetNoiTrangThaiNhanVien kngv=new KetNoiTrangThaiNhanVien();
+		Vector<TrangThaiNhanVien>vec1=kngv.hienThiTTLenCbo(magv);
+		cboTT.removeAllItems();
+
+		KetNoiTrangThaiNhanVien knllh1=new KetNoiTrangThaiNhanVien();
+		Vector<TrangThaiNhanVien>vec=knllh1.docToanBoTrangThai();
+		TrangThaiNhanVien a = new TrangThaiNhanVien();
+		a = (TrangThaiNhanVien) vec1.toArray()[0];
+		for(TrangThaiNhanVien dm : vec)
+		{
+			cboTT.addItem(dm);
+			if(dm.getLoaiTT().equals(a.getLoaiTT()))
+				cboTT.setSelectedItem(dm);
+		}
+	}
+	public void hienThicboTT() {
+		KetNoiTrangThaiNhanVien dmService=new KetNoiTrangThaiNhanVien();
+		Vector<TrangThaiNhanVien>vec=dmService.docToanBoTrangThai();
+		cboTT.removeAllItems();
+		for(TrangThaiNhanVien dm : vec)
+		{
+			cboTT.addItem(dm);
+		}
+	}
+	public String LayMaLoaiTT(String lydo) {
+		KetNoiTrangThaiNhanVien tgg = new KetNoiTrangThaiNhanVien();
+		TrangThaiNhanVien a = new TrangThaiNhanVien();
+		a = tgg.LayMaTT(lydo);
+		return a.getMaTT();
+	}
+
 	protected void CapNhatNS() 
 	{
 		GiangVien gv = new GiangVien();
@@ -441,6 +516,8 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		gv.setDiaChi(txtdiachi.getText());
 		gv.setHsl(Float.parseFloat(txtHS.getText()));
 		gv.setLuongCb(Float.parseFloat(txtLuongCB.getText()));
+		gv.setSoLop(Integer.parseInt(txtSoLop.getText()));
+		gv.setMaTT(LayMaLoaiTT(cboTT.getSelectedItem().toString()));
 		//ngaybd
 		Date sqlDate = null;
 		try {
@@ -498,6 +575,8 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		gv.setDiaChi(txtdiachi.getText());
 		gv.setHsl(Float.parseFloat(txtHS.getText()));
 		gv.setLuongCb(Float.parseFloat(txtLuongCB.getText()));
+		gv.setSoLop(Integer.parseInt(txtSoLop.getText()));
+		gv.setMaTT(LayMaLoaiTT(cboTT.getSelectedItem().toString()));
 		//ngaybd
 	
 		///
@@ -538,6 +617,8 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 		dtmNhanSu.setRowCount(0);
 		for(GiangVien a : dsGV)
 		{
+			KetNoiTrangThaiNhanVien kntt = new KetNoiTrangThaiNhanVien(); 
+			String d  = kntt.LayTenTrangThai(a.getMaTT());
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(a.getMaGV());
 			vec.add(a.getTenGV());
@@ -547,7 +628,8 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 			vec.add(a.getLuongCb());
 			vec.add(a.getNgayVL());
 			vec.add(a.getNgayKT());
-			
+			vec.add(a.getSoLop());
+			vec.add(d);
 			dtmNhanSu.addRow(vec);
 		}
 	} 
@@ -567,6 +649,8 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 			dtmNhanSu.setRowCount(0);
 			for(GiangVien a : dsGVTim)
 			{
+				KetNoiTrangThaiNhanVien kntt = new KetNoiTrangThaiNhanVien(); 
+				String d  = kntt.LayTenTrangThai(a.getMaTT());
 				Vector<Object> vec = new Vector<Object>();
 				vec.add(a.getMaGV());
 				vec.add(a.getTenGV());
@@ -576,6 +660,8 @@ public class ManHinhQuanLiGiangVien extends JFrame{
 				vec.add(a.getLuongCb());
 				vec.add(a.getNgayVL());
 				vec.add(a.getNgayKT());
+				vec.add(a.getSoLop());
+				vec.add(d);
 				dtmNhanSu.addRow(vec);
 			}
 		}

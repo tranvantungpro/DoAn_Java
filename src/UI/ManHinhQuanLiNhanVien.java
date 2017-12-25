@@ -21,6 +21,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -39,11 +40,16 @@ import Moudle.CTH;
 import Moudle.GiangVien;
 
 import Moudle.NhanSu;
-
+import Moudle.TrangThai;
+import Moudle.TrangThaiBangChamCong;
+import Moudle.TrangThaiNhanVien;
 import Service.KetNoiCTH;
 import Service.KetNoiGV;
 
 import Service.KetNoiNV;
+import Service.KetNoiTT;
+import Service.KetNoiTTBangChamCong;
+import Service.KetNoiTrangThaiNhanVien;
 
 
 public class ManHinhQuanLiNhanVien extends JFrame{
@@ -54,10 +60,10 @@ public ManHinhQuanLiNhanVien (String title)
 	addEvents();
 	showWindow();
 	HienThiToanBoNS();
-	
+	hienThicboTT();
 	
 }
-JTextField txtMa, txtTen, txtsdt, txtdiachi, txtPB,txtNgayBt,txtNgayKT ,txtTim;  
+JTextField txtMa, txtTen, txtsdt, txtdiachi, txtPB,txtNgayBt,txtNgayKT ,txtTim,txtTrangThai;  
 JButton btnThem, btnXoa, btnSua, btnTimKiem, btnTaoMoi, btnTinhLuong, btnQuayLai;
 DefaultTableModel dtmNhanSu;
 JTable  tblNhanSu;
@@ -65,6 +71,7 @@ DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 ArrayList<NhanSu> dsNs = null;
 ArrayList<NhanSu> dsThem = null;
 ArrayList<NhanSu> dsnsTim = null;
+JComboBox<TrangThaiNhanVien>cboTT;
 static String MaNS = "";
 
 Calendar cal = Calendar.getInstance();
@@ -170,11 +177,10 @@ private void addEvents()
 			txtMa.setText(ns.getMaNV());
 			txtTen.setText(ns.getTenNV());
 			txtsdt.setText(ns.getSdt());
-			txtdiachi.setText(ns.getDiaChi());
-			
+			txtdiachi.setText(ns.getDiaChi());			
 			txtNgayBt.setText(df.format(ns.getNgayVL()));
 			txtNgayKT.setText(df.format(ns.getNgayKT()));
-			
+			hienThicboTrangThaithemMa(ns.getMaTT());
 		}
 	});
 
@@ -209,7 +215,7 @@ private void addEvents()
 			txtNgayBt.setText(LayNgayHienHanh());
 			txtNgayKT.setText(""); 
 			HienThiToanBoNS();
-		
+			cboTT.setSelectedItem("Mới");
 			
 
 			
@@ -244,13 +250,6 @@ public void QuayLai()
 }
 
 
-
-
-protected void NhapTT() {
-
-
-}
-
 private void addContronls() 
 {
 
@@ -259,7 +258,13 @@ private void addContronls()
 	JPanel pnMain=new JPanel();
 	pnMain.setLayout(new BoxLayout(pnMain,BoxLayout.Y_AXIS));
 	
-	
+	JPanel pnTieuDe = new JPanel();
+	JLabel lblTieude = new JLabel("QUẢN LÝ NHÂN VIÊN");
+	lblTieude.setForeground(Color.BLUE);
+	lblTieude.setFont(new Font("Times New Roman", Font.BOLD, 25));
+	lblTieude.setIcon(new ImageIcon("Hinh/QLNV.png"));
+	pnTieuDe.add(lblTieude);
+	pnMain.add(pnTieuDe);
 	
 	JPanel pnThongTinChiTiet=new JPanel();
 	//GridLayout(4, 2) là 4 dòng 2 cột
@@ -324,7 +329,15 @@ private void addContronls()
 	pnNgaykt.add(txtNgayKT);
 	pnThongTinChiTiet.add(pnNgaykt);
 	
-	
+	JPanel pnLyDo = new JPanel();
+	pnLyDo.setLayout(new FlowLayout(FlowLayout.LEFT));
+	JLabel lblLyDo = new JLabel("Trang Thai: ");
+	//lblLyDo.setFont(new Font("Arial", Font.PLAIN, 15));
+	cboTT=new JComboBox<TrangThaiNhanVien>();
+	cboTT.setPreferredSize(new Dimension(270, 20));
+	pnLyDo.add(lblLyDo);
+	pnLyDo.add(cboTT);
+	pnThongTinChiTiet.add(pnLyDo);
 	
 	JPanel pnButtonChiTiet=new JPanel();
 	pnButtonChiTiet.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -349,6 +362,14 @@ private void addContronls()
 	JLabel lblTim=new JLabel("Nhập dữ liệu:");
 	txtTim=new JTextField(20);
 	btnTimKiem=new JButton("Tìm");
+	
+	btnThem.setIcon(new ImageIcon("Hinh/save.png"));
+	btnXoa.setIcon(new ImageIcon("Hinh/delete.png"));
+	btnTaoMoi.setIcon(new ImageIcon("Hinh/plus.png"));
+	btnSua.setIcon(new ImageIcon("Hinh/update.png"));
+	btnQuayLai.setIcon(new ImageIcon("Hinh/QL.png"));
+	btnTinhLuong.setIcon(new ImageIcon("Hinh/Luong.png"));
+	btnTimKiem.setIcon(new ImageIcon("Hinh/TK.png"));
 	pnTim.add(lblTim);
 	pnTim.add(txtTim);
 	pnTim.add(btnTimKiem);
@@ -367,7 +388,7 @@ private void addContronls()
 	lblDiaChi.setPreferredSize(lblVL.getPreferredSize());
 	lblSdt.setPreferredSize(lblVL.getPreferredSize());
 	lblNgKt.setPreferredSize(lblVL.getPreferredSize());
-	
+	lblLyDo.setPreferredSize(lblVL.getPreferredSize());
 	
 	JPanel pnNorth=new JPanel();
 	pnNorth.setLayout(new BorderLayout());
@@ -381,7 +402,7 @@ private void addContronls()
 	dtmNhanSu.addColumn("Địa chỉ");
 	dtmNhanSu.addColumn("Ngày Bắt Đầu");
 	dtmNhanSu.addColumn("Ngày Kết Thúc");
-	
+	dtmNhanSu.addColumn("Trang Thai");
 	
 	tblNhanSu = new JTable(dtmNhanSu);
 	JScrollPane sptable = new JScrollPane(tblNhanSu, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -398,11 +419,65 @@ public void showWindow()
 	this.setVisible(true);
 }
 
+//protected void hienThiCboTrangThaiTheoMa(String trangThai) {
+//	
+//	if(trangThai.equals(""))
+//	{
+//		JOptionPane.showMessageDialog(null, "null");
+//		cboTT.setSelectedItem(null);
+//	}
+//	else
+//	{
+//		KetNoiTrangThaiNhanVien kncth=new KetNoiTrangThaiNhanVien();
+//
+//		TrangThaiNhanVien a = new TrangThaiNhanVien();
+//		a = kncth.HienThiTTTheoTen(trangThai);
+//		cboTT.removeAllItems();
+//
+//		KetNoiTrangThaiNhanVien dmService=new KetNoiTrangThaiNhanVien();
+//		Vector<TrangThaiNhanVien>vec=dmService.docToanBoTrangThai();
+//		for(TrangThaiNhanVien dm : vec)
+//		{
+//			cboTT.addItem(dm);
+//			if(dm.getLoaiTT().equals(a.getLoaiTT()))
+//			{
+//				cboTT.setSelectedItem(dm);
+//			}
+//		}
+//	} 
+//}
+public void hienThicboTrangThaithemMa(String magv) 
+{
+	KetNoiTrangThaiNhanVien kngv=new KetNoiTrangThaiNhanVien();
+	Vector<TrangThaiNhanVien>vec1=kngv.hienThiTTLenCbo(magv);
+	cboTT.removeAllItems();
 
-
-
-
-
+	KetNoiTrangThaiNhanVien knllh1=new KetNoiTrangThaiNhanVien();
+	Vector<TrangThaiNhanVien>vec=knllh1.docToanBoTrangThai();
+	TrangThaiNhanVien a = new TrangThaiNhanVien();
+	a = (TrangThaiNhanVien) vec1.toArray()[0];
+	for(TrangThaiNhanVien dm : vec)
+	{
+		cboTT.addItem(dm);
+		if(dm.getLoaiTT().equals(a.getLoaiTT()))
+			cboTT.setSelectedItem(dm);
+	}
+}
+public void hienThicboTT() {
+	KetNoiTrangThaiNhanVien dmService=new KetNoiTrangThaiNhanVien();
+	Vector<TrangThaiNhanVien>vec=dmService.docToanBoTrangThai();
+	cboTT.removeAllItems();
+	for(TrangThaiNhanVien dm : vec)
+	{
+		cboTT.addItem(dm);
+	}
+}
+public String LayMaLoaiTT(String lydo) {
+	KetNoiTrangThaiNhanVien tgg = new KetNoiTrangThaiNhanVien();
+	TrangThaiNhanVien a = new TrangThaiNhanVien();
+	a = tgg.LayMaTT(lydo);
+	return a.getMaTT();
+}
 
 
 protected void CapNhatNS() 
@@ -412,7 +487,7 @@ protected void CapNhatNS()
 	ns.setTenNV(txtTen.getText());
 	ns.setSdt(txtsdt.getText());
 	ns.setDiaChi(txtdiachi.getText());
-	//ns.setMaphongban(cboPB.getSelectedItem().toString());
+	ns.setMaTT(LayMaLoaiTT(cboTT.getSelectedItem().toString()));
 	
 	//ngaybd
 	Date sqlDate = null;
@@ -442,7 +517,7 @@ protected void CapNhatNS()
 	{
 		JOptionPane.showMessageDialog(null, "Cập nhật lớp học thất bại");
 	}
-
+   
 }
 
 protected void XoaLopHoc() 
@@ -469,7 +544,7 @@ protected void LuuMoiLH()
 	ns.setTenNV(txtTen.getText());
 	ns.setSdt(txtsdt.getText());
 	ns.setDiaChi(txtdiachi.getText());
-	
+	 ns.setMaTT(LayMaLoaiTT(cboTT.getSelectedItem().toString()));
 	//ngaybd
 	Date sqlDate = null;
 	try {
@@ -500,6 +575,7 @@ protected void LuuMoiLH()
 	{
 		JOptionPane.showMessageDialog(null, "Lưu lớp học thất bại");
 	}
+	
 
 }
 
@@ -525,16 +601,16 @@ public void HienThiToanBoNS()
 	dtmNhanSu.setRowCount(0);
 	for(NhanSu a : dsNs)
 	{
-		
+		KetNoiTrangThaiNhanVien kntt = new KetNoiTrangThaiNhanVien(); 
+		String d  = kntt.LayTenTrangThai(a.getMaTT());
 		Vector<Object> vec = new Vector<Object>();
 		vec.add(a.getMaNV());
 		vec.add(a.getTenNV());
 		vec.add(a.getSdt());
 		vec.add(a.getDiaChi());
-	
 		vec.add(a.getNgayVL());
 		vec.add(a.getNgayKT());
-		
+		vec.add(d);
 		dtmNhanSu.addRow(vec);
 	}
 } 
@@ -550,10 +626,13 @@ public void HienThiTim()
 	{
 		String a1 = txtTim.getText();
 		KetNoiNV knns = new KetNoiNV();
+		
 		dsnsTim = knns.TimNhanSu(a1);
 		dtmNhanSu.setRowCount(0);
 		for(NhanSu a : dsnsTim)
 		{
+			KetNoiTrangThaiNhanVien kntt = new KetNoiTrangThaiNhanVien(); 
+			String d  = kntt.LayTenTrangThai(a.getMaTT());
 			Vector<Object> vec = new Vector<Object>();
 			vec.add(a.getMaNV());
 			vec.add(a.getTenNV());
@@ -561,6 +640,7 @@ public void HienThiTim()
 			vec.add(a.getDiaChi());
 			vec.add(a.getNgayVL());
 			vec.add(a.getNgayKT());
+			vec.add(d);
 			dtmNhanSu.addRow(vec);
 		}
 	}

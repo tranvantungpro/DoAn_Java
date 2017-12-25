@@ -112,6 +112,7 @@ public class MHQuanLyLopHoc extends JFrame
 		JLabel lblTieude = new JLabel("QUẢN LÝ LỚP HỌC");
 		lblTieude.setForeground(Color.BLUE);
 		lblTieude.setFont(new Font("Arial", Font.BOLD, 25));
+		lblTieude.setIcon(new ImageIcon("Hinh/QLLH.png"));
 		pnTieuDe.add(lblTieude);
 		pnTopOfTop.add(pnTieuDe);
 		//pnTim
@@ -289,8 +290,9 @@ public class MHQuanLyLopHoc extends JFrame
 		btnXoa.setIcon(new ImageIcon("Hinh/delete.png"));
 		btnTaoMoi.setIcon(new ImageIcon("Hinh/plus.png"));
 		btnSua.setIcon(new ImageIcon("Hinh/update.png"));
-		btnQuayLai.setIcon(new ImageIcon("Hinh/back.png"));
+		btnQuayLai.setIcon(new ImageIcon("Hinh/QL.png"));
 		btnTimKiem.setIcon(new ImageIcon("Hinh/find.png"));
+		btnXepLich.setIcon(new ImageIcon("Hinh/Xem.png"));
 		pnButton.add(btnTaoMoi);
 		pnButton.add(btnThem);
 		pnButton.add(btnXoa);
@@ -400,7 +402,6 @@ public class MHQuanLyLopHoc extends JFrame
 				txtSiSo.setText(LH.getSiso()+""); 
 				KetNoiGV gv = new KetNoiGV(); 
 				String aa = gv.LayTenGV(LH.getMaGV());
-
 				txtGiangVien.setText(aa);
 			}
 		});

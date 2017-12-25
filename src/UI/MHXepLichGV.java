@@ -1,6 +1,7 @@
 package UI;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -12,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -46,11 +48,20 @@ public class MHXepLichGV extends JFrame
 		Container con = getContentPane();
 		con.setLayout(new BorderLayout());
 
+		JPanel pnTieuDe = new JPanel();
+		JLabel lblTieude = new JLabel("XẾP LỊCH GIẢNG VIÊN");
+		lblTieude.setForeground(Color.BLUE);
+		lblTieude.setFont(new Font("Arial", Font.BOLD, 25));
+		lblTieude.setIcon(new ImageIcon("Hinh/Calendar.png"));
+		pnTieuDe.add(lblTieude);
+		con.add(pnTieuDe,BorderLayout.NORTH);
 		//pnServer
 		JPanel pnTop= new JPanel();
 		JPanel pnBottom = new JPanel();
 		pnBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
 
+		
+		
 		JPanel pnLopHoc = new JPanel();
 		JLabel lblLop = new JLabel("Lớp học:");
 		lblLop.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -59,7 +70,7 @@ public class MHXepLichGV extends JFrame
 		pnLopHoc.add(lblLop);
 		pnLopHoc.add(cboLoHoc);
 		pnTop.add(pnLopHoc);
-		con.add(pnTop, BorderLayout.NORTH);
+		con.add(pnTop);
 
 		JPanel pnGv = new JPanel();
 		JLabel lblGv = new JLabel("Giảng Viên:");
@@ -74,6 +85,8 @@ public class MHXepLichGV extends JFrame
 		JPanel pnButton = new JPanel();
 		btnXepLop = new JButton("Xếp lớp");
 		btnQuayLai = new JButton("Quay lại");
+		btnQuayLai.setIcon(new ImageIcon("Hinh/QL.png"));
+		btnXepLop.setIcon(new ImageIcon("Hinh/XL.png"));
 		pnBottom.add(btnXepLop);
 		pnBottom.add(btnQuayLai);
 		con.add(pnBottom, BorderLayout.SOUTH);
@@ -223,7 +236,7 @@ public class MHXepLichGV extends JFrame
 
 	public void ShowWindow()
 	{
-		this.setSize(450, 150);
+		this.setSize(450, 230);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}

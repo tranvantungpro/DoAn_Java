@@ -12,7 +12,16 @@ public class GiangVien
 	private String sdt;
 	private float LuongCb,hsl;
 	private int SoLop;
+	private String MaTT;
 	
+	public String getMaTT() {
+		return MaTT;
+	}
+
+	public void setMaTT(String maTT) {
+		MaTT = maTT;
+	}
+
 	public int getSoLop() {
 		return SoLop;
 	}

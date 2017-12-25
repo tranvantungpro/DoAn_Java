@@ -1,6 +1,7 @@
 package UI;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -16,6 +17,7 @@ import java.sql.Statement;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -34,7 +36,7 @@ public class ManHinhTinhLuong extends JFrame{
 	DefaultTableModel dtnLuong;
 	JTable tblLuong;
 	JTextField txtTim;
-	JButton btnLietKe,btnThoat;
+	JButton btnLietKe,btnQuayLai;
 	Connection con=null;
 	Statement sta=null;
 	ResultSet result=null;
@@ -67,32 +69,20 @@ public class ManHinhTinhLuong extends JFrame{
 			}
 			}
 		});
+		btnQuayLai.addActionListener(new ActionListener() 
+		{	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				QuayLai();
+				ManHinhChinh ui = new ManHinhChinh("Quản Lý Trung Tâm Tin Học");
+				ui.showWindows();
+			}
+		});
 	}
-//	public void HienThiToanBoLichGD() {
-//		try
-//		{
-//			CallableStatement callStatement=con.prepareCall("{call XemLichGD}");
-//			result=callStatement.executeQuery();
-//			dtnLuong.setRowCount(0);
-//			while(result.next())
-//			{
-//				Vector<Object> vec=new Vector<Object>();
-//				vec.add(result.getString("MaGV"));
-//				vec.add(result.getString("TenGV"));
-//				vec.add(result.getString("SoNgayLam"));
-//				vec.add(result.getString("HeSoLuong"));
-//				vec.add(result.getString("LuongCB"));
-//				vec.add(result.getString(" Luong"));
-//				dtnLuong.addRow(vec);
-//			}
-//			
-//		}
-//		catch(Exception ex)
-//		{
-//			ex.printStackTrace();
-//		}
-//	}
-
+	public void QuayLai() 
+	{
+		this.dispose(); 
+	}
 	public void ketNoiCoSoDuLieu() {
 		try
 		{
@@ -125,6 +115,7 @@ public class ManHinhTinhLuong extends JFrame{
 				vec.add(result.getString("TenGV"));
 				vec.add(result.getString("SoNgayLam"));
 				vec.add(result.getString("HeSoLuong"));
+				vec.add(result.getString("HeSo"));
 				vec.add(result.getString("LuongCB"));
 				vec.add(result.getString("Luong"));
 				vec.add(result.getString("Thang"));
@@ -148,7 +139,13 @@ public class ManHinhTinhLuong extends JFrame{
 		JPanel pnMain=new JPanel();
 		pnMain.setLayout(new BoxLayout(pnMain,BoxLayout.Y_AXIS));
 		
-		
+		JPanel pnTieuDe = new JPanel();
+		JLabel lblTieude = new JLabel("TÍNH LƯƠNG");
+		lblTieude.setForeground(Color.BLUE);
+		lblTieude.setFont(new Font("Times New Roman", Font.BOLD, 25));
+		lblTieude.setIcon(new ImageIcon("Hinh/QLTL.png"));
+		pnTieuDe.add(lblTieude);
+		pnMain.add(pnTieuDe);
 		
 		JPanel pnThongTinChiTiet=new JPanel();
 		pnMain.add(pnThongTinChiTiet);
@@ -157,16 +154,20 @@ public class ManHinhTinhLuong extends JFrame{
 		
 		JPanel pnButtonChiTiet=new JPanel();
 		pnButtonChiTiet.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		btnThoat=new JButton("Thoat");
 		JPanel pnTim=new JPanel();
-		JLabel lblTim=new JLabel("Thang:");
+		JLabel lblTim=new JLabel("Tháng:");
 	
 		txtTim=new JTextField(20);
 		btnLietKe=new JButton("Liệt kê");
+		btnLietKe.setIcon(new ImageIcon("Hinh/TK.png"));
+		btnQuayLai=new JButton("Quay Lại");
+		btnQuayLai.setIcon(new ImageIcon("Hinh/QL.png"));
 		pnTim.add(lblTim);
 		pnTim.add(txtTim);
 		pnTim.add(btnLietKe);
+		pnTim.add(btnQuayLai);
 		pnMain.add(pnTim,BorderLayout.SOUTH);
+
 		pnThongTinChiTiet.add(pnButtonChiTiet);
 
 		dtnLuong=new DefaultTableModel();
@@ -174,6 +175,7 @@ public class ManHinhTinhLuong extends JFrame{
 		dtnLuong.addColumn("Tên Giáo Viên");
 		dtnLuong.addColumn("Số ngày làm");
 		dtnLuong.addColumn("Hệ số lương");
+		dtnLuong.addColumn("Hệ Số Chấm Công");
 		dtnLuong.addColumn("Lương căn bản");
 		dtnLuong.addColumn("Lương");
 		dtnLuong.addColumn("Tháng");

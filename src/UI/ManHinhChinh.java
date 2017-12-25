@@ -12,16 +12,19 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import GUI.MaHinhChuongTrinhHoc;
-import GUI.ManHinhGhiDanh;
-import GUI.ManHinhPhieuXuat;
-import GUI.ManHinhThongKeBaoCao;
-
 public class ManHinhChinh extends JFrame
 {
 	JMenuBar mnuBar;
-	JMenu mnuQLGT, mnuQLHV,mnuQLLH, mnuQLGD,mnuQLNS, mnuQLGV, mnuQLPH, mnuBaoCao,mnuPhieuXuat;
-	JMenu mnuCTH;
+	JMenu mnuQLGT;
+	JMenu mnuQLHV;
+	JMenu mnuQLLH;
+	JMenu mnuQLGD;
+	JMenu mnuQLNS;
+	JMenu mnuQLGV;
+	JMenu mnuQLPH;
+	
+	JMenu mnuBaoCao;
+
 	
 	public ManHinhChinh (String Tieude)
 	{
@@ -42,19 +45,14 @@ public class ManHinhChinh extends JFrame
 		mnuQLNS=new JMenu("Quản lí Nhân Viên");
 		mnuQLGV=new JMenu("Quản lí Giáo Viên");
 		mnuQLPH=new JMenu("Quản lí Phòng Học");
-		mnuBaoCao = new JMenu("Thống Kê Báo Cáo");
-		mnuPhieuXuat = new JMenu("Quản Lý Phiếu Xuất");
-		mnuCTH = new JMenu("Quản lý Chương Trình Học");
+		mnuBaoCao = new JMenu("Báo Cáo");
 		mnuBar.add(mnuQLGT);
 		mnuBar.add(mnuQLHV);
 		mnuBar.add(mnuQLLH);
-		mnuBar.add(mnuCTH); //tuong
-		mnuBar.add(mnuQLGD); // tường
+		mnuBar.add(mnuQLGD);
 		mnuBar.add(mnuQLNS);
 		mnuBar.add(mnuQLGV);
 		mnuBar.add(mnuQLPH);
-		mnuBar.add(mnuPhieuXuat); // tường
-		mnuBar.add(mnuBaoCao); // tường);
 	}
 
 	private void addEvents() 
@@ -93,6 +91,7 @@ public class ManHinhChinh extends JFrame
 				
 			}
 		});
+	
 		mnuQLLH.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -127,7 +126,8 @@ public class ManHinhChinh extends JFrame
 				lophoc.showWindow();
 				
 			}
-		});	
+		});
+		
 		mnuQLHV.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -261,140 +261,8 @@ public class ManHinhChinh extends JFrame
 				
 			}
 		});
-		mnuQLGD.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				ManHinhGhiDanh gd = new ManHinhGhiDanh();
-				gd.setVisible(true);
-				
-			}
-		});
-		mnuPhieuXuat.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ManHinhPhieuXuat a = new ManHinhPhieuXuat();
-				a.setVisible(true);
-				
-			}
-		});
-		mnuCTH.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				MaHinhChuongTrinhHoc a = new MaHinhChuongTrinhHoc();
-				a.setVisible(true);
-			}
-		});
-		mnuBaoCao.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ManHinhThongKeBaoCao a = new ManHinhThongKeBaoCao();
-				a.setVisible(true);
-				
-			}
-		});
-	
+		
+		
 	}
 	
 	public void Hide() 
@@ -404,7 +272,7 @@ public class ManHinhChinh extends JFrame
 	
 	public void showWindows() 
 	{
-		this.setSize(1200, 700);
+		this.setSize(800, 500);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

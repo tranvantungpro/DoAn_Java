@@ -30,8 +30,8 @@ public class TestManHinhChinh
 //		MHXepLichGV ui = new MHXepLichGV("Xếp Lịch Giảng Viên");
 //		ui.ShowWindow();
 		
-		MHQuanLyHocVien hocvien = new MHQuanLyHocVien("Quản Lý học Viên");
-		hocvien.showWindow();
+		ManHinhChinh hocvien = new ManHinhChinh("MÀN HÌNH CHÍNH");
+		hocvien.showWindows();
 //		MHChuyenLop cl = new MHChuyenLop("Chuyển Lớp");
 //		cl.ShowWindow();
 		
