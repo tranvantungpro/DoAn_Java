@@ -1,10 +1,8 @@
 package UI;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.CallableStatement;
@@ -20,7 +18,6 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -193,13 +190,7 @@ private void addcontrols() {
 	con.setLayout(new BorderLayout());
 	JPanel pnMain=new JPanel();
 	pnMain.setLayout(new BoxLayout(pnMain,BoxLayout.Y_AXIS));
-	JPanel pnTieuDe = new JPanel();
-	JLabel lblTieude = new JLabel("LỊCH GIẢNG DẠY");
-	lblTieude.setForeground(Color.BLUE);
-	lblTieude.setFont(new Font("Times New Roman", Font.BOLD, 25));
-	lblTieude.setIcon(new ImageIcon("Hinh/Calendar.png"));
-	pnTieuDe.add(lblTieude);
-	pnMain.add(pnTieuDe);
+	
 	
 	
 	JPanel pnThongTinChiTiet=new JPanel();
@@ -213,7 +204,6 @@ private void addcontrols() {
 	JLabel lblTim=new JLabel("Nhập dữ liệu:");
 	txtTim=new JTextField(20);
 	btnTimKiem=new JButton("Tìm");
-	btnTimKiem.setIcon(new ImageIcon("Hinh/TK.png"));
 	pnTim.add(lblTim);
 	pnTim.add(txtTim);
 	pnTim.add(btnTimKiem);
@@ -227,7 +217,7 @@ private void addcontrols() {
 	dtnLich.addColumn("Tên phòng Học");
 	
 	dtnLich1=new DefaultTableModel();
-	dtnLich1.addColumn("Tên giáo viên");
+	dtnLich1.addColumn("Tên Lớp Học");
 	dtnLich1.addColumn("Số Lớp giảng dạy");
 	
 	tblLich=new JTable(dtnLich);

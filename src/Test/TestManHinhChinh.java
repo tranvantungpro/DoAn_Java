@@ -19,8 +19,8 @@ public class TestManHinhChinh
 {
 	public static void main(String[] args) 
 	{
-//		ManHinhChinh manhinh = new ManHinhChinh("Phần mềm quản lý trung tâm tin học");
-//		manhinh.showWindows();
+		ManHinhChinh manhinh = new ManHinhChinh("TRUNG TÂM TIN HỌC UIT");
+		manhinh.showWindows();
 		
 //		MHQuanLyGiaoTrinh ui = new MHQuanLyGiaoTrinh("Quản Lý Giáo Trình");
 //		ui.showWindow();
@@ -30,8 +30,8 @@ public class TestManHinhChinh
 //		MHXepLichGV ui = new MHXepLichGV("Xếp Lịch Giảng Viên");
 //		ui.ShowWindow();
 		
-		ManHinhChinh hocvien = new ManHinhChinh("MÀN HÌNH CHÍNH");
-		hocvien.showWindows();
+//		MHQuanLyHocVien hocvien = new MHQuanLyHocVien("Quản Lý học Viên");
+//		hocvien.showWindow();
 //		MHChuyenLop cl = new MHChuyenLop("Chuyển Lớp");
 //		cl.ShowWindow();
 		

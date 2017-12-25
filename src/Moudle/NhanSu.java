@@ -5,16 +5,10 @@ import java.util.Date;
 public class NhanSu {
 	private String MaNV;
 	private String TenNV;
-	private String DiaChi,MaTT;
+	private String DiaChi;
 	private String sdt;
 	private Date NgayVL,NgayKT;
 	
-	public String getMaTT() {
-		return MaTT;
-	}
-	public void setMaTT(String trangThai) {
-		MaTT = trangThai;
-	}
 	public Date getNgayVL() {
 		return NgayVL;
 	}

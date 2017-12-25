@@ -1,1 +1,15 @@
+<<<<<<< HEAD
+/Service/
+/Test/
 /UI/
+/Moudle/
+/DAL/
+/IO/
+=======
+/GUI/
+/Moudle/
+/Service/
+/Test/
+/UI/
+/DAL/
+>>>>>>> 36a292d4d6131ce35344f67e9a902a6e6050a31d

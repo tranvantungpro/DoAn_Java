@@ -1,7 +1,6 @@
 package UI;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -12,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -47,19 +45,11 @@ public class MHChuyenLop extends JFrame
 		Container con = getContentPane();
 		con.setLayout(new BorderLayout());
 	
-		
 		//pnServer
 		JPanel pnTop= new JPanel();
 		JPanel pnBottom = new JPanel();
 		pnBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
-		JPanel pnTieuDe = new JPanel();
-		JLabel lblTieude = new JLabel("CHUYỂN LỚP HỌC VIÊN");
-		lblTieude.setForeground(Color.BLUE);
-		lblTieude.setFont(new Font("Arial", Font.BOLD, 25));
-		lblTieude.setIcon(new ImageIcon("Hinh/MHCL.png"));
-		pnTieuDe.add(lblTieude);
-		con.add(pnTieuDe,BorderLayout.NORTH);
 		
 		JPanel pnhv = new JPanel();
 		JLabel lblHV = new JLabel("Học viên:");
@@ -87,8 +77,6 @@ public class MHChuyenLop extends JFrame
 		JPanel pnButton = new JPanel();
 		btnChuyenLop = new JButton("Chuyển lớp");
 		btnQuayLai = new JButton("Quay lại");
-		btnChuyenLop.setIcon(new ImageIcon("Hinh/CL.png"));
-		btnQuayLai.setIcon(new ImageIcon("Hinh/QL.png"));
 		pnBottom.add(btnChuyenLop);
 		pnBottom.add(btnQuayLai);
 		con.add(pnBottom, BorderLayout.SOUTH);
@@ -230,7 +218,7 @@ public class MHChuyenLop extends JFrame
 	
 	public void ShowWindow()
 	{
-		this.setSize(450, 200);
+		this.setSize(450, 150);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}

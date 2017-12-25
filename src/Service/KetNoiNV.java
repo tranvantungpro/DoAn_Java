@@ -13,8 +13,8 @@ import Moudle.NhanSu;
 public class KetNoiNV extends KetNoiSQL {
 	PreparedStatement preStatement=null;
 	ResultSet result=null;
-	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
-	Connection conn = a.getConnect();
+//	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
+//	Connection conn = a.getConnect();
 	public Vector<NhanSu> docToanBoDanhMuc()
 	{
 		Vector<NhanSu> vec=new Vector<NhanSu>();
@@ -32,7 +32,6 @@ public class KetNoiNV extends KetNoiSQL {
 				dm.setDiaChi(result.getString(4));		
 				dm.setNgayVL(result.getDate(5));
 				dm.setNgayKT(result.getDate(6));
-				dm.setMaTT(result.getString(7));
 				vec.add(dm);
 			}			
 		}
@@ -58,8 +57,7 @@ public class KetNoiNV extends KetNoiSQL {
 				ns.setSdt(result.getString(3));
 				ns.setDiaChi(result.getString(4));
 				ns.setNgayVL(result.getDate(5));
-				ns.setNgayKT(result.getDate(6));
-				ns.setMaTT(result.getString(7));
+				ns.setNgayKT(result.getDate(6));	
 				dsGT.add(ns);
 			}
 		} 
@@ -89,7 +87,6 @@ public class KetNoiNV extends KetNoiSQL {
 				ns.setDiaChi(result.getString(4));
 				ns.setNgayVL(result.getDate(5));
 				ns.setNgayKT(result.getDate(6));
-				ns.setMaTT(result.getString(7));
 				dsNS.add(ns);
 			}
 			
@@ -104,7 +101,7 @@ public class KetNoiNV extends KetNoiSQL {
 	{
 		try
 		{
-			String sql= "insert into NhanSu VALUES (?,?,?,?,?,?,?)";
+			String sql= "insert into NhanSu VALUES (?,?,?,?,?,?)";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, ns.getMaNV());
 			preStatement.setString(2, ns.getTenNV());
@@ -112,7 +109,7 @@ public class KetNoiNV extends KetNoiSQL {
 			preStatement.setString(4, ns.getDiaChi());
 			preStatement.setDate(5,(Date)  ns.getNgayVL());
 			preStatement.setDate(6, (Date) ns.getNgayKT());
-			preStatement.setString(7, ns.getMaTT());
+			
 			return preStatement.executeUpdate();
 			
 		}
@@ -143,15 +140,14 @@ public class KetNoiNV extends KetNoiSQL {
 	{
 		try
 		{
-			String sql= "update NhanSu set TenNS=?, Sdt=?, DiaChi=?,NgayVaoLam=?,NgayKetThuc=?,MaTT=? where MaNS=?";
+			String sql= "update NhanSu set TenNS=?, Sdt=?, DiaChi=?,NgayVaoLam=?,NgayKetThuc=? where MaNS=?";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, ns.getTenNV());
 			preStatement.setString(2, ns.getSdt());
 			preStatement.setString(3, ns.getDiaChi());
 			preStatement.setDate(4,(Date)  ns.getNgayVL());
 			preStatement.setDate(5, (Date) ns.getNgayKT());	
-			preStatement.setString(6, ns.getMaTT());
-			preStatement.setString(7,ns.getMaNV()); 
+			preStatement.setString(6,ns.getMaNV()); 
 			return preStatement.executeUpdate();
 		}
 		catch(Exception e)

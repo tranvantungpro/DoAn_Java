@@ -1,6 +1,5 @@
 package Service;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -15,8 +14,6 @@ public class KetNoiTG extends KetNoiSQL
 {
 	PreparedStatement preStatement=null;
 	ResultSet result=null;
-	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
-	Connection conn = a.getConnect();
 	public Vector<ThoiGian>HienThiTGCbo()
 	{
 		Vector<ThoiGian> vec=new Vector<ThoiGian>();

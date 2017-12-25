@@ -4,23 +4,9 @@ import java.util.Date;
 
 public class BangChamCong {
 private String MaCC,MaGV;
-private String MaTTCC;
-
-private int MaTG;
+private String LyDo;
+private int Ca;
 private Date NgayCC;
-
-public String getMaTTCC() {
-	return MaTTCC;
-}
-public void setMaTTCC(String maTTCC) {
-	MaTTCC = maTTCC;
-}
-public int getMaTG() {
-	return MaTG;
-}
-public void setMaTG(int maTG) {
-	MaTG = maTG;
-}
 public String getMaCC() {
 	return MaCC;
 }
@@ -33,24 +19,38 @@ public String getMaGV() {
 public void setMaGV(String maGV) {
 	MaGV = maGV;
 }
-
+public String getLyDo() {
+	return LyDo;
+}
+public void setLyDo(String lyDo) {
+	LyDo = lyDo;
+}
+public int getCa() {
+	return Ca;
+}
+public void setCa(int ca) {
+	Ca = ca;
+}
 public Date getNgayCC() {
 	return NgayCC;
 }
 public void setNgayCC(Date ngayCC) {
 	NgayCC = ngayCC;
 }
-
-public BangChamCong(String maCC, String maGV, String maTTCC, int maTG, Date ngayCC) {
+public BangChamCong(String maCC, String maGV, String lyDo, int ca, Date ngayCC) {
 	super();
 	MaCC = maCC;
 	MaGV = maGV;
-	MaTTCC = maTTCC;
-	MaTG = maTG;
+	LyDo = lyDo;
+	Ca = ca;
 	NgayCC = ngayCC;
 }
 public BangChamCong() {
 	super();
+}
+@Override
+public String toString() {
+	return this.LyDo;
 }
 
 

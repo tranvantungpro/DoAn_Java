@@ -227,7 +227,6 @@ public class MHQuanLyGiaoTrinh extends JFrame
 		JLabel lblTieude = new JLabel("QUẢN LÝ GIÁO TRÌNH");
 		lblTieude.setForeground(Color.BLUE);
 		lblTieude.setFont(new Font("Arial", Font.BOLD, 25));
-		lblTieude.setIcon(new ImageIcon("Hinh/QLGT.png"));
 		pnTieuDe.add(lblTieude);
 		pnTopOfTop.add(pnTieuDe);
 		 

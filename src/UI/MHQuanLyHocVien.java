@@ -90,7 +90,6 @@ public class MHQuanLyHocVien extends JFrame
 		JLabel lblTieude = new JLabel("QUẢN LÝ HỌC VIÊN");
 		lblTieude.setForeground(Color.BLUE);
 		lblTieude.setFont(new Font("Arial", Font.BOLD, 25));
-		lblTieude.setIcon(new ImageIcon("Hinh/QLHV.png"));
 		pnTieuDe.add(lblTieude);
 		pnTopOfTop.add(pnTieuDe);
 		//pnTim
@@ -239,10 +238,9 @@ public class MHQuanLyHocVien extends JFrame
 		btnXoa.setIcon(new ImageIcon("Hinh/delete.png"));
 		btnTaoMoi.setIcon(new ImageIcon("Hinh/plus.png"));
 		btnSua.setIcon(new ImageIcon("Hinh/update.png"));
-		btnQuayLai.setIcon(new ImageIcon("Hinh/QL.png"));
+		btnQuayLai.setIcon(new ImageIcon("Hinh/back.png"));
 		btnTim.setIcon(new ImageIcon("Hinh/find.png"));
-		btnBaoLuu.setIcon(new ImageIcon("Hinh/BL.png"));
-		btnChuyenLop.setIcon(new ImageIcon("Hinh/CL.png"));
+		
 		pnButton.add(btnTaoMoi);
 		pnButton.add(btnThem);
 		pnButton.add(btnXoa);

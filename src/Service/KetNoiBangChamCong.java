@@ -13,8 +13,8 @@ import Moudle.GiangVien;
 public class KetNoiBangChamCong extends KetNoiSQL {
 	PreparedStatement preStatement=null;
 	ResultSet result=null;
-	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
-	Connection conn = a.getConnect();
+//	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
+//	Connection conn = a.getConnect();
 	public Vector<BangChamCong> docToanBoDanhMuc()
 	{
 		Vector<BangChamCong> vec=new Vector<BangChamCong>();
@@ -29,9 +29,8 @@ public class KetNoiBangChamCong extends KetNoiSQL {
 				dm.setMaCC(result.getString(1));
 				dm.setMaGV(result.getString(2));			
 				dm.setNgayCC(result.getDate(3));
-				dm.setMaTG(result.getInt(4)); 
-				dm.setMaTTCC(result.getString(5));
-				
+				dm.setCa(result.getInt(4)); 
+				dm.setLyDo(result.getString(5));
 				vec.add(dm);
 			}			
 		}
@@ -55,8 +54,8 @@ public class KetNoiBangChamCong extends KetNoiSQL {
 				gd.setMaCC(result.getString(1));
 				gd.setMaGV(result.getString(2));
 				gd.setNgayCC(result.getDate(3));
-				gd.setMaTG(result.getInt(4)); 
-				gd.setMaTTCC(result.getString(5));
+				gd.setCa(result.getInt(4)); 
+				gd.setLyDo(result.getString(5));
 				dsGD.add(gd);
 			}
 		} 
@@ -72,7 +71,7 @@ public class KetNoiBangChamCong extends KetNoiSQL {
 		ArrayList<BangChamCong> dsGD= new ArrayList<BangChamCong>();
 		try
 		{
-			String sql= "select * from BangChamCong where MaGV like concat('%', ?, '%') collate sql_latin1_general_cp1_ci_as";
+			String sql= "select * from BangChamCong where MaCC like concat('%', ?, '%') collate sql_latin1_general_cp1_ci_as";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, luong);
 			result=preStatement.executeQuery();
@@ -83,9 +82,8 @@ public class KetNoiBangChamCong extends KetNoiSQL {
 				gd.setMaCC(result.getString(1));
 				gd.setMaGV(result.getString(2));
 				gd.setNgayCC(result.getDate(3));
-				gd.setMaTG(result.getInt(4)); 
-				gd.setMaTTCC(result.getString(5));
-			
+				gd.setCa(result.getInt(4)); 
+				gd.setLyDo(result.getString(5));
 				dsGD.add(gd);
 			}
 			
@@ -105,9 +103,9 @@ public class KetNoiBangChamCong extends KetNoiSQL {
 			preStatement.setString(1, gd.getMaCC());
 			preStatement.setString(2, gd.getMaGV());
 			preStatement.setDate(3,(Date)  gd.getNgayCC());
-			preStatement.setLong(4, gd.getMaTG());
-			preStatement.setString(5, gd.getMaTTCC());
-			
+			preStatement.setLong(4, gd.getCa());
+			preStatement.setString(5, gd.getLyDo());
+
 			
 			return preStatement.executeUpdate();
 			
@@ -139,13 +137,14 @@ public class KetNoiBangChamCong extends KetNoiSQL {
 	{
 		try
 		{
-			String sql= "update BangChamCong set MaGV=?, NgayCC=?, MaTG=?,MaTTCC=? where MaCC=?";
+			String sql= "update BangChamCong set MaGV=?, NgayCC=?, Ca=?,LyDo=?";
 			preStatement = conn.prepareStatement(sql);
-			preStatement.setString(1, gd.getMaGV());
-			preStatement.setDate(2,(Date)  gd.getNgayCC());
-			preStatement.setLong(3,gd.getMaTG());
-			preStatement.setString(4, gd.getMaTTCC());	
-			preStatement.setString(5, gd.getMaCC());	
+			preStatement.setString(1, gd.getMaCC());
+			preStatement.setString(2, gd.getMaGV());
+			preStatement.setDate(3,(Date)  gd.getNgayCC());
+			preStatement.setLong(4, gd.getCa());
+			preStatement.setString(5, gd.getLyDo());;
+
 			return preStatement.executeUpdate();
 		}
 		catch(Exception e)
@@ -196,5 +195,60 @@ public class KetNoiBangChamCong extends KetNoiSQL {
 		return 0;
 		
 	}
-
+	public Vector<BangChamCong> hienThicboCathemMa(String macc) {
+		// TODO Auto-generated method stub
+		Vector<BangChamCong> vec=new Vector<BangChamCong>();
+		try
+		{
+			String sql="select * from BangChamCong ";
+			Statement statement=conn.createStatement();
+			ResultSet result=statement.executeQuery(sql);
+			while(result.next())
+			{
+				BangChamCong dm=new BangChamCong();
+				dm.setMaCC(result.getString(1));
+				dm.setMaGV(result.getString(2));			
+				dm.setNgayCC(result.getDate(3));
+				dm.setCa(result.getInt(4)); 
+				dm.setLyDo(result.getString(5));
+				vec.add(dm);
+				
+			}			
+			
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return vec;
+		
+	}
+	public Vector<BangChamCong> hienThicboLyDothemMa(String macc) {
+		// TODO Auto-generated method stub
+		Vector<BangChamCong> vec=new Vector<BangChamCong>();
+		try
+		{
+			String sql="select * from BangChamCong";
+			Statement statement=conn.createStatement();
+			ResultSet result=statement.executeQuery(sql);
+			while(result.next())
+			{
+				BangChamCong dm=new BangChamCong();
+				dm.setMaCC(result.getString(1));
+				dm.setMaGV(result.getString(2));			
+				dm.setNgayCC(result.getDate(3));
+				dm.setCa(result.getInt(4)); 
+				dm.setLyDo(result.getString(5));
+				vec.add(dm);
+				
+			}			
+			
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		return vec;
+		
+	}
 }

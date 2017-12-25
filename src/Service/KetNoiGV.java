@@ -27,8 +27,8 @@ public class KetNoiGV extends KetNoiSQL
 {
 	PreparedStatement preStatement=null;
 	ResultSet result=null;
-	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
-	Connection conn = a.getConnect();
+//	KetNoiSQLQuyen a = new KetNoiSQLQuyen();
+//	Connection conn = a.getConnect();
 	public Vector<GiangVien> docToanBoDanhMuc()
 	{
 		Vector<GiangVien> vec=new Vector<GiangVien>();
@@ -48,8 +48,6 @@ public class KetNoiGV extends KetNoiSQL
 				dm.setLuongCb(result.getFloat(6));	
 				dm.setNgayVL(result.getDate(7));
 				dm.setNgayKT(result.getDate(8));
-				dm.setSoLop(result.getInt(9));
-				dm.setMaTT(result.getString(10));
 				vec.add(dm);
 			}			
 			
@@ -80,8 +78,6 @@ public class KetNoiGV extends KetNoiSQL
 				dm.setLuongCb(result.getFloat(6));	
 				dm.setNgayVL(result.getDate(7));
 				dm.setNgayKT(result.getDate(8));
-				dm.setSoLop(result.getInt(9));
-				dm.setMaTT(result.getString(10));
 				vec.add(dm);
 			}			
 			
@@ -109,13 +105,12 @@ public class KetNoiGV extends KetNoiSQL
 				gv.setMaGV(result.getString(1));
 				gv.setTenGV(result.getString(2)); 
 				gv.setSdt(result.getString(3));
-				gv.setDiaChi(result.getString(4));			
+				gv.setDiaChi(result.getString(4));
+				
 				gv.setHsl(result.getFloat(5));
 				gv.setLuongCb(result.getFloat(6));	
 				gv.setNgayVL(result.getDate(7));
 				gv.setNgayKT(result.getDate(8));
-				gv.setSoLop(result.getInt(9));
-				gv.setMaTT(result.getString(9));
 				dsGv.add(gv);
 			}
 			
@@ -130,7 +125,7 @@ public class KetNoiGV extends KetNoiSQL
 	{
 		try
 		{
-			String sql= "insert into GiangVien VALUES (?,?,?,?,?,?,?,?,?,?)";
+			String sql= "insert into GiangVien VALUES (?,?,?,?,?,?,?,?)";
 			preStatement = conn.prepareStatement(sql);
 			preStatement.setString(1, gv.getMaGV());
 			preStatement.setString(2, gv.getTenGV());
@@ -140,8 +135,7 @@ public class KetNoiGV extends KetNoiSQL
 			preStatement.setString(6, gv.getDiaChi());
 			preStatement.setDate(7,(Date)  gv.getNgayVL());
 			preStatement.setDate(8, (Date) gv.getNgayKT());
-			preStatement.setInt(9, gv.getSoLop());
-			preStatement.setString(10, gv.getMaTT());
+			
 			return preStatement.executeUpdate();
 			
 		}
@@ -173,7 +167,7 @@ public class KetNoiGV extends KetNoiSQL
 		try
 		{
 			
-			String sql= "update GiangVien set TenGV=?, Sdt=?, DiaChi=?,HeSoLuong=?,LuongCB=?, NgayVaoLam=?,NgayKetThuc=?,SoLop=?,MaTT=? where MaGV=?";
+			String sql= "update GiangVien set TenGV=?, Sdt=?, DiaChi=?,HeSoLuong=?,LuongCB=?, NgayVaoLam=?,NgayKetThuc=? where MaGV=?";
 			preStatement = conn.prepareStatement(sql);			
 			preStatement.setString(1, gv.getTenGV());
 			preStatement.setString(2, gv.getSdt());
@@ -182,9 +176,8 @@ public class KetNoiGV extends KetNoiSQL
 			preStatement.setFloat(5, gv.getLuongCb());
 			preStatement.setDate(6, (Date) gv.getNgayVL());
 			preStatement.setDate(7, (Date) gv.getNgayKT());
-			preStatement.setString(8, gv.getMaTT());
-			preStatement.setInt(9, gv.getSoLop());
-			preStatement.setString(10, gv.getMaGV());		
+			preStatement.setString(8, gv.getMaGV());
+			
 			return preStatement.executeUpdate();
 		}
 		catch(Exception e)
