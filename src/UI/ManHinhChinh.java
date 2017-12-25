@@ -404,7 +404,7 @@ public class ManHinhChinh extends JFrame
 	
 	public void showWindows() 
 	{
-		this.setSize(800, 500);
+		this.setSize(1200, 700);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

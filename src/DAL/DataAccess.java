@@ -25,8 +25,13 @@ public class DataAccess {
     public void open() throws ClassNotFoundException, SQLException
     {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+<<<<<<< HEAD
+       // String url="jdbc:sqlserver://:1433;instance=MSSQLSERVER;databaseName=QuanLyTrungTamTH;user=sa;password=sa";
+        String url="jdbc:sqlserver://localhost:1433;instance=MSSQLSERVER;databaseName=QuanLyTrungTamTH;integratedSecurity=true;";
+=======
        // String url="jdbc:sqlserver://TRANTUNG\\TRANTUNG:1433;instance=MSSQLSERVER;databaseName=QuanLyTrungTamTH;user=sa;password=sa";
         String url="jdbc:sqlserver://TRANTUNG\\TRANTUNG:1433;instance=MSSQLSERVER;databaseName=QuanLyTrungTamTH;integratedSecurity=true;";
+>>>>>>> 36a292d4d6131ce35344f67e9a902a6e6050a31d
         conn=DriverManager.getConnection(url);
         System.out.print("Chay vao open");
         
